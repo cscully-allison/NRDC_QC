@@ -1,0 +1,23 @@
+<!--Name: datasource.config.xml -->
+<!--Author: Connor Scully-Allison -->
+<!--Date: Nov 20, 2017 -->
+<!--Description: This is a prototype for a configuration file that will be created
+	programmatically via the web based UI. In this configuration file data-
+	sources are defiend generically with some custom defintions-->
+
+<DataSource>
+    <Type>Database</Type>
+    <Language>SQL</Language>
+    <Implementation>Microsoft SQL<Implementation>
+    <Connection></Connection>
+    <Username></Username>
+    <Password></Password>
+    <Database>
+	<Name>ProtoNRDC</Name>
+        <Tables>
+	    <Table>Measurements</Table>
+	    <Table>Deployments</Table>
+            <Table></Table>
+	</Tables>
+    </Database>
+</DataSource>

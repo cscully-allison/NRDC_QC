@@ -1,6 +1,6 @@
 ## Dependencies
 
-###For MSSQL
+### For MSSQL
     Database connections to Microsoft SQL server with SQLAlchemy requires manual configuration of drivers. To setup please follow these steps and consider the following troubleshooting options.
 
     1. Install SQLAlchemy via the command line

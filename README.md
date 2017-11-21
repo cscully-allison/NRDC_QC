@@ -26,9 +26,17 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
 
 4. Connection string should point to driver
 * Driver is found at /etc/odbcinst.ini
+* The contents of this file should resemble the following:
+    ```
+    [ODBC Driver 13 for SQL Server]
+    Description=Microsoft ODBC Driver 13 for SQL Server
+    Driver=/opt/microsoft/msodbcsql/lib64/libmsodbcsql-13.1.so.9.1
+    UsageCount=1
+    ```
+
 
 5. Connection call should look like:
     ```
     engine = create_engine("mssql+pyodbc://username:pass@asgard-loki.rd.unr.edu/ProtoNRDC?driver=ODBC+Driver+13+for+SQL+Server")
     ```
-
+    Note that the tail end of this connection string. The driver words reference the name in brackets in the /etc/odbcinst.ini file.

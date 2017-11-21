@@ -10,14 +10,14 @@
     <Language>SQL</Language>
     <Implementation>Microsoft SQL<Implementation>
     <Connection></Connection>
-    <Username></Username>
-    <Password></Password>
-    <Database>
+    <Username>cilstudent</Username>
+    <Password>cil!234</Password>
+    <InitialCatalog>
 	<Name>ProtoNRDC</Name>
         <Tables>
 	    <Table>Measurements</Table>
 	    <Table>Deployments</Table>
             <Table></Table>
 	</Tables>
-    </Database>
+    </InitalCatalog>
 </DataSource>

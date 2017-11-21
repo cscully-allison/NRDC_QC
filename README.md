@@ -10,7 +10,6 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
 
 2. Install pyodbc
     ```
-    sudo apt-get install unixodbc-dev-utf16
     pip install pyodbc
     ```
 

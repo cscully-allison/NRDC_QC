@@ -1,3 +1,5 @@
+<?xml version="1.0"?>
+
 <!--Name: datasource.config.xml -->
 <!--Author: Connor Scully-Allison -->
 <!--Date: Nov 20, 2017 -->
@@ -5,19 +7,26 @@
 	programmatically via the web based UI. In this configuration file data-
 	sources are defiend generically with some custom defintions-->
 
+
 <DataSource>
-    <Type>Database</Type>
-    <Language>SQL</Language>
-    <Implementation>Microsoft SQL<Implementation>
-    <Connection></Connection>
-    <Username>cilstudent</Username>
-    <Password>cil!234</Password>
-    <InitialCatalog>
-	<Name>ProtoNRDC</Name>
-        <Tables>
-	    <Table>Measurements</Table>
-	    <Table>Deployments</Table>
-            <Table></Table>
-	</Tables>
-    </InitalCatalog>
+  <Type>Database</Type>
+  <Language>SQL</Language>
+  <Implementation>Microsoft SQL</Implementation>
+  <Connection>mssql+pyodbc://{0}:{1}@asgard-loki.rd.unr.edu/{3}?driver=ODBC+Driver+13+for+SQL+Server</Connection>
+  <Username>cilstudent</Username>
+  <Password>cil!234</Password>
+  <InitialCatalog>
+  	<Name>ProtoNRDC</Name>
+      <Tables>
+  	    <Context namespace="Infrastructure">
+  	    	<Table>Deployments</Table>
+  	    </Context>
+  	    <Context namespace="Data">
+  		    <Table>Measurements</Table>
+        </Context>
+        <Context namespace="Vocabulary">
+  		    <Table>[L1 Quality Control]</Table>
+        </Context>
+      </Tables>
+  </InitialCatalog>
 </DataSource>

@@ -1,5 +1,16 @@
 ## Dependencies
 
+### For Containerization
+The container should install the following items
+
+1. Ubuntu 16.14
+2. Python2/3
+3. PIP
+4. Flask
+5. SQLAlchemy
+    1. SQLAlhemy database specific dependencies
+6. xmltodict (via pip)
+
 ### For MSSQL
 Database connections to Microsoft SQL server with SQLAlchemy requires manual configuration of drivers. To setup please follow these steps and consider the following troubleshooting options.
 

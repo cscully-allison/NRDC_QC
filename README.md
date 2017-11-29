@@ -16,12 +16,12 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
 
 1. Install SQLAlchemy via the command line
     ```
-    pip install sqlalchemy
+    pip3 install sqlalchemy
     ```
 
 2. Install pyodbc
     ```
-    pip install pyodbc
+    pip3 install pyodbc
     ```
 
 3. Install MSSQL driver
@@ -51,3 +51,11 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
     engine = create_engine("mssql+pyodbc://username:pass@asgard-loki.rd.unr.edu/ProtoNRDC?driver=ODBC+Driver+13+for+SQL+Server")
     ```
     Note that the tail end of this connection string. The driver words reference the name in brackets in the /etc/odbcinst.ini file.
+    
+    
+6. Install Flask and Flask_Cors
+
+    ```
+    pip3 install flask
+    pip3 install flask-cors
+    ```

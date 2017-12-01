@@ -5,25 +5,28 @@ from sqlalchemy import create_engine
 from Configuration import SourceConfiguration
 from DataSource import DataBaseSource
 
+#variables
+config = None
+DataSource = None
+ResultRows = []
+Result = None
+DataStreamQuerySource = "SQLQueries/DetailedDataStreamQuery.sql"
+Query = ""
+Measurements = None
+
+#Get configuration and set up data source
 config = SourceConfiguration("config/datasource.config")
-
 DataSource = DataBaseSource(config)
-
 DataSource.configure()
-result = DataSource.read("select name from Data.[Data Streams]")
 
-for x in result:
-	print (x)
-
-
+with open(DataStreamQuerySource) as DSQ:
+	Query = DSQ.read()
+	result = DataSource.read(Query
 
 
-"""
-engine = create_engine("mssql+pyodbc://cilstudent:cil!234@asgard-loki.rd.unr.edu/ProtoNRDC?driver=ODBC+Driver+13+for+SQL+Server")
-connection = engine.connect()
+for row in result:
+	ResultRows.append(dict(row))
 
-result = connection.execute("select deployment, name from infrastructure.deployments")
-
-for x in result:
-	print x
-"""
+for x in ResultRows:
+	if x["PropertyName"] == 'Temperature' and x["DataTypeName"] == 'Average':
+		result = DataSource.read(Query)

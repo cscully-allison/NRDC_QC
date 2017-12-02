@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 import sys
-import xmltodict
+from xml.dom.minidom import parseString
 
 
 class Configuration:
@@ -35,7 +35,7 @@ class SourceConfiguration(Configuration):
             try:
                 with open(SourceFile) as CFile:
                     xml = CFile.read()
-                    self.SourceMetaData = xmltodict.parse(xml)
+                    self.SourceMetaData = parseString(xml)
 
                 # Write cached file out for later comparision
                 WFile = open(CachedFilePath, 'w+')
@@ -82,7 +82,7 @@ class SourceConfiguration(Configuration):
         if self.SourceFile != None:
                 with open(SourceFile) as CFile:
                     xml = CFile.read()
-                    self.SourceMetaData = xmltodict.parse(xml)
+                    self.SourceMetaData = parseString(xml)
 
                 # Write cached file out for later comparision
                 WFile = open(CachedFilePath, 'w+')

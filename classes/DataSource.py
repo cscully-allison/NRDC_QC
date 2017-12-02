@@ -34,25 +34,57 @@ class DataBaseSource(DataSource):
 
     def configure(self):
         #retrieve configuration dictionary
-        ConfigDict = self.Configuration.SourceMetaData["DataSource"]
+        ConfigDOM = self.Configuration.SourceMetaData
 
         #get connection string
-        ConnString = ConfigDict["Connection"];
+        ConnString = ConfigDOM.getElementsByTagName("Connection")[0].firstChild.nodeValue;
 
         #build connection string
-        ConnString = ConnString.format(ConfigDict["Username"], ConfigDict["Password"], ConfigDict["InitialCatalog"]["Name"])
+        ConnString = ConnString.format(ConfigDOM.getElementsByTagName("Username")[0].firstChild.nodeValue, ConfigDOM.getElementsByTagName("Password")[0].firstChild.nodeValue, ConfigDOM.getElementsByTagName("Name")[0].firstChild.nodeValue)
 
         #generate connection and bind to class
         self.Engine = create_engine(ConnString)
         self.Connection = self.Engine.connect()
 
-        return False
 
 
     def read(self, SQLQuery):
         QueryResponse = self.Connection.execute(SQLQuery)
         return QueryResponse
 
+    """
+        Retrieves all data streams that have associated tests.
+        I currently have all the sql code in a file and it filters
+        from what's returned by that.
+        todo: More programatic query building
+    """
+    def fetchDataStreams(self, QuerySource):
+        #variables
+        Query = ""
+        result = None #A SQLAlchemy row proxy object
+        DOM = self.Configuration.SourceMetaData
+        DataStreamsList = None
+        TestableDataStreamIDs = []
+        ReturnableRows = []
+
+        #get the names of all datastreams to be Tested
+        DataStreamsList = DOM.getElementsByTagName("Stream")
+
+        for elem in DataStreamsList:
+            TestableDataStreamIDs.append(elem.firstChild.nodeValue)
+
+        print( TestableDataStreamIDs )
+
+        #with open(QuerySource) as Q:
+        #	Query = Q.read()
+        #	result = DataSource.read(Query)
+
+        return
+
+
+
+    def fetchMeasurements(self):
+        return
 
     def write(self):
         return False

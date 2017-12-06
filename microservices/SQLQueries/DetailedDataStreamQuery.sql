@@ -20,4 +20,4 @@ SELECT TOP 1000 [Stream]
   ON DS.Property = P.Property
   JOIN [ProtoNRDC].Vocabulary.Units as U
   ON DS.Unit = U.Unit
-  WHERE DS.[Data Interval] = '00:10:00';
+  WHERE DS.[Data Interval] = '00:10:00'

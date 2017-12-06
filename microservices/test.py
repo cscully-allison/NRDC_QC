@@ -2,7 +2,7 @@ import sys
 sys.path.append("../classes")
 
 from sqlalchemy import create_engine
-from Configuration import SourceConfiguration
+from Configuration import SourceConfiguration, TestConfiguration
 from DataSource import DataBaseSource
 from DataContainers import Measurement, DataStream, DataBundle
 
@@ -23,22 +23,14 @@ DataSource = DataBaseSource(config)
 DataSource.configure()
 
 
-DataSource.fetchDataStreams(DataStreamQuerySource)
+DataStreams = DataSource.fetchDataStreams(DataStreamQuerySource)
 
-with open(DataStreamQuerySource) as Q:
-	Query = Q.read()
-	result = DataSource.read(Query)
+DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
-
-
-
-for row in result:
-	ResultRows.append(dict(row))
-
+TestConfig = TestConfiguration("config/tests.config")
 
 """
 Query Measurements associated with a partiuclar data stream
-"""
 
 for x in ResultRows:
 	if x["PropertyName"] == 'Temperature' and x["DataTypeName"] == 'Average':
@@ -52,3 +44,4 @@ with open(MeasurementQuerySource) as MQS:
 			Measurements.append(Measurement(row['Value'], row['Measurement Time Stamp'], row['L1 Flag'], row['Stream']))
 		Stream["Measurements"] = Measurements
 		Measurements = []
+"""

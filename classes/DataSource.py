@@ -1,6 +1,7 @@
 import sys
 from abc import ABCMeta, abstractmethod
 from Configuration import SourceConfiguration
+from DataContainers import DataStream, Measurement
 from sqlalchemy import create_engine
 
 class DataSource:
@@ -65,26 +66,44 @@ class DataBaseSource(DataSource):
         DOM = self.Configuration.SourceMetaData
         DataStreamsList = None
         TestableDataStreamIDs = []
+        DataStreams = []
         ReturnableRows = []
 
         #get the names of all datastreams to be Tested
         DataStreamsList = DOM.getElementsByTagName("Stream")
-
         for elem in DataStreamsList:
             TestableDataStreamIDs.append(elem.firstChild.nodeValue)
 
-        print( TestableDataStreamIDs )
 
-        #with open(QuerySource) as Q:
-        #	Query = Q.read()
-        #	result = DataSource.read(Query)
+        #Query All 10 minute datastreams
+        with open(QuerySource) as Q:
+            Query = Q.read()
+            ReturnableRows = self.read(Query)
 
-        return
+        #Filer streams by the ID associated with tests
+        for Row in ReturnableRows:
+            if str(Row['Stream']) in TestableDataStreamIDs:
+                DataStreams.append( DataStream([], dict(Row)) )
+
+        return DataStreams
 
 
+    def fetchMeasurements(self, DataStreamsList, QuerySource):
+        #variables
+        Query = ""
+        ReturnedRows = None
 
-    def fetchMeasurements(self):
-        return
+        #Query Measurements associated with a particular datastream
+        for Stream in DataStreamsList:
+            with open(QuerySource) as Q:
+                Query = Q.read()
+                Query = Query.format(Stream.MetaData["Stream"])
+                ReturnedRows = self.read(Query)
+
+                for Row in ReturnedRows:
+                    Stream.insertMeasurement(Measurement(Row["Value"], Row["Measurement Time Stamp"], Row["L1 Flag"], Row["Stream"]))
+
+        return DataStreamsList
 
     def write(self):
         return False

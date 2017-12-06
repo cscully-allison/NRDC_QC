@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from Configuration import SourceConfiguration, TestConfiguration
 from DataSource import DataBaseSource
 from DataContainers import Measurement, DataStream, DataBundle
+from Testing import Tester
 
 #variables
 config = None
@@ -16,6 +17,7 @@ MeasurementQuerySource= "SQLQueries/measurementQuery.sql"
 Query = ""
 DataStreams = []
 Measurements = []
+TesterGroup = []
 
 #Get configuration and set up data source
 config = SourceConfiguration("config/datasource.config")
@@ -29,19 +31,12 @@ DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
 TestConfig = TestConfiguration("config/tests.config")
 
-"""
-Query Measurements associated with a partiuclar data stream
+print(TestConfig.TestParameters)
 
-for x in ResultRows:
-	if x["PropertyName"] == 'Temperature' and x["DataTypeName"] == 'Average':
-		DataStreams.append(x)
 
-with open(MeasurementQuerySource) as MQS:
-	Query = MQS.read()
-	for Stream in DataStreams:
-		result = DataSource.read(Query.format(Stream["Stream"]))
-		for row in result:
-			Measurements.append(Measurement(row['Value'], row['Measurement Time Stamp'], row['L1 Flag'], row['Stream']))
-		Stream["Measurements"] = Measurements
-		Measurements = []
-"""
+
+for Stream in DataStreams:
+    TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
+
+for TesterObj in TesterGroup:
+    TesterObj.RunTests()

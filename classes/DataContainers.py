@@ -27,6 +27,7 @@ class DataStream:
 
     def __init__(self, Measurements=[], MetaData={}):
         self.Measurements = Measurements
+        self.StreamID = MetaData["Stream"]
         self.MetaData = MetaData
 
     def loadMeasurements(self, Measurements):

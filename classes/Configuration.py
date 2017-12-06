@@ -91,12 +91,15 @@ class SourceConfiguration(Configuration):
 class TestConfiguration(Configuration):
 
         def __init__(self, SourceFile=None):
-            #variables
-            xml = ""
-            CachedFilePath = "{}.cached".format(SourceFile)
+            #member variabales
             self.SourceFile = SourceFile
             self.SourceMetaData = None
             self.TestParameters = {}
+
+            #variables
+            xml = ""
+            CachedFilePath = "{}.cached".format(SourceFile)
+
 
             #Only try to fetch configuration information
             # if a file source was given
@@ -116,7 +119,6 @@ class TestConfiguration(Configuration):
                     print("If this was a file I/O error please consider changing the path to the configuaration file.")
 
                 self.TestParameters = self.ExtractTestParams(self.SourceMetaData)
-                print(self.TestParameters)
 
 
         def GetSourceInfo(self):

@@ -20,26 +20,39 @@ class Tester:
         for Ndx, Measurement in enumerate(self.DataStream.Measurements):
 
             for Test in self.Tests:
+
+                #Out of bounds test (flag number is 2)
                 if Test.id == "OBT":
-                    Tested = Test.RunTest(Measurement)
-                    #if Tested.Flag != None:
+                    Measurement = Test.RunTest(Measurement)
+                    if Measurement.Flag == 2:
+                        self.TestedDataPoints.append(Measurement)
+                        break
 
-
+                #Repeat value test (flag value is 1)
                 elif Test.id == "RVT":
                     NumDataPoints = Test.GetTestRequiredDataPoints()
                     if Ndx >= NumDataPoints:
                         PossibleRepeatValues = self.DataStream.Measurements[ Ndx-NumDataPoints : Ndx ]
                         PossibleRepeatValues.append( Measurement )
-                        Tested = Test.RunTest( PossibleRepeatValues )
+                        Measurement = Test.RunTest( PossibleRepeatValues )
 
-                elif Test.id == "MVT":
-                    if Ndx >= 2:
+                        if Measurement.Flag == 1:
+                            self.TestedDataPoints.append(Measurement)
+                            break
+
+            #All tests passed (Flag Data as good)
+            if Measurement.Flag == None:
+                Measurement.setFlag(999)
+                self.TestedDataPoints.append(Measurement)
+
+        self.DataStream.Measurements = self.TestedDataPoints
+        self.DataStream.sortMeasurements()
 
     def ConstructTests(self, TestParams):
         #variabales
         Tests = []
 
-        Tests.append( MissingValueTest() )
+        #Tests.append( MissingValueTest() )
 
         for TestInfo in TestParams:
             if TestInfo["Type"] == "Bounds":
@@ -75,6 +88,7 @@ class MissingValueTest(Test):
         #Compare zeorth measurement timestamp against 1st
         # If they are greater than 10mins apart create measuremt,
         # Flag and eject
+        #if First.TimeStamp - Second.TimeStamp > datetime()
 
 
 

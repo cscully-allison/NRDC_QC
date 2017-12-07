@@ -1,3 +1,5 @@
+import datetime
+
 """
 """
 class DataBundle:
@@ -38,6 +40,9 @@ class DataStream:
 
     def insertMeasurement(self, Measurement):
         self.Measurements.append(Measurement)
+
+    def sortMeasurements(self):
+        self.Measurements.sort(key = lambda Measurement: Measurement.TimeStamp)
 
 """
 """

@@ -3,8 +3,8 @@
     <Stream>63</Stream>
     <Test>
       <Type>Bounds</Type>
-      <Max>15.0</Max>
-      <Min>-20.0</Min>
+      <Max>28.0</Max>
+      <Min>-40.0</Min>
     </Test>
     <Test>
       <Type>Repeat Value</Type>

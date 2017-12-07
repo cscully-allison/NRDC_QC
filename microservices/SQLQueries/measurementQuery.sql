@@ -1,3 +1,3 @@
-SELECT TOP 10000 *
+SELECT *
 FROM Data.Measurements as M
 WHERE M.Stream = {0};

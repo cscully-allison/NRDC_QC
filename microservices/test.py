@@ -40,3 +40,5 @@ for Stream in DataStreams:
 
 for TesterObj in TesterGroup:
     TesterObj.RunTests()
+    for ndx, M in enumerate(TesterObj.DataStream.Measurements):
+        print(M.Value, M.TimeStamp, ", ", M.Flag)

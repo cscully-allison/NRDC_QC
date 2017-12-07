@@ -103,6 +103,7 @@ class DataBaseSource(DataSource):
                 for Row in ReturnedRows:
                     Stream.insertMeasurement(Measurement(Row["Value"], Row["Measurement Time Stamp"], Row["L1 Flag"], Row["Stream"]))
 
+
         return DataStreamsList
 
     def write(self):

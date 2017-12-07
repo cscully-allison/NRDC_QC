@@ -23,7 +23,7 @@ def L1Flags():
             Query = r.read()
             Flags = DataSource.read(Query)
 
-        for Row in Flags:
+        for Row in ReturnableRows:
             print(Row)
         return "Working"
 

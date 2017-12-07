@@ -66,8 +66,8 @@ class DataBaseSource(DataSource):
         self.Connection = self.Engine.connect()
 
 
-    def read(self, SQLQuery):
-        QueryResponse = self.Connection.execute(SQLQuery)
+    def read(self, SQLQuery, Parameter1=None, Parameter2=None):
+        QueryResponse = self.Connection.execute(SQLQuery,Parameter1,Parameter2)
         return QueryResponse
 
     """

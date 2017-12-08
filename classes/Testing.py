@@ -1,4 +1,14 @@
 from abc import ABCMeta, abstractmethod
+from datetime import datetime, timedelta
+from DataContainers import Measurement
+
+#Global Constants
+REPEAT_VALUE_FLAG = 1
+OUT_OF_BOUNDS_FLAG = 2
+MISSING_VALUE_FLAG = 3
+ALL_GOOD_FLAG = 4
+
+
 
 
 class Tester:
@@ -16,15 +26,28 @@ class Tester:
     def RunTests(self):
         #variabales
         PossibleRepeatValues = []
+        MissingValueTuple = []
+        NewlySpawnedMeasurements = []
+
+        #Sort By Timestamp to Ensure Everything is sequential
+        self.DataStream.sortMeasurements()
 
         for Ndx, Measurement in enumerate(self.DataStream.Measurements):
 
             for Test in self.Tests:
 
+                if Test.id == "MVT":
+                    if Ndx >= 2:
+                        MissingValueTuple = self.DataStream.Measurements[Ndx-1: Ndx]
+                        MissingValueTuple.append(Measurement)
+                        NewlySpawnedMeasurements.extend( Test.RunTest(MissingValueTuple, self.DataStream.StreamID) )
+
+
+
                 #Out of bounds test (flag number is 2)
-                if Test.id == "OBT":
+                elif Test.id == "OBT":
                     Measurement = Test.RunTest(Measurement)
-                    if Measurement.Flag == 2:
+                    if Measurement.Flag == OUT_OF_BOUNDS_FLAG:
                         self.TestedDataPoints.append(Measurement)
                         break
 
@@ -36,14 +59,16 @@ class Tester:
                         PossibleRepeatValues.append( Measurement )
                         Measurement = Test.RunTest( PossibleRepeatValues )
 
-                        if Measurement.Flag == 1:
+                        if Measurement.Flag == REPEAT_VALUE_FLAG:
                             self.TestedDataPoints.append(Measurement)
                             break
 
             #All tests passed (Flag Data as good)
             if Measurement.Flag == None:
-                Measurement.setFlag(999)
+                Measurement.setFlag(ALL_GOOD_FLAG)
                 self.TestedDataPoints.append(Measurement)
+
+        self.TestedDataPoints.extend(NewlySpawnedMeasurements)
 
         self.DataStream.Measurements = self.TestedDataPoints
         self.DataStream.sortMeasurements()
@@ -52,7 +77,7 @@ class Tester:
         #variabales
         Tests = []
 
-        #Tests.append( MissingValueTest() )
+        Tests.append( MissingValueTest() )
 
         for TestInfo in TestParams:
             if TestInfo["Type"] == "Bounds":
@@ -80,15 +105,30 @@ class MissingValueTest(Test):
     def __init__(self, TestID = "MVT"):
         self.id = TestID
 
-    def RunTest(self, MasurementPair):
+    def RunTest(self, MeasurementPair, StreamID):
         #variables
         First = MeasurementPair[0]
         Second = MeasurementPair[1]
+        Delta = None
+        TimeStampOffset = None
+        NewMeasurements = []
 
         #Compare zeorth measurement timestamp against 1st
         # If they are greater than 10mins apart create measuremt,
         # Flag and eject
-        #if First.TimeStamp - Second.TimeStamp > datetime()
+        Delta = Second.TimeStamp - First.TimeStamp
+
+        if (Delta.seconds / 60) > 10:
+            for ndx in range( int(Delta.seconds/60/10) ):
+                TimeStampOffset = timedelta(0, ndx*60*10)
+
+                if First.TimeStamp + TimeStampOffset != First.TimeStamp:
+                    NewMeasurements.append( Measurement( None, First.TimeStamp + TimeStampOffset , MISSING_VALUE_FLAG, StreamID ) )
+
+            return NewMeasurements
+
+        return []
+
 
 
 

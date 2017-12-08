@@ -70,6 +70,9 @@ class DataBaseSource(DataSource):
         QueryResponse = self.Connection.execute(SQLQuery)
         return QueryResponse
 
+    def write(self, SQLQuery):
+        self.Connection.execute(SQLQuery)
+
     """
         Retrieves all data streams that have associated tests.
         I currently have all the sql code in a file and it filters
@@ -125,3 +128,15 @@ class DataBaseSource(DataSource):
 
     def write(self):
         return False
+
+    def writeFlagsToDataStream(self, DataStreamID, MeasurementList):
+        BaseString = "UPDATE {0} SET [L1 Flag]={1} WHERE [Measurement Time Stamp]=\'{2}\' AND [Stream] = {3};"
+        Table = "Data.Measurements"
+        Query = ""
+
+        for Measurement in MeasurementList:
+            if Measurement.getFlag() != 3 and Measurement.getFlag() != 4:
+                Query += BaseString.format(Table, Measurement.getFlag(), Measurement.TimeStamp, DataStreamID)
+
+
+        self.Connection.execute(Query)

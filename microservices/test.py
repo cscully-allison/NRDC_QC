@@ -31,7 +31,6 @@ DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
 TestConfig = TestConfiguration("config/tests.config")
 
-print(TestConfig.TestParameters)
 
 
 
@@ -43,4 +42,4 @@ for TesterObj in TesterGroup:
 
 
 for TesterObj in TesterGroup:
-    TesterObj.DataStream
+    DataSource.writeFlagsToDataStream(TesterObj.DataStream.StreamID, TesterObj.DataStream.Measurements)

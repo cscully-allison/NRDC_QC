@@ -6,7 +6,7 @@ from DataContainers import Measurement
 REPEAT_VALUE_FLAG = 1
 OUT_OF_BOUNDS_FLAG = 2
 MISSING_VALUE_FLAG = 3
-
+ALL_GOOD_FLAG = 4
 
 
 
@@ -65,7 +65,7 @@ class Tester:
 
             #All tests passed (Flag Data as good)
             if Measurement.Flag == None:
-                Measurement.setFlag(999)
+                Measurement.setFlag(ALL_GOOD_FLAG)
                 self.TestedDataPoints.append(Measurement)
 
         self.TestedDataPoints.extend(NewlySpawnedMeasurements)

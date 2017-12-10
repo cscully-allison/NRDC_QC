@@ -14,7 +14,7 @@ export class FlagDashboardComponent implements OnInit {
 
   // Doughnut
   public doughnutChartLabels:string[] = ['Repeat Value Flag', 'Out Of Bounds Flag', 'Missing Value Flag'];
-  public flagIds:number = [1,2,3];
+  public flagIds:number[] = [1,2,3];
   public doughnutChartData:number[] = [0,0,210];
   public doughnutChartType:string = 'doughnut';
 

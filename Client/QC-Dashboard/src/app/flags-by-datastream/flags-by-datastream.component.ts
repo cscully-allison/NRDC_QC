@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class FlagsByDatastreamComponent implements OnInit {
 
   id = -1;
+  sub = null;
 
   constructor(private aroute:ActivatedRoute, private http:HttpClient) {
 

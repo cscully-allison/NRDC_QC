@@ -11,6 +11,7 @@ export class FlagsByDatastreamComponent implements OnInit {
 
   id = -1;
   sub = null;
+  flagData = {};
 
   constructor(private aroute:ActivatedRoute, private http:HttpClient) {
 
@@ -21,11 +22,29 @@ export class FlagsByDatastreamComponent implements OnInit {
     this.http.get('http://sensor.nevada.edu/GS/Services/Flag/L1/'+this.id).subscribe(
      data => {
          console.log(data)
+         this.flagData = data;
+
+         this.getFlagCounts(data);
      })
   }
 
   ngOnDestroy() {
    this.sub.unsubscribe();
- }
+  }
+
+  getFlagCounts(returnedFlags:object):object{
+      var countsObject = {};
+
+      for(let dsid in returnedFlags){
+          if(!Number.isNaN(+dsid)){
+              countsObject[dsid] = {};
+              countsObject[dsid]["Deployment Name"] =  returnedFlags[dsid]["Deployment Name"];
+              countsObject[dsid]["flagCount"] = returnedFlags[dsid]["Measurements"].length;
+          }
+      }
+
+      console.log(countsObject);
+      return countsObject;
+  }
 
 }

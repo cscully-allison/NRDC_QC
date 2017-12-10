@@ -1,5 +1,16 @@
 ## Dependencies
 
+### For Client
+The client side of the application requires the following parts
+
+1. Node
+2. NPM
+3. AngularCLI
+4. ng2-charts
+5. d3
+    i. Typescript deifntions
+
+
 ### For Containerization
 The container should install the following items
 

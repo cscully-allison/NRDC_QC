@@ -74,7 +74,7 @@ def L1FlagsRefined(FlagID):
         StructuredData['Flag Name'] = Row[6]
         StructuredData['Flag Description'] = Row[7]
         
-        
+        # Building the Datastreams section
         while Row is not None:
             if str(Row[0]) not in StructuredData:
                 StructuredData[str(Row[0])] = {}
@@ -82,6 +82,7 @@ def L1FlagsRefined(FlagID):
                 StructuredData[str(Row[0])]["Deployment Name"] = Row[2]
                 StructuredData[str(Row[0])]["Measurements"] = []
             
+            # Building the Measurements section
             MeasurementEntry = {}
             MeasurementEntry['Time Stamp'] = str(Row[4])
             MeasurementEntry['Value'] = str(Row[3])

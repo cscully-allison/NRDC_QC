@@ -12,6 +12,7 @@ import { DatavisDashboardComponent } from './datavis-dashboard/datavis-dashboard
 import { ConfigDashboardComponent } from './config-dashboard/config-dashboard.component';
 import { AboutComponent } from './about/about.component';
 import { FlagsByDatastreamComponent } from './flags-by-datastream/flags-by-datastream.component';
+import { NameComponent } from './name/name.component';
 
 
 
@@ -33,7 +34,8 @@ const appRoutes: Routes = [
     DatavisDashboardComponent,
     ConfigDashboardComponent,
     AboutComponent,
-    FlagsByDatastreamComponent
+    FlagsByDatastreamComponent,
+    NameComponent
   ],
   imports: [
     HttpClientModule,

@@ -1,5 +1,5 @@
 {
-  "name": "qc-dashboard",
+  "name": "my-app",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -12,28 +12,21 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/schematics": "0.0.40",
     "@angular/animations": "^5.0.0",
-    "@angular/cdk": "^5.0.0",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/forms": "^5.0.0",
     "@angular/http": "^5.0.0",
-    "@angular/material": "^5.0.0",
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
-    "@types/d3": "^4.12.0",
-    "chart.js": "^2.7.1",
     "core-js": "^2.4.1",
-    "d3": "^4.12.0",
-    "ng2-charts": "^1.6.0",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular/cli": "^1.6.0",
+    "@angular/cli": "1.6.0",
     "@angular/compiler-cli": "^5.0.0",
     "@angular/language-service": "^5.0.0",
     "@types/jasmine": "~2.5.53",

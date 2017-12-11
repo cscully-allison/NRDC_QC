@@ -8,7 +8,8 @@ The client side of the application requires the following parts
 3. AngularCLI
 4. ng2-charts
 5. d3
-    i. Typescript deifntions
+    1. Typescript deifntions
+    2. Refrence : https://stackoverflow.com/questions/38335087/correct-way-to-import-d3-js-into-an-angular-2-application
 
 
 ### For Containerization

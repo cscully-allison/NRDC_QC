@@ -39,10 +39,7 @@ export class FlagDashboardComponent implements OnInit {
           data => {
               this.doughnutChartData = this.retrieveDataValues(data);
           })
-          // this.http.get('http://sensor.nevada.edu/GS/Services/DataVis/Measurements/66').subscribe(
-          //   data => {
-          //       console.log(data)
-          //   })
+          
 
   }
 

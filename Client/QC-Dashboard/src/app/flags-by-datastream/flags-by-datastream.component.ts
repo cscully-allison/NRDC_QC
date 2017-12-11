@@ -153,10 +153,14 @@ export class FlagsByDatastreamComponent implements OnInit {
   }
 
   forwardToMeasurements(passedFlaggedData:object, context){
-      console.log(passedFlaggedData);
+      var flagDataBundle = {};
 
-      var measurements = passedFlaggedData["Measurements"];
-      context.router.navigate(["/datavis/", passedFlaggedData] );
+      //flagDataBundle["Measurements"] = passedFlaggedData["Measurements"];
+      flagDataBundle["streamID"] = passedFlaggedData["streamID"];
+      flagDataBundle["Deployment Name"] = passedFlaggedData["Deployment Name"];
+      flagDataBundle["Deployment ID"] = passedFlaggedData["Deployment ID"];
+
+      context.router.navigate(["/datavis/", flagDataBundle] );
   }
 
   extractLabels(organizedData:object[]):object[]{

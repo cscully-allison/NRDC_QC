@@ -1,8 +1,9 @@
 import sys
+from random import random
 from abc import ABCMeta, abstractmethod
 from Configuration import SourceConfiguration
 from DataContainers import DataStream, Measurement
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import pyodbc
 import urllib
 
@@ -130,13 +131,41 @@ class DataBaseSource(DataSource):
         return False
 
     def writeFlagsToDataStream(self, DataStreamID, MeasurementList):
-        BaseString = "UPDATE {0} SET [L1 Flag]={1} WHERE [Measurement Time Stamp]=\'{2}\' AND [Stream] = {3};"
-        Table = "Data.Measurements"
+
+        #Need to check to make sure there are measurements to write to DB
+        # Table = "#FlagInsertBuffer_" + str(int(random()*10000000))
+        #
+        # TableCreate = """IF OBJECT_ID('{0}', 'U') IS NULL
+        #                     CREATE TABLE {0}
+        #                     (
+        #                         [Stream] [int] NOT NULL,
+        #                         [Measurement Time Stamp] [datetime2](7) NOT NULL,
+        #                         [L1 Flag] [tinyint] NULL,
+        #                     );""".format(Table)
+        # InsertString = "INSERT INTO {0} (Stream, [Measurement Time Stamp], [L1 Flag]) VALUES ".format(Table)
+        # InsertValues = "({0},\'{1}\',{2})"
+        # SelectTest = "SELECT [Stream], [Measurement Time Stamp], [L1 Flag] FROM {0};".format(Table)
+        # TableJoinAndUpdate = """ UPDATE [DBM]
+        #                             SET [DBM].[L1 Flag] = [TEMP].[L1 Flag]
+        #                             FROM [Data].[Measurements] AS [DBM]
+        #                             JOIN {0} [TEMP]
+        #                             ON TEMP.[Measurement Time Stamp] = DBM.[Measurement Time Stamp] AND TEMP.[Stream] = DBM.[Stream];
+        #                             """.format(Table)
+        # TableDrop = """
+        #                 IF OBJECT_ID('tempdb.dbo.#FlagInsertBuffer', 'U') IS NOT NULL
+        #                     DROP TABLE #FlagInsertBuffer;
+        #             """
+        Update = "UPDATE Data.Measurements SET [L1 Flag] = {0} WHERE [Measurement Time Stamp] = \'{1}\' AND [Stream] = {2};"
         Query = ""
 
-        for Measurement in MeasurementList:
-            if Measurement.getFlag() != 3 and Measurement.getFlag() != 4:
-                Query += BaseString.format(Table, Measurement.getFlag(), Measurement.TimeStamp, DataStreamID)
 
+        newConn = self.Engine.connect()
 
-        self.Connection.execute(Query)
+        for Ndx, Measurement in enumerate(MeasurementList):
+            if Measurement.getFlag() != 3:
+
+                Query += Update.format(Measurement.getFlag(), Measurement.TimeStamp, DataStreamID)
+                if(Ndx % 300 == 0):
+                    print("Loading Flags into DB. . . ", Ndx, "out of ", len(MeasurementList))
+                    returned = newConn.execute(text(Query))
+                    Query = ""

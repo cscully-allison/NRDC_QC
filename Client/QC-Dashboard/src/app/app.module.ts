@@ -20,7 +20,8 @@ const appRoutes: Routes = [
   { path: 'flag/:id', component: FlagsByDatastreamComponent },
   { path: 'datavis', component: DatavisDashboardComponent },
   { path: 'config', component: ConfigDashboardComponent },
-  { path: 'about', component: AboutComponent }
+  { path: 'about', component: AboutComponent },
+  { path: '**', redirectTo: '/flag', pathMatch: 'full' },
 ];
 
 

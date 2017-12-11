@@ -1,6 +1,35 @@
+ul, li {
+    padding: 0;
+    list-style-type: none;
+}
+
+ul{
+}
+
+
+.value {
+    display: inline-block;
+    min-width: 250px;
+    min-height: 30px;
+
+    border: 1px black solid;
+}
+
+.timestamp{
+    display: inline-block;
+
+    min-width: 250px;
+    min-height: 50px;
+
+    min-height: 30px;
+
+    border: 1px black solid;
+}
+
+
+
 #chart-view{
   min-width: 100%;
-  padding-top: 5em;
   position: absolute;
 }
 
@@ -10,4 +39,6 @@
   margin-right: auto;
   max-width: 50em;
   max-height: 20em;
+
+  text-align: center;
 }

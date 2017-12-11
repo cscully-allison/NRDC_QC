@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Router} from '@angular/router';
 
@@ -23,10 +23,7 @@ export class FlagDashboardComponent implements OnInit {
   // events
   public chartClicked(e:any):void {
     var flagid = this.flagIds[e.active[0]._index];
-
     this.router.navigateByUrl("/flag/" + flagid);
-
-
   }
 
   public chartHovered(e:any):void {

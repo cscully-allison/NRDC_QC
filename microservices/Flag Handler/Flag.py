@@ -31,14 +31,16 @@ def L1Flags():
 
         # Processing Data
         UniqueFlags = {}
-        for v, w, x, y, z in Flags:
-            UniqueFlags[str(x)] = UniqueFlags.get(x, 0) + 1
+        Row = Flags.fetchone()
+        while Row is not None:
+            if str(Row[0]) not in UniqueFlags:
+                UniqueFlags[str(Row[0])] = {}
+                UniqueFlags[str(Row[0])]['Total Amount'] = 0
+                UniqueFlags[str(Row[0])]['Name'] = Row[1]
+                UniqueFlags[str(Row[0])]['Description'] = Row[2]
 
-        # Calculating Total
-        Keys = list(UniqueFlags.keys())
-        UniqueFlags['Total'] = 0
-        for Key in Keys:
-            UniqueFlags['Total'] = UniqueFlags['Total'] + UniqueFlags[Key]
+            UniqueFlags[str(Row[0])]['Total Amount'] += 1
+            Row = Flags.fetchone()
 
         #Serialize
         return jsonify(UniqueFlags)

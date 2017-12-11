@@ -1,4 +1,4 @@
-SELECT MES.[Stream], MES.[Measurement Time Stamp], MES.[L1 Flag], ONE.[Name], ONE.[Description]
+SELECT MES.[L1 Flag], ONE.[Name], ONE.[Description]
 FROM [ProtoNRDC].[Data].[Measurements] MES
 JOIN [ProtoNRDC].[Data].[Data Streams] DS 
 ON MES.[Stream] = DS.[Stream]

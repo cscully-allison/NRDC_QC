@@ -28,7 +28,7 @@ def GetMeasurementsByStream(DatastreamID,Interval=100):
         with open("../SQLQueries/MeasurementsByDatastream.sql") as r:
             Query = r.read()
             Query = text(Query)
-            Measurements = DataSource.Connection.execute(Query,x=DatastreamID,y=Interval)
+            Measurements = DataSource.Connection.execute(Query,x=DatastreamID)
 
         # Processing Data
         StructuredData = {}

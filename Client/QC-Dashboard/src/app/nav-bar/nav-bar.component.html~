@@ -1,7 +1,7 @@
 
 <ul>
   <li><a routerLink="/flag">Flag</a></li>
-  <li><a routerLink="/datavis">Data Visualization Dashboard</a></li>
-  <li><a routerLink="/config">Configuration</a></li>
+  <li><a href="/datavis">Data Visualization Dashboard</a></li>
+  <li><a href="/config">Configuration</a></li>
   <li style="float:right"><a class="active" href="/about">About</a></li>
 </ul>

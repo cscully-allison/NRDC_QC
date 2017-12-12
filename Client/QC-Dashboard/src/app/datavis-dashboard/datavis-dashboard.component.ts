@@ -42,6 +42,8 @@ export class DatavisDashboardComponent implements OnInit {
               //list.appendChild(listItem);
            }
 
+           console.log(this.dataHolder);
+
            //container.appendChild(list);
     })
   }

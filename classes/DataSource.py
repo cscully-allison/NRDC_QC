@@ -158,7 +158,7 @@ class DataBaseSource(DataSource):
         Update = "UPDATE Data.Measurements SET [L1 Flag] = {0} WHERE [Measurement Time Stamp] = \'{1}\' AND [Stream] = {2};"
         Query = ""
 
-
+        ReturnStatements = []
         newConn = self.Engine.connect()
 
         for Ndx, Measurement in enumerate(MeasurementList):
@@ -166,6 +166,11 @@ class DataBaseSource(DataSource):
 
                 Query += Update.format(Measurement.getFlag(), Measurement.TimeStamp, DataStreamID)
                 if(Ndx % 300 == 0):
-                    print("Loading Flags into DB. . . ", Ndx, "out of ", len(MeasurementList))
+                    print("Loading Flags into DB. . . ", Ndx, " out of ", len(MeasurementList))
+                    line = "Loading Flags into DB. . . " + str(Ndx) + " out of " + str(len(MeasurementList))
+                    ReturnStatements.append(line)
                     returned = newConn.execute(text(Query))
                     Query = ""
+        return ReturnStatements
+
+

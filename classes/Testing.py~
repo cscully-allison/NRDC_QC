@@ -127,7 +127,7 @@ class MissingValueTest(Test):
                 TimeStampOffset = timedelta(0, ndx*60*10)
 
                 if TimeStamp1 + TimeStampOffset != TimeStamp1:
-                    NewMeasurements.append( Measurement( None, str(TimeStamp1 + TimeStampOffset) , MISSING_VALUE_FLAG, StreamID ) )
+                    NewMeasurements.append( Measurement( None, TimeStamp1 + TimeStampOffset , MISSING_VALUE_FLAG, StreamID ) )
            
             return NewMeasurements
 

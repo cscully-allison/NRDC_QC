@@ -133,28 +133,6 @@ class DataBaseSource(DataSource):
     def writeFlagsToDataStream(self, DataStreamID, MeasurementList):
 
         #Need to check to make sure there are measurements to write to DB
-        # Table = "#FlagInsertBuffer_" + str(int(random()*10000000))
-        #
-        # TableCreate = """IF OBJECT_ID('{0}', 'U') IS NULL
-        #                     CREATE TABLE {0}
-        #                     (
-        #                         [Stream] [int] NOT NULL,
-        #                         [Measurement Time Stamp] [datetime2](7) NOT NULL,
-        #                         [L1 Flag] [tinyint] NULL,
-        #                     );""".format(Table)
-        # InsertString = "INSERT INTO {0} (Stream, [Measurement Time Stamp], [L1 Flag]) VALUES ".format(Table)
-        # InsertValues = "({0},\'{1}\',{2})"
-        # SelectTest = "SELECT [Stream], [Measurement Time Stamp], [L1 Flag] FROM {0};".format(Table)
-        # TableJoinAndUpdate = """ UPDATE [DBM]
-        #                             SET [DBM].[L1 Flag] = [TEMP].[L1 Flag]
-        #                             FROM [Data].[Measurements] AS [DBM]
-        #                             JOIN {0} [TEMP]
-        #                             ON TEMP.[Measurement Time Stamp] = DBM.[Measurement Time Stamp] AND TEMP.[Stream] = DBM.[Stream];
-        #                             """.format(Table)
-        # TableDrop = """
-        #                 IF OBJECT_ID('tempdb.dbo.#FlagInsertBuffer', 'U') IS NOT NULL
-        #                     DROP TABLE #FlagInsertBuffer;
-        #             """
         Update = "UPDATE Data.Measurements SET [L1 Flag] = {0} WHERE [Measurement Time Stamp] = \'{1}\' AND [Stream] = {2};"
         Query = ""
 

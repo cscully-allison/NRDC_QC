@@ -10,19 +10,29 @@
                 <div class="timestamp">
                     <h3>Time Stamp:</h3>
                 </div>
-                <div>
-                    <h3>:</h3>
+                <div class="timestamp">
+                    <h3>Flag:</h3>
                 </div>
             </li>
             <li *ngFor="let data of dataHolder">
-                <div class="value">
+                <div *ngIf="data['Flag Type'] == 4" class="value ok">
                     {{data.Value}}
                 </div>
-                <div class="timestamp">
+                <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
                     {{data["Time Stamp"]}}
                 </div>
-                <div class="timestamp">
-                    {{data["Flag Type"]}}
+                <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
+                    {{data["Flag Name"]}}
+                </div>
+
+                <div *ngIf="data['Flag Type'] < 4" class="value bad">
+                    {{data.Value}}
+                </div>
+                <div *ngIf="data['Flag Type'] < 4" class="timestamp bad">
+                    {{data["Time Stamp"]}}
+                </div>
+                <div *ngIf="data['Flag Type'] < 4" class="timestamp bad">
+                    {{data["Flag Name"]}}
                 </div>
             </li>
         </ul>

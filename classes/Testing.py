@@ -116,6 +116,7 @@ class MissingValueTest(Test):
         #Compare zeorth measurement timestamp against 1st
         # If they are greater than 10mins apart create measuremt,
         # Flag and eject
+        print(First.TimeStamp, Second.TimeStamp)
         Delta = Second.TimeStamp - First.TimeStamp
 
         if (Delta.seconds / 60) > 10:

@@ -1,0 +1,17 @@
+#graph-container{
+  min-width: 1000px;
+  min-height: 700px;
+}
+
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+:host ::ng-deep .line{
+    fill: none !important;
+    stroke-width: 2px !important;
+    stroke: rgba(20,20,200,1.0) !important;
+}

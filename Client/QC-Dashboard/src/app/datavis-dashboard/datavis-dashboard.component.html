@@ -1,13 +1,42 @@
-<div id="chart-view">
-<div id="chart-container">
-  <canvas baseChart width="400" height="400"
-            [datasets]="lineChartData"
-            [labels] = "lineChartLabels"
-            [options]="lineChartOptions"
-            [colors]="lineChartColors"
-            [legend]="lineChartLegend"
-            [chartType]="lineChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-</div>
-</div>
+
+  <h3>Queried Measurments for {{passedData["Deployment Name"]}}</h3>
+  <h4>DataStream: {{passedData["streamID"]}}</h4>
+  <line-graph [chartData]=dataHolder></line-graph>
+  <!-- <div id="chart-view">
+    <div id="chart-container">
+        <ul>
+            <li>
+                <div class="value">
+                    <h3>Value:</h3>
+                </div>
+                <div class="timestamp">
+                    <h3>Time Stamp:</h3>
+                </div>
+                <div class="timestamp">
+                    <h3>Flag:</h3>
+                </div>
+            </li>
+            <li *ngFor="let data of dataHolder">
+                <div *ngIf="data['Flag Type'] == 4" class="value ok">
+                    {{data.Value}}
+                </div>
+                <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
+                    {{data["Time Stamp"]}}
+                </div>
+                <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
+                    {{data["Flag Name"]}}
+                </div>
+
+                <div *ngIf="data['Flag Type'] < 4" class="value bad">
+                    {{data.Value}}
+                </div>
+                <div *ngIf="data['Flag Type'] < 4" class="timestamp bad">
+                    {{data["Time Stamp"]}}
+                </div>
+                <div *ngIf="data['Flag Type'] < 4" class="timestamp bad">
+                    {{data["Flag Name"]}}
+                </div>
+            </li>
+        </ul>
+    </div>
+</div> -->

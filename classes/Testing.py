@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
 from DataContainers import Measurement
+import re
 
 #Global Constants
 REPEAT_VALUE_FLAG = 1
@@ -118,13 +119,30 @@ class MissingValueTest(Test):
         #Compare zeorth measurement timestamp against 1st
         # If they are greater than 10mins apart create measuremt,
         # Flag and eject
+        p = re.compile(r'\b(\w+[.]\w+)')
 
         if(type(First.TimeStamp) != "str" or type(Second.TimeStamp) != "str"):
             First.TimeStamp = str(First.TimeStamp)
             Second.TimeStamp = str(Second.TimeStamp)
+        
+        Check2 = p.search(Second.TimeStamp[:-1])
+        Check2.group()
 
-        TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
-        TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
+        Check1 = p.search(First.TimeStamp[:-1])
+        Check1.group()
+        
+        if Check2 is None:
+            TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
+        else: 
+            TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
+
+        if Check1 is None:
+            TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
+        else: 
+            TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
+
+        #TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
+        #TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
         Delta = TimeStamp2 - TimeStamp1
 
         if (Delta.seconds / 60) > 10:

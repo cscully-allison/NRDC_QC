@@ -30,43 +30,45 @@ class Tester:
         NewlySpawnedMeasurements = []
 
         #Sort By Timestamp to Ensure Everything is sequential
-        self.DataStream.sortMeasurements()
 
         for Ndx, Measurement in enumerate(self.DataStream.Measurements):
 
-            for Test in self.Tests:
+            # Guard against checking against null values
+            if(Measurement.Value != None):
 
-                if Test.id == "MVT":
-                    if Ndx >= 2:
-                        MissingValueTuple = self.DataStream.Measurements[Ndx-1: Ndx]
-                        MissingValueTuple.append(Measurement)
-                        NewlySpawnedMeasurements.extend( Test.RunTest(MissingValueTuple, self.DataStream.StreamID) )
+                for Test in self.Tests:
+
+                    if Test.id == "MVT":
+                        if Ndx >= 2:
+                            MissingValueTuple = self.DataStream.Measurements[Ndx-1: Ndx]
+                            MissingValueTuple.append(Measurement)
+                            NewlySpawnedMeasurements.extend( Test.RunTest(MissingValueTuple, self.DataStream.StreamID) )
 
 
 
-                #Out of bounds test (flag number is 2)
-                elif Test.id == "OBT":
-                    Measurement = Test.RunTest(Measurement)
-                    if Measurement.Flag == OUT_OF_BOUNDS_FLAG:
-                        self.TestedDataPoints.append(Measurement)
-                        break
-
-                #Repeat value test (flag value is 1)
-                elif Test.id == "RVT":
-                    NumDataPoints = Test.GetTestRequiredDataPoints()
-                    if Ndx >= NumDataPoints:
-                        PossibleRepeatValues = self.DataStream.Measurements[ Ndx-NumDataPoints : Ndx ]
-                        PossibleRepeatValues.append( Measurement )
-                        Measurement = Test.RunTest( PossibleRepeatValues )
-
-                        if Measurement.Flag == REPEAT_VALUE_FLAG:
+                    #Out of bounds test (flag number is 2)
+                    elif Test.id == "OBT":
+                        Measurement = Test.RunTest(Measurement)
+                        if Measurement.Flag == OUT_OF_BOUNDS_FLAG:
                             self.TestedDataPoints.append(Measurement)
                             break
 
-            #All tests passed (Flag Data as good)
-            if Measurement.Flag == None:
-                Measurement.setFlag(ALL_GOOD_FLAG)
-                self.TestedDataPoints.append(Measurement)
+                    #Repeat value test (flag value is 1)
+                    elif Test.id == "RVT":
+                        NumDataPoints = Test.GetTestRequiredDataPoints()
+                        if Ndx >= NumDataPoints:
+                            PossibleRepeatValues = self.DataStream.Measurements[ Ndx-NumDataPoints : Ndx ]
+                            PossibleRepeatValues.append( Measurement )
+                            Measurement = Test.RunTest( PossibleRepeatValues )
+
+                            if Measurement.Flag == REPEAT_VALUE_FLAG:
+                                self.TestedDataPoints.append(Measurement)
+                                break
+
+                #All tests passed (Flag Data as good)
+                if Measurement.Flag == None:
+                    Measurement.setFlag(ALL_GOOD_FLAG)
+                    self.TestedDataPoints.append(Measurement)
 
         self.TestedDataPoints.extend(NewlySpawnedMeasurements)
 
@@ -116,8 +118,13 @@ class MissingValueTest(Test):
         #Compare zeorth measurement timestamp against 1st
         # If they are greater than 10mins apart create measuremt,
         # Flag and eject
-        TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
-        TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
+
+        if(type(First.TimeStamp) != "str" or type(Second.TimeStamp) != "str"):
+            First.TimeStamp = str(First.TimeStamp)
+            Second.TimeStamp = str(Second.TimeStamp)
+
+        TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
+        TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
         Delta = TimeStamp2 - TimeStamp1
 
         if (Delta.seconds / 60) > 10:
@@ -128,7 +135,7 @@ class MissingValueTest(Test):
 
                 if TimeStamp1 + TimeStampOffset != TimeStamp1:
                     NewMeasurements.append( Measurement( None, str(TimeStamp1 + TimeStampOffset) , MISSING_VALUE_FLAG, StreamID ) )
-           
+
             return NewMeasurements
 
         return []

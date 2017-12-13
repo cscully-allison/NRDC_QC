@@ -27,7 +27,6 @@ class DataSource:
 
 def Connect(User,Pass,Db):
     ConnStr ="DRIVER={FreeTDS};Server=ASGARD-LOKI;Database="+ Db +";UID="+ User +";PWD="+ Pass +";TDS_Version=8.0;Port=1433;"
-    print(ConnStr)
     pyodbc.connect(ConnStr)
 
 
@@ -133,29 +132,8 @@ class DataBaseSource(DataSource):
     def writeFlagsToDataStream(self, DataStreamID, MeasurementList):
 
         #Need to check to make sure there are measurements to write to DB
-        # Table = "#FlagInsertBuffer_" + str(int(random()*10000000))
-        #
-        # TableCreate = """IF OBJECT_ID('{0}', 'U') IS NULL
-        #                     CREATE TABLE {0}
-        #                     (
-        #                         [Stream] [int] NOT NULL,
-        #                         [Measurement Time Stamp] [datetime2](7) NOT NULL,
-        #                         [L1 Flag] [tinyint] NULL,
-        #                     );""".format(Table)
-        # InsertString = "INSERT INTO {0} (Stream, [Measurement Time Stamp], [L1 Flag]) VALUES ".format(Table)
-        # InsertValues = "({0},\'{1}\',{2})"
-        # SelectTest = "SELECT [Stream], [Measurement Time Stamp], [L1 Flag] FROM {0};".format(Table)
-        # TableJoinAndUpdate = """ UPDATE [DBM]
-        #                             SET [DBM].[L1 Flag] = [TEMP].[L1 Flag]
-        #                             FROM [Data].[Measurements] AS [DBM]
-        #                             JOIN {0} [TEMP]
-        #                             ON TEMP.[Measurement Time Stamp] = DBM.[Measurement Time Stamp] AND TEMP.[Stream] = DBM.[Stream];
-        #                             """.format(Table)
-        # TableDrop = """
-        #                 IF OBJECT_ID('tempdb.dbo.#FlagInsertBuffer', 'U') IS NOT NULL
-        #                     DROP TABLE #FlagInsertBuffer;
-        #             """
         Update = "UPDATE Data.Measurements SET [L1 Flag] = {0} WHERE [Measurement Time Stamp] = \'{1}\' AND [Stream] = {2};"
+        Insert  = "INSERT INTO Data.Measurements ([Stream],[Measurement Time Stamp],[Value],[Controlled Value],[L1 Flag],[L2 Flag]) VALUES ({0}, \'{1}\', NULL, NULL, {2}, NULL);"
         Query = ""
 
         ReturnStatements = []
@@ -169,8 +147,18 @@ class DataBaseSource(DataSource):
                     print("Loading Flags into DB. . . ", Ndx, " out of ", len(MeasurementList))
                     line = "Loading Flags into DB. . . " + str(Ndx) + " out of " + str(len(MeasurementList))
                     ReturnStatements.append(line)
-                    returned = newConn.execute(text(Query))
+                    returned = newConn.execute( text(Query) )
                     Query = ""
+
+                elif(len(MeasurementList) < 600):
+                    print("Loading Flags into DB. ", Ndx, "out of ", len(MeasurementList))
+                    returned = newConn.execute( text(Query) )
+                    Query = ""
+
+            elif Measurement.getFlag() == 3:
+                print("Inserting Flags Into DB. ", Ndx, "out of ", len(MeasurementList))
+                InsertStatement = Insert.format(DataStreamID, Measurement.TimeStamp, Measurement.getFlag());
+                newConn.execute( text(InsertStatement) )
+
+
         return ReturnStatements
-
-

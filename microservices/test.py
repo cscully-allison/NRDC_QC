@@ -24,22 +24,22 @@ config = SourceConfiguration("config/datasource.config")
 DataSource = DataBaseSource(config)
 DataSource.configure()
 
-
+#DataStream and measurement retrieval
 DataStreams = DataSource.fetchDataStreams(DataStreamQuerySource)
-
 DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
+
+#Test Configuration
 TestConfig = TestConfiguration("config/tests.config")
-
-
-
-
 for Stream in DataStreams:
     TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
 
+
+#testing
 for TesterObj in TesterGroup:
     TesterObj.RunTests()
 
 
+#return (show flagged data that goes back into db)
 for TesterObj in TesterGroup:
     DataSource.writeFlagsToDataStream(TesterObj.DataStream.StreamID, TesterObj.DataStream.Measurements)

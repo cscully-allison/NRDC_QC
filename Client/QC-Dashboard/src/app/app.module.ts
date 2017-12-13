@@ -13,6 +13,8 @@ import { ConfigDashboardComponent } from './config-dashboard/config-dashboard.co
 import { AboutComponent } from './about/about.component';
 import { FlagsByDatastreamComponent } from './flags-by-datastream/flags-by-datastream.component';
 import { NameComponent } from './name/name.component';
+import { LineGraphComponent } from './datavis-dashboard/line-graph/line-graph.component';
+import { DemoComponent } from './demo/demo.component';
 
 
 
@@ -22,6 +24,7 @@ const appRoutes: Routes = [
   { path: 'datavis', component: DatavisDashboardComponent },
   { path: 'config', component: ConfigDashboardComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'demo', component: DemoComponent},
   { path: '**', redirectTo: '/flag', pathMatch: 'full' },
 ];
 
@@ -35,7 +38,9 @@ const appRoutes: Routes = [
     ConfigDashboardComponent,
     AboutComponent,
     FlagsByDatastreamComponent,
-    NameComponent
+    NameComponent,
+    LineGraphComponent,
+    DemoComponent
   ],
   imports: [
     HttpClientModule,

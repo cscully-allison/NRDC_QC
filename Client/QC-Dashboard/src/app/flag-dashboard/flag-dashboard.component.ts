@@ -15,7 +15,7 @@ export class FlagDashboardComponent implements OnInit {
   // Doughnut
   public doughnutChartLabels:string[] = ['Repeat Value Flag', 'Out Of Bounds Flag', 'Missing Value Flag'];
   public flagIds:number[] = [1,2,3];
-  public doughnutChartData:number[] = [0,0,210];
+  public doughnutChartData:number[] = [0,0,0];
   public doughnutChartType:string = 'doughnut';
 
   public flagData:object
@@ -39,7 +39,7 @@ export class FlagDashboardComponent implements OnInit {
           data => {
               this.doughnutChartData = this.retrieveDataValues(data);
           })
-          
+
 
   }
 
@@ -48,9 +48,7 @@ export class FlagDashboardComponent implements OnInit {
 
       for(let flag in flagData){
         values.push(flagData[flag]["Total Amount"]);
-      }
-
-      values.push(210);
+    }
 
       return values;
    }

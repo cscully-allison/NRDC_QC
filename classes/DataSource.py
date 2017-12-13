@@ -36,6 +36,7 @@ class DataBaseSource(DataSource):
         self.Configuration = configuration
         self.Engine = None
         self.Connection = None
+        self.ConnectionString = ""
 
 
     def configure(self):
@@ -47,6 +48,8 @@ class DataBaseSource(DataSource):
 
         #build connection string
         ConnString = ConnString.format(ConfigDOM.getElementsByTagName("Username")[0].firstChild.nodeValue, ConfigDOM.getElementsByTagName("Password")[0].firstChild.nodeValue, ConfigDOM.getElementsByTagName("Name")[0].firstChild.nodeValue)
+
+        self.ConnectionString = ConnString;
 
         #generate connection and bind to class
         self.Engine = create_engine(ConnString)

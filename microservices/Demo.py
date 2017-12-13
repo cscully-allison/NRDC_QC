@@ -31,20 +31,32 @@ TesterGroup = []
 def Get():
 
     # Try
-    try:       
+    try:
         # Variables
         Final = {}
         Num = 0
-        # Connection Section        
+        # Connection Section
         config = SourceConfiguration("config/datasource.config")
+        Final["Source Config XML"] = config.SourceMetaData
         DataSource = DataBaseSource(config)
         DataSource.TDSconfigure()
 
         DataStreams = DataSource.fetchDataStreams(DataStreamQuerySource)
 
+        Final["Data Streams"] = []
+        for Stream in DataStreams:
+             Final["Data Streams"].append(jsonify(Stream));
+
         DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
+        Final["Measurements"] = {}
+        for Stream in DataStreams:
+            Final["Measurements"][Stream.StreamID] = len(Stream.Measurements)
+
+
         TestConfig = TestConfiguration("config/tests.config")
+
+        Final["Test Configuration"][]
 
         for Stream in DataStreams:
             TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
@@ -55,7 +67,7 @@ def Get():
         for TesterObj in TesterGroup:
             Num +=1
             Final[str(Num)] = DataSource.writeFlagsToDataStream(TesterObj.DataStream.StreamID, TesterObj.DataStream.Measurements)
-        
+
         #Serialize
         return jsonify(Final)
 

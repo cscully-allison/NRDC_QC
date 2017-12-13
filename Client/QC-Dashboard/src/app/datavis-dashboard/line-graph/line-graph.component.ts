@@ -133,8 +133,8 @@ export class LineGraphComponent implements OnInit, OnChanges {
             var y = d3.scaleLinear().range([height, 0]);
 
 
-            var valueline = d3.line()
-                    //.curve(d3.curveMonotoneX)
+            var valueLine = d3.line()
+                    .curve(d3.curveMonotoneX)
                     .x(d => { return x(d["Time Stamp"]); })
                     .y(d => { return y(d["Value"]); });
 
@@ -146,7 +146,11 @@ export class LineGraphComponent implements OnInit, OnChanges {
             //this is being used to format the data
             data.forEach(function (d) {
                 d["Time Stamp"] = new Date(d["Time Stamp"]);
-                d["Value"] = +d["Value"];
+                if(d["Value"] != "None"){
+                    d["Value"] = +d["Value"];
+                }else{
+                    d["Value"] = 0;
+                }
             });
 
             console.log(data);
@@ -166,7 +170,10 @@ export class LineGraphComponent implements OnInit, OnChanges {
             svg.append("path")
                .data([data])
                .attr("class", "line")
-               .attr("d", valueline);
+               .attr("d", valueLine)
+               .on("mouseover", function(d){
+                        console.log( x.invert( d3.mouse(elem)[0]), y.invert(d3.mouse(elem)[0]) )
+                   });
 
             // Add the X Axis
             svg.append("g")

@@ -27,7 +27,6 @@ class DataSource:
 
 def Connect(User,Pass,Db):
     ConnStr ="DRIVER={FreeTDS};Server=ASGARD-LOKI;Database="+ Db +";UID="+ User +";PWD="+ Pass +";TDS_Version=8.0;Port=1433;"
-    print(ConnStr)
     pyodbc.connect(ConnStr)
 
 
@@ -134,6 +133,7 @@ class DataBaseSource(DataSource):
 
         #Need to check to make sure there are measurements to write to DB
         Update = "UPDATE Data.Measurements SET [L1 Flag] = {0} WHERE [Measurement Time Stamp] = \'{1}\' AND [Stream] = {2};"
+        Insert  = "INSERT INTO Data.Measurements ([Stream],[Measurement Time Stamp],[Value],[Controlled Value],[L1 Flag],[L2 Flag]) VALUES ({0}, \'{1}\', NULL, NULL, {2}, NULL);"
         Query = ""
 
         newConn = self.Engine.connect()
@@ -144,5 +144,14 @@ class DataBaseSource(DataSource):
                 Query += Update.format(Measurement.getFlag(), Measurement.TimeStamp, DataStreamID)
                 if(Ndx % 300 == 0):
                     print("Loading Flags into DB. ", Ndx, "out of ", len(MeasurementList))
-                    returned = newConn.execute(text(Query))
+                    returned = newConn.execute( text(Query) )
                     Query = ""
+                elif(len(MeasurementList) < 600):
+                    print("Loading Flags into DB. ", Ndx, "out of ", len(MeasurementList))
+                    returned = newConn.execute( text(Query) )
+                    Query = ""
+
+            elif Measurement.getFlag() == 3:
+                print("Inserting Flags Into DB. ", Ndx, "out of ", len(MeasurementList))
+                InsertStatement = Insert.format(DataStreamID, Measurement.TimeStamp, Measurement.getFlag());
+                newConn.execute( text(InsertStatement) )

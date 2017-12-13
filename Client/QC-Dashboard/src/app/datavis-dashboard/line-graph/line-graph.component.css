@@ -3,11 +3,10 @@
   min-height: 700px;
 }
 
-
-path {
-    stroke: steelblue;
-    stroke-width: 2;
-    fill: none;
+:host ::ng-deep .flag{
+    fill: none !important;
+    stroke-width: 2px !important;
+    stroke: rgba(200,20,20,1.0) !important;
 }
 
 :host ::ng-deep .line{

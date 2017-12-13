@@ -118,8 +118,13 @@ class MissingValueTest(Test):
         #Compare zeorth measurement timestamp against 1st
         # If they are greater than 10mins apart create measuremt,
         # Flag and eject
-        TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
-        TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
+
+        if(type(First.TimeStamp) != "str" or type(Second.TimeStamp) != "str"):
+            First.TimeStamp = str(First.TimeStamp)
+            Second.TimeStamp = str(Second.TimeStamp)
+
+        TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
+        TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
         Delta = TimeStamp2 - TimeStamp1
 
         if (Delta.seconds / 60) > 10:
@@ -130,7 +135,7 @@ class MissingValueTest(Test):
 
                 if TimeStamp1 + TimeStampOffset != TimeStamp1:
                     NewMeasurements.append( Measurement( None, str(TimeStamp1 + TimeStampOffset) , MISSING_VALUE_FLAG, StreamID ) )
-           
+
             return NewMeasurements
 
         return []

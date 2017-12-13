@@ -22,7 +22,15 @@ export class DatavisDashboardComponent implements OnInit {
   public lineChartLabels:Array<any> = [];
 
   public lineChartOptions:any = {
-   responsive: true
+   responsive: true,
+   scales: {
+           xAxes: [{
+               type:"time",
+               time: {
+                  unit: 'month'
+              }
+          }]
+       }
   };
 
   public lineChartColors:Array<any> = [
@@ -84,8 +92,10 @@ export class DatavisDashboardComponent implements OnInit {
            console.log(data)
            for(let measurement in data["Measurements"]){
               var measurementRef =  data["Measurements"][measurement];
-               this.lineChartData[0].data.push(+measurementRef["Value"]);
-               this.lineChartLabels.push(measurementRef["Time Stamp"])
+              var date = new Date(measurementRef["Time Stamp"]);
+              this.lineChartLabels.push(date);
+              this.lineChartData[0].data.push(+measurementRef["Value"]);
+
            }
 
            console.log(this.dataHolder);

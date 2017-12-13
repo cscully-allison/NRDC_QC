@@ -138,9 +138,9 @@ class DataBaseSource(DataSource):
         #                 IF OBJECT_ID('tempdb.dbo.#FlagInsertBuffer', 'U') IS NOT NULL
         #                     DROP TABLE #FlagInsertBuffer;
         #             """
+
         Update = "UPDATE Data.Measurements SET [L1 Flag] = {0} WHERE [Measurement Time Stamp] = \'{1}\' AND [Stream] = {2};"
         Query = ""
-
 
         newConn = self.Engine.connect()
 
@@ -149,6 +149,6 @@ class DataBaseSource(DataSource):
 
                 Query += Update.format(Measurement.getFlag(), Measurement.TimeStamp, DataStreamID)
                 if(Ndx % 300 == 0):
-                    print("Loading Flags into DB. . . ", Ndx, "out of ", len(MeasurementList))
+                    print("Loading Flags into DB. ", Ndx, "out of ", len(MeasurementList))
                     returned = newConn.execute(text(Query))
                     Query = ""

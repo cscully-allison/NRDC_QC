@@ -13,7 +13,7 @@ export class DemoComponent implements OnInit {
   ngOnInit() {
       this.http.get('https://sensor.nevada.edu/GS/Services/Demo/').subscribe(
         data => {
-            console.log(data)
+            console.log(data);
         })
   }
 

@@ -30,45 +30,43 @@ class Tester:
         NewlySpawnedMeasurements = []
 
         #Sort By Timestamp to Ensure Everything is sequential
+        self.DataStream.sortMeasurements()
 
         for Ndx, Measurement in enumerate(self.DataStream.Measurements):
 
-            # Guard against checking against null values
-            if(Measurement.Value != None):
+            for Test in self.Tests:
 
-                for Test in self.Tests:
-
-                    if Test.id == "MVT":
-                        if Ndx >= 2:
-                            MissingValueTuple = self.DataStream.Measurements[Ndx-1: Ndx]
-                            MissingValueTuple.append(Measurement)
-                            NewlySpawnedMeasurements.extend( Test.RunTest(MissingValueTuple, self.DataStream.StreamID) )
+                if Test.id == "MVT":
+                    if Ndx >= 2:
+                        MissingValueTuple = self.DataStream.Measurements[Ndx-1: Ndx]
+                        MissingValueTuple.append(Measurement)
+                        NewlySpawnedMeasurements.extend( Test.RunTest(MissingValueTuple, self.DataStream.StreamID) )
 
 
 
-                    #Out of bounds test (flag number is 2)
-                    elif Test.id == "OBT":
-                        Measurement = Test.RunTest(Measurement)
-                        if Measurement.Flag == OUT_OF_BOUNDS_FLAG:
+                #Out of bounds test (flag number is 2)
+                elif Test.id == "OBT":
+                    Measurement = Test.RunTest(Measurement)
+                    if Measurement.Flag == OUT_OF_BOUNDS_FLAG:
+                        self.TestedDataPoints.append(Measurement)
+                        break
+
+                #Repeat value test (flag value is 1)
+                elif Test.id == "RVT":
+                    NumDataPoints = Test.GetTestRequiredDataPoints()
+                    if Ndx >= NumDataPoints:
+                        PossibleRepeatValues = self.DataStream.Measurements[ Ndx-NumDataPoints : Ndx ]
+                        PossibleRepeatValues.append( Measurement )
+                        Measurement = Test.RunTest( PossibleRepeatValues )
+
+                        if Measurement.Flag == REPEAT_VALUE_FLAG:
                             self.TestedDataPoints.append(Measurement)
                             break
 
-                    #Repeat value test (flag value is 1)
-                    elif Test.id == "RVT":
-                        NumDataPoints = Test.GetTestRequiredDataPoints()
-                        if Ndx >= NumDataPoints:
-                            PossibleRepeatValues = self.DataStream.Measurements[ Ndx-NumDataPoints : Ndx ]
-                            PossibleRepeatValues.append( Measurement )
-                            Measurement = Test.RunTest( PossibleRepeatValues )
-
-                            if Measurement.Flag == REPEAT_VALUE_FLAG:
-                                self.TestedDataPoints.append(Measurement)
-                                break
-
-                #All tests passed (Flag Data as good)
-                if Measurement.Flag == None:
-                    Measurement.setFlag(ALL_GOOD_FLAG)
-                    self.TestedDataPoints.append(Measurement)
+            #All tests passed (Flag Data as good)
+            if Measurement.Flag == None:
+                Measurement.setFlag(ALL_GOOD_FLAG)
+                self.TestedDataPoints.append(Measurement)
 
         self.TestedDataPoints.extend(NewlySpawnedMeasurements)
 
@@ -129,7 +127,7 @@ class MissingValueTest(Test):
                 TimeStampOffset = timedelta(0, ndx*60*10)
 
                 if TimeStamp1 + TimeStampOffset != TimeStamp1:
-                    NewMeasurements.append( Measurement( None, str(TimeStamp1 + TimeStampOffset) , MISSING_VALUE_FLAG, StreamID ) )
+                    NewMeasurements.append( Measurement( None, TimeStamp1 + TimeStampOffset , MISSING_VALUE_FLAG, StreamID ) )
            
             return NewMeasurements
 

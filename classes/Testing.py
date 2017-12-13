@@ -123,8 +123,8 @@ class MissingValueTest(Test):
             First.TimeStamp = str(First.TimeStamp)
             Second.TimeStamp = str(Second.TimeStamp)
 
-        TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
-        TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S')
+        TimeStamp2 = datetime.strptime(Second.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
+        TimeStamp1 = datetime.strptime(First.TimeStamp[:-1], '%Y-%m-%d %H:%M:%S.%f')
         Delta = TimeStamp2 - TimeStamp1
 
         if (Delta.seconds / 60) > 10:

@@ -1,8 +1,30 @@
 #About-Title {
+	margin-top: 100px;
     text-align: center;
 }
 #About-Project{
     margin: auto;
     text-align: left;
     width: 80%
+}
+#About-Project:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.left {
+  width: 70%;
+}
+.right {
+  width: 25%;
+}
+.column {
+	margin-top: 20px;
+    float: left;
+    padding: 10px;
+}
+.divider {
+  width: 2px;
+  margin: 6px 0;
+  background: blue;
 }

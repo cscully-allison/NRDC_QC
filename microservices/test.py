@@ -21,22 +21,33 @@ TesterGroup = []
 
 #Get configuration and set up data source
 config = SourceConfiguration("config/datasource.config")
+print(config.XMLString)
 DataSource = DataBaseSource(config)
-DataSource.configure()
+#DataSource.configure()
+DataSource.TDSconfigure()
 
 #DataStream and measurement retrieval
 DataStreams = DataSource.fetchDataStreams(DataStreamQuerySource)
+for Stream in DataStreams:
+    print("Data indentifying stream", Stream.StreamID, ":" , Stream.MetaData)
+
 DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
+for Stream in DataStreams:
+    print("Number of Measurements Queried for ", Stream.StreamID , ":", len( Stream.Measurements ) )
 
 
 #Test Configuration
 TestConfig = TestConfiguration("config/tests.config")
+print(TestConfig.XMLString)
+
+
 for Stream in DataStreams:
     TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
 
 
 #testing
 for TesterObj in TesterGroup:
+    print("Running tests for Measurements in DataStream: ", TesterObj.DataStream.StreamID)
     TesterObj.RunTests()
 
 

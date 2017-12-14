@@ -5,25 +5,18 @@ from DataSource import DataBaseSource
 from DataContainers import Measurement, DataStream, DataBundle
 from Testing import Tester
 from flask import Flask, jsonify, json, request
-from flask_cors import cross_origin
+from flask_cors import cross_origin,CORS
 from collections import Counter
 from sqlalchemy.sql import text
 import pyodbc
+import time
+
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+cors = CORS(app, resources={r"/Demo/*": {"origins": "*"}})
 
 #variables
-config = None
-DataSource = None
-ResultRows = []
-Result = None
-DataStreamQuerySource = "SQLQueries/DetailedDataStreamQuery.sql"
-MeasurementQuerySource= "SQLQueries/measurementQuery.sql"
-Query = ""
-DataStreams = []
-Measurements = []
-TesterGroup = []
 Final = {}
 
 
@@ -35,11 +28,12 @@ def Get():
     # Try
     try:
         # Variable
-        global config
-        global DataSource
-        global DataStreams
-        global Final
         Num = 0
+        global Final
+        Final = {}
+        DataStreamQuerySource = "SQLQueries/DetailedDataStreamQuery.sql"
+        MeasurementQuerySource= "SQLQueries/measurementQuery.sql"
+        TesterGroup = []
 
         # Connection Section
         config = SourceConfiguration("config/datasource.config")
@@ -66,8 +60,14 @@ def Get():
         for Stream in DataStreams:
             TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
 
+        begin = time.time()	
+
         for TesterObj in TesterGroup:
             TesterObj.RunTests()
+
+        end = time.time()
+
+        Final["Testing Time"] = (end - begin)
 
         for TesterObj in TesterGroup:
             Num +=1
@@ -75,7 +75,7 @@ def Get():
 
 
         #Serialize
-        return "Complete"
+        return jsonify({"Status":"Complete"})
 
     # Except
     except Exception as e:

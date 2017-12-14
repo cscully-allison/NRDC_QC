@@ -7,31 +7,37 @@
 
 <div *ngIf="done" id="About-Project" align="center">
     <h1>OK We Are Done:</h1>
-    <h2>What happened while you were waiting?</h2>
+    <h1>What happened while you were waiting?</h1>
     <br/>
-    <h2>First we pulled out this XML File:</h2>
-    <br/>
-    <div style="width: 600px; margin:auto;">
-        <h3 style="color:red">{{data["Source Config XML"]}}</h3>
+    <div class="grey">
+        <h1>First we pulled out this XML File:</h1>
+        <br/>
+        <div style="width: 600px; margin:auto;">
+            <h2 style="color:rgba(220,40,40,0.9)">{{data["Source Config XML"]}}</h2>
+        </div>
+        <br/>
+        <h1>We used this xml file to configure the data source with metadata that allowed this program to query the database. Ultimately this will be generated from the configuration dashboard.</h1>
     </div>
     <br/>
-    <h3>We used this xml file to configure the data source so we could effictively query the database. Ultimately this will be created from the configuration dashboard.</h3>
+    <br/>
+    <h1>After Configuring the Data Source we Pulled Data Streams and Measurements out of them:</h1>
+    <h1 *ngFor="let Stream of data['Data Streams']">From {{Stream["Stream"]}}: On {{Stream["DeploymentName"]}} -- {{data['Measurements'][Stream["Stream"]]}} Measurements were pulled for testing.</h1>
     <br/>
     <br/>
-    <h2>After Configuring the Data Source we Pulled Data Streams and Measurements out of them:</h2>
-    <h3 *ngFor="let Stream of data['Data Streams']">From {{Stream["Stream"]}}: On {{Stream["DeploymentName"]}} -- {{data['Measurements'][Stream["Stream"]]}} Measurements were pulled for testing.</h3>
-    <br/>
-    <br/>
-    <h2> After downloading all these values we then dynamically generate our tests! Using this XML file: </h2>
+    <div class="grey">
+    <h1> After downloading all these values we then dynamically generate our tests! Using this XML file: </h1>
     <div style="width: 600px; margin:auto;">
-        <h3 style="color:red">{{data["Test Configuration"]}}</h3>
+        <h2 style="color:rgba(220,40,40,0.9)">{{data["Test Configuration"]}}</h2>
     </div>
-    <h3> The xml file above contains testing parameters that are loaded into test classes of certian types. These classes all have one test function that is run using these parameters on each measurement.</h3>
+    <h1> The xml file above contains testing parameters that are loaded into test classes of certian types. These classes all have one "test" function that is run using the parameters specified above on each measurement.</h1>
     <br/>
     <br/>
-    <h1 style="color:rgba(0,220,0, 0.9)"> And then we run our tests (according to the specified parameters). </h1>
+    </div>
+
+    <h1 style="color:rgba(40,220,40, 0.9)"> And then we run our tests (according to the specified parameters). </h1>
+        <h1><div style="margin:20px; color: rgba(40,40,220,0.9);">{{numtests}}</div> Tests were Performed in: <div style="margin:20px; color: rgba(40,40,220,0.9);">{{data["Testing Time"]}} Seconds</div> </h1>
     <br/>
     <br/>
-    <h2> And finally the flags are written back to the database to be queried at the Flag page. </h2>
+    <h1> And finally the flags are written back to the database to be queried at the Flag page. </h1>
 
 </div>

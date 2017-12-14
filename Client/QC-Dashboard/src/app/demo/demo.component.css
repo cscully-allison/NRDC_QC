@@ -23,11 +23,16 @@
     100% { transform: rotate(360deg); }
 }
 
+.grey{
+    background-color: rgba(210,210,210, 1.0 );
+    padding: 2em;
+}
+
 #About-Title {
     text-align: center;
 }
 #About-Project{
     margin: auto;
-    text-align: center;
+    text-align: left;
     width: 80%
 }

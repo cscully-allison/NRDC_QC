@@ -33,7 +33,7 @@ export class FlagsByDatastreamComponent implements OnInit {
 
 
           var svgContainer = d3.select("#flag-bundles-container").append("svg")
-                              .attr("width", 1200)
+                              .attr("width", 1600)
                               .attr("height", 600);
 
 
@@ -137,7 +137,7 @@ export class FlagsByDatastreamComponent implements OnInit {
   //assign some visual data to each flag bundle object that will be
   // displayed as a circle
   assignVisualData(flagBundles:object[]):object[]{
-      var xoffset = 330, yoffset = 320;
+      var xoffset = 350, yoffset = 320;
       var color = "#027878";
       var radius = 100;
 

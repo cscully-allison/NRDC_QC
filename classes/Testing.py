@@ -74,6 +74,11 @@ class Tester:
         self.TestedDataPoints.extend(NewlySpawnedMeasurements)
 
         self.DataStream.Measurements = self.TestedDataPoints
+
+        for Measurement in self.DataStream.Measurements:
+            if type(Measurement.TimeStamp) != "str":
+                Measurement.TimeStamp = str(Measurement.TimeStamp)
+
         self.DataStream.sortMeasurements()
 
     def ConstructTests(self, TestParams):
@@ -126,7 +131,7 @@ class MissingValueTest(Test):
             Second.TimeStamp = str(Second.TimeStamp)
 
         Check2 = p.search(Second.TimeStamp[:-1])
-    
+
         Check1 = p.search(First.TimeStamp[:-1])
 
 

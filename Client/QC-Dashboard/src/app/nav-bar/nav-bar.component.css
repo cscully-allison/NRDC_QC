@@ -33,4 +33,5 @@ li a:hover:not(.active) {
     float: left;
     font-size: 1em;
     color: #fff;
+    text-align: center;
 }

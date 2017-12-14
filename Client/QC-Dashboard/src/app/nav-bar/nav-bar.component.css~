@@ -27,7 +27,8 @@ li a:hover:not(.active) {
 }
 
 .dvdr {
-    padding: 14px 16px;
+    padding-top: 14px;
+    padding-bottom: 14px;
     width: 1%;
     float: left;
     font-size: 1em;

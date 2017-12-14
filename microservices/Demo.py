@@ -24,17 +24,23 @@ Query = ""
 DataStreams = []
 Measurements = []
 TesterGroup = []
+Final = {}
+
 
 # Service Functionality
-@app.route('/Demo/')
+@app.route('/Demo/Config')
 @cross_origin()
 def Get():
 
     # Try
     try:
-        # Variables
-        Final = {}
+        # Variable
+        global config
+        global DataSource
+        global DataStreams
+        global Final
         Num = 0
+
         # Connection Section
         config = SourceConfiguration("config/datasource.config")
         Final["Source Config XML"] = config.XMLString
@@ -45,14 +51,13 @@ def Get():
 
         Final["Data Streams"] = []
         for Stream in DataStreams:
-             Final["Data Streams"].append(Stream);
+             Final["Data Streams"].append(Stream.MetaData);
 
         DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
         Final["Measurements"] = {}
         for Stream in DataStreams:
             Final["Measurements"][Stream.StreamID] = len(Stream.Measurements)
-
 
         TestConfig = TestConfiguration("config/tests.config")
 
@@ -61,13 +66,31 @@ def Get():
         for Stream in DataStreams:
             TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
 
-
         for TesterObj in TesterGroup:
             TesterObj.RunTests()
 
         for TesterObj in TesterGroup:
             Num +=1
             Final[str(Num)] = DataSource.writeFlagsToDataStream(TesterObj.DataStream.StreamID, TesterObj.DataStream.Measurements)
+
+
+        #Serialize
+        return "Complete"
+
+    # Except
+    except Exception as e:
+        print(str(e))
+        line = 'Error on line {}'.format(sys.exc_info()[-1].tb_lineno)
+        print(line)
+        return False, str(e), line
+
+# Service Functionality
+@app.route('/Demo/Run')
+@cross_origin()
+def Run():
+
+    # Try
+    try:
 
         #Serialize
         return jsonify(Final)

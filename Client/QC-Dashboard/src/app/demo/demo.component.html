@@ -1,2 +1,37 @@
 
-<div class="loader"></div>
+<div class="loader-holder">
+    <div class="loader" *ngIf="loading"></div>
+    <div *ngIf="loading"><h3> Testing Measurements. Please Wait </h3></div>
+</div>
+<div class="button" *ngIf="!loading" (click)="demo()">DEMO</div>
+
+<div *ngIf="done" id="About-Project" align="center">
+    <h1>OK We Are Done:</h1>
+    <h2>What happened while you were waiting?</h2>
+    <br/>
+    <h2>First we pulled out this XML File:</h2>
+    <br/>
+    <div style="width: 600px; margin:auto;">
+        <h3 style="color:red">{{data["Source Config XML"]}}</h3>
+    </div>
+    <br/>
+    <h3>We used this xml file to configure the data source so we could effictively query the database. Ultimately this will be created from the configuration dashboard.</h3>
+    <br/>
+    <br/>
+    <h2>After Configuring the Data Source we Pulled Data Streams and Measurements out of them:</h2>
+    <h3 *ngFor="let Stream of data['Data Streams']">From {{Stream["Stream"]}}: On {{Stream["DeploymentName"]}} -- {{data['Measurements'][Stream["Stream"]]}} Measurements were pulled for testing.</h3>
+    <br/>
+    <br/>
+    <h2> After downloading all these values we then dynamically generate our tests! Using this XML file: </h2>
+    <div style="width: 600px; margin:auto;">
+        <h3 style="color:red">{{data["Test Configuration"]}}</h3>
+    </div>
+    <h3> The xml file above contains testing parameters that are loaded into test classes of certian types. These classes all have one test function that is run using these parameters on each measurement.</h3>
+    <br/>
+    <br/>
+    <h1 style="color:rgba(0,220,0, 0.9)"> And then we run our tests (according to the specified parameters). </h1>
+    <br/>
+    <br/>
+    <h2> And finally the flags are written back to the database to be queried at the Flag page. </h2>
+
+</div>

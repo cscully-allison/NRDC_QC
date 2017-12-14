@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-demo',
@@ -8,15 +8,30 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DemoComponent implements OnInit {
 
-  public loading = true;
+  public loading = false;
+  public done = false;
+  public data = {};
 
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-      this.http.get('http://sensor.nevada.edu/GS/Services/Demo/').subscribe(
-        data => {
-            console.log(data);
-        })
+
+  }
+
+  demo(){
+      this.loading = true;
+      this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Config/', { headers: new HttpHeaders({ timeout: `${60000}` }) })
+      .subscribe(
+        data => { this.loading = false;
+                  this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Run/')
+                  .subscribe(data => {this.data = data; console.log(data); this.done = true;})
+                },
+        err => {
+                this.loading = false;
+                this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Run/')
+                .subscribe(data => {this.data = data; console.log(data); this.done = true;})
+                }
+     )
   }
 
 }

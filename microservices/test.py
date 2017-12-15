@@ -22,7 +22,8 @@ TesterGroup = []
 #Get configuration and set up data source
 config = SourceConfiguration("config/datasource.config")
 DataSource = DataBaseSource(config)
-DataSource.configure()
+#DataSource.configure()
+DataSource.TDSconfigure()
 
 #DataStream and measurement retrieval
 DataStreams = DataSource.fetchDataStreams(DataStreamQuerySource)

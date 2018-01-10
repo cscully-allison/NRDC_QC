@@ -1,3 +1,7 @@
+## About
+This is the principal repository for the NRDC Near Real-Time Automated Quality Control software suite. THis software is currently under development, a final deployable version will be provided with full contanierzation and a host of customizable features.
+   
+
 ## Dependencies
 
 ### For Client
@@ -71,3 +75,4 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
     pip3 install flask
     pip3 install flask-cors
     ```
+  

@@ -1,5 +1,5 @@
 ## About
-This is the principal repository for the NRDC Near Real-Time Automated Quality Control software suite. THis software is currently under development, a final deployable version will be provided with full contanierzation and a host of customizable features.
+This is the principal repository for the NRDC Near Real-Time Automated Quality Control software suite. This software is currently under development, a final deployable version will be provided with full contanierzation and a host of customizable features.
    
 
 ## Dependencies

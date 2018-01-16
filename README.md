@@ -64,7 +64,7 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
 
 5. Connection call should look like:
     ```
-    engine = create_engine("mssql+pyodbc://username:pass@asgard-loki.rd.unr.edu/ProtoNRDC?driver=ODBC+Driver+13+for+SQL+Server")
+    engine = create_engine("mssql+pyodbc://<username>:<pass>@<server>/<initialdatabase>?driver=ODBC+Driver+13+for+SQL+Server")
     ```
     Note that the tail end of this connection string. The driver words reference the name in brackets in the /etc/odbcinst.ini file.
     

@@ -5,13 +5,25 @@
 #About-Project{
     margin: auto;
     text-align: left;
-    width: 80%
+    width: 70%
 }
 #About-Project:after {
     content: "";
     display: table;
     clear: both;
 }
+
+#About-Us{
+    margin: auto;
+    text-align: left;
+    width: 70%
+}
+#About-Us:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 .left {
   width: 70%;
 }
@@ -21,10 +33,5 @@
 .column {
 	margin-top: 20px;
     float: left;
-    padding: 10px;
-}
-.divider {
-  width: 2px;
-  margin: 6px 0;
-  background: blue;
+    padding:5px;
 }

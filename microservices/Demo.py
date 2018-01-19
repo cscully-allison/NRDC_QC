@@ -38,6 +38,9 @@ def Get():
         # Connection Section
         config = SourceConfiguration("config/datasource.config")
         Final["Source Config XML"] = config.XMLString
+
+        print(config.XMLString)
+
         DataSource = DataBaseSource(config)
         DataSource.TDSconfigure()
 
@@ -47,11 +50,15 @@ def Get():
         for Stream in DataStreams:
              Final["Data Streams"].append(Stream.MetaData);
 
+             print(Stream.MetaData)
+
         DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
         Final["Measurements"] = {}
         for Stream in DataStreams:
             Final["Measurements"][Stream.StreamID] = len(Stream.Measurements)
+
+            print( "Number of Measurements from DataStream ", Stream.StreamID, " :", len(Stream.Measurements) )
 
         TestConfig = TestConfiguration("config/tests.config")
 
@@ -61,6 +68,7 @@ def Get():
             TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
 
         begin = time.time()	
+
 
         for TesterObj in TesterGroup:
             TesterObj.RunTests()

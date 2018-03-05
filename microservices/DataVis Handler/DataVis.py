@@ -17,7 +17,7 @@ app.url_map.strict_slashes = False
 def GetMeasurementsByStream(DatastreamID,Interval=100):
 
     # Try
-    try:       
+    try:
         # Connection Section        
         config = SourceConfiguration("../config/datasource.config")
         DataSource = DataBaseSource(config)
@@ -44,10 +44,10 @@ def GetMeasurementsByStream(DatastreamID,Interval=100):
             Measurement['Time Stamp'] = Row[4]
             Measurement['Value'] = str(Row[3])
             Measurement['Flag Type'] = Row[5]
-            StructuredData['Measurements'].append(Measurement)   
+            StructuredData['Measurements'].append(Measurement)
             Row = Measurements.fetchone()
 
-        
+
         #Serialize
         return jsonify(StructuredData)
 

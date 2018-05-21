@@ -1,4 +1,5 @@
 import sys
+sys.path.append("..")
 sys.path.append("../../classes")
 from Configuration import SourceConfiguration
 from DataSource import DataBaseSource
@@ -59,5 +60,5 @@ def GetMeasurementsByStream(DatastreamID,Interval=100):
 # Run Main
 if __name__ == '__main__':
 	# Set to False when deploying
-	app.debug = False
+	app.debug = True
 	app.run(host='127.0.0.1', port=8093)

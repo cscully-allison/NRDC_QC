@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+
+
 import subprocess
 import xml.etree.ElementTree as ET
 import sys
@@ -15,6 +18,8 @@ tree = root = None
 #get input from the user
 if(len(sys.argv) > 1):
 	ServiceName = sys.argv[1]
+else:
+	print("Please input service name as argument")
 
 #parse the xml file to get the data about the xml file we want to start up
 tree = ET.parse(Directory)
@@ -31,6 +36,7 @@ print(Path)
 
 #start the service
 StartCommand = 'uwsgi --socket 127.0.0.1:{0} --chdir {1} --protocol http --callable app --file {2}'.format(Port, Path, ExeFile)
+print (StartCommand)
 p = subprocess.Popen(['sudo', 'bash', '-c', StartCommand])
 
 

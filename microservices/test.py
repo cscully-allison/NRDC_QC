@@ -12,6 +12,7 @@ config = None
 DataSource = None
 ResultRows = []
 Result = None
+TablesQuery = "SQLQueries/TablesMetadata.sql"
 DataStreamQuerySource = "SQLQueries/DetailedDataStreamQuery.sql"
 MeasurementQuerySource= "SQLQueries/measurementQuery.sql"
 Query = ""
@@ -21,10 +22,19 @@ TesterGroup = []
 
 #Get configuration and set up data source
 config = SourceConfiguration("config/datasource.config")
-print(config.XMLString)
+#print(config.XMLString)
 DataSource = DataBaseSource(config)
 #DataSource.configure()
 DataSource.TDSconfigure()
+
+
+# with open(TablesQuery) as Q:
+#     Query = Q.read()
+#     print(Query)
+# Tables = DataSource.read(Query)
+
+for table in Tables:
+    print("Table ", table)
 
 #DataStream and measurement retrieval
 DataStreams = DataSource.fetchDataStreams(DataStreamQuerySource)

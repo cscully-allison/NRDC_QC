@@ -2,7 +2,20 @@
 This is the principal repository for the NRDC Near Real-Time Automated Quality Control software suite. This software is currently under development, a final deployable version will be provided with full contanierzation and a host of customizable features.
    
 
+## Deployment
+The QC Software client code is contained in Client/QC-Dashboard. The compiled code which is served down can be found in Client/QC-Dashboard/Dist.
+
+### Compiling the frontend code
+To sucessfully compile the frontend code use the following command
+
+```
+ng build --base-href=
+```
+
+
+
 ## Dependencies
+
 
 ### For Client
 The client side of the application requires the following parts

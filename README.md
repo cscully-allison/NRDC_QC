@@ -1,3 +1,15 @@
+## Deployment
+
+###client
+
+To deploy the angular app:
+
+From the /NRDC_QC/Client/QC-Dashboard/ directory input the following command:
+
+```
+ng build --base-href=./ --deploy-url=../Static/
+```
+
 ## Dependencies
 
 ### For Client
@@ -8,7 +20,7 @@ The client side of the application requires the following parts
 3. AngularCLI
 4. ng2-charts
 5. d3
-    1. Typescript deifntions
+    1. Typescript definitions
     2. Refrence : https://stackoverflow.com/questions/38335087/correct-way-to-import-d3-js-into-an-angular-2-application
 
 
@@ -63,8 +75,8 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
     engine = create_engine("mssql+pyodbc://username:pass@asgard-loki.rd.unr.edu/ProtoNRDC?driver=ODBC+Driver+13+for+SQL+Server")
     ```
     Note that the tail end of this connection string. The driver words reference the name in brackets in the /etc/odbcinst.ini file.
-    
-    
+
+
 6. Install Flask and Flask_Cors
 
     ```

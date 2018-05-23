@@ -1,0 +1,27 @@
+#Title:link    {
+  /* Applies to all unvisited links */
+  text-decoration:  none;
+  font-weight:      bold;
+  color:            white;
+  } 
+#Title:visited {
+  /* Applies to all visited links */
+  text-decoration:  none;
+  font-weight:      bold;
+  color:            white;
+  } 
+#Title:hover   {
+  /* Applies to links under the pointer */
+  text-decoration:  none;
+  font-weight:      bold;
+  color:            white;
+  } 
+#Title:active  {
+  /* Applies to activated links */
+  text-decoration:  none;
+  font-weight:      bold;
+  color: white;
+  } 
+#Banner{
+  background-color:#D3D3D3;
+}

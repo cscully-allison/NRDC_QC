@@ -1,0 +1,7 @@
+#About-Title {
+    text-align: center;
+}
+#About-Project{
+    text-align: left;
+    width: 80%
+}

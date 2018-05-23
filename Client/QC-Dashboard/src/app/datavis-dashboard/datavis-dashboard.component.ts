@@ -26,25 +26,19 @@ export class DatavisDashboardComponent implements OnInit {
       });
     }
 
-    this.http.get('https://sensor.nevada.edu/GS/Services/DataVis/Measurements/' + this.passedData["streamID"] + '/1000').subscribe(
+    this.http.get('https://sensor.nevada.edu/GS/Services/DataVis/Measurements/' + this.passedData["streamID"] + '/50').subscribe(
        data => {
-           console.log(data)
-           var container = document.getElementById("chart-container");
-           var list = document.createElement("UL");
-           var listItem, text;
+           var tempHolder = [];
+           var flagNames = ["Repeat Value","Out of Bounds","Missing Value","OK"];
 
            for(let measurement in data["Measurements"]){
               var measurementRef =  data["Measurements"][measurement];
-              this.dataHolder.push(measurementRef);
-              //listItem = document.createElement("LI");
-              //text = document.createTextNode(measurementRef["Value"]);
-              //listItem.appendChild(text);
-              //list.appendChild(listItem);
+              measurementRef["Flag Name"] = flagNames[measurementRef["Flag Type"]-1];
+              tempHolder.push(measurementRef);
            }
 
-           console.log(this.dataHolder);
+           this.dataHolder = tempHolder;
 
-           //container.appendChild(list);
     })
   }
 

@@ -25,3 +25,13 @@ li a:hover:not(.active) {
 .active {
     background-color: #4CAF50;
 }
+
+.dvdr {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    width: 1%;
+    float: left;
+    font-size: 1em;
+    color: #fff;
+    text-align: center;
+}

@@ -1,4 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 body{
   margin: 0px;
+  font-family: 'Raleway', sans-serif;
+}
+
+
+.button{
+    width: 300px;
+    padding: 30px;
+
+    border: 1px solid black;
+
+    text-align: center !important;
+
+    margin: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.button:hover{
+    background: rgba(0,0,0,.9);
+    color: white;
+    border: 1px solid white;
 }

@@ -1,0 +1,30 @@
+<directory>
+	<service>
+	    <name>Demo</name>
+	    <exe>Demo.py</exe>
+	    <path>/web/NRDC_QC/microservices/</path>
+	    <port>8069</port>
+	    <pid>53735</pid>
+	</service>
+	<service>
+	    <name>FlagHandler</name>
+	    <exe>Flag.py</exe>
+	    <path>/web/NRDC_QC/microservices/Flag\ Handler/</path>
+	    <port>8094</port>
+	    <pid>53750</pid>
+	</service>
+	<service>
+	    <name>VizHandler</name>
+	    <exe>DataVis.py</exe>
+	    <path>/web/NRDC_QC/microservices/DataVis\ Handler/</path>
+	    <port>8093</port>
+	    <pid>53756</pid>
+	</service>
+	<service>
+	    <name>ConfigManager</name>
+	    <exe>ConfigManager.py</exe>
+	    <path>/web/NRDC_QC/microservices/Configuration\ Manager/</path>
+	    <port>8091</port>
+	    <pid>53762</pid>
+	</service>
+</directory>

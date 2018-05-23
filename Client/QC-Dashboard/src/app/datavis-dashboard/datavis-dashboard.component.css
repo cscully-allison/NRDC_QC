@@ -7,12 +7,22 @@ ul{
 }
 
 
+.ok {
+    background-color: green;
+}
+
+.bad {
+    background-color: red;
+}
+
 .value {
     display: inline-block;
     min-width: 250px;
-    min-height: 30px;
+    min-height: 15px;
 
     border: 1px black solid;
+
+    padding-top: 10px;
 }
 
 .timestamp{
@@ -21,7 +31,8 @@ ul{
     min-width: 250px;
     min-height: 50px;
 
-    min-height: 30px;
+    min-height: 15px;
+    padding-top: 10px;
 
     border: 1px black solid;
 }

@@ -1,0 +1,38 @@
+:host ::ng-deep .loader-holder{
+    text-align: center;
+    margin-top: 100px;
+    width: 200px;
+    margin: auto;
+}
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin-top: 100px;
+    margin: auto;
+    animation: spin 2s linear infinite;
+}
+
+
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.grey{
+    background-color: rgba(210,210,210, 1.0 );
+    padding: 2em;
+}
+
+#About-Title {
+    text-align: center;
+}
+#About-Project{
+    margin: auto;
+    text-align: left;
+    width: 80%
+}

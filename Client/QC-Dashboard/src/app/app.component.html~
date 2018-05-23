@@ -1,0 +1,7 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center width:100% min-height:100%">
+	<h1><a id="Title" href="http://sensor.nevada.edu/GS/Services/QCDashboard/">NRDC QC Dashboard</a></h1>
+	<nav-bar></nav-bar>
+	<!--<view></view>-->
+	<router-outlet></router-outlet>
+</div>

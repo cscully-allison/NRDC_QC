@@ -1,6 +1,9 @@
-## Deployment
+## About
+This is the principal repository for the NRDC Near Real-Time Automated Quality Control software suite. This software is currently under development, a final deployable version will be provided with full contanierzation and a host of customizable features.
 
-###client
+
+## Deployment
+The QC Software client code is contained in Client/QC-Dashboard. The compiled code which is served down can be found in Client/QC-Dashboard/Dist.
 
 To deploy the angular app:
 
@@ -10,7 +13,10 @@ From the /NRDC_QC/Client/QC-Dashboard/ directory input the following command:
 ng build --base-href=./ --deploy-url=../Static/
 ```
 
+
+
 ## Dependencies
+
 
 ### For Client
 The client side of the application requires the following parts
@@ -72,7 +78,7 @@ Database connections to Microsoft SQL server with SQLAlchemy requires manual con
 
 5. Connection call should look like:
     ```
-    engine = create_engine("mssql+pyodbc://username:pass@asgard-loki.rd.unr.edu/ProtoNRDC?driver=ODBC+Driver+13+for+SQL+Server")
+    engine = create_engine("mssql+pyodbc://<username>:<pass>@<server>/<initialdatabase>?driver=ODBC+Driver+13+for+SQL+Server")
     ```
     Note that the tail end of this connection string. The driver words reference the name in brackets in the /etc/odbcinst.ini file.
 

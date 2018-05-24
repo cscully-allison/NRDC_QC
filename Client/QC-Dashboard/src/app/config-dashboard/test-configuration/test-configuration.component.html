@@ -1,0 +1,9 @@
+<h1 id="About-Title">Test Configuration</h1>
+<hr align="center" width="50%">
+
+<div class="view">
+    <div>
+        <h3 align="center"> Select a {{safeNav.getCurrentLevelTitle()}}</h3>
+        <div class="button"  *ngFor="let item of navlist" (click) = 'getNextNavList(item.id)' >{{item.name}}</div>
+    </div>
+</div>

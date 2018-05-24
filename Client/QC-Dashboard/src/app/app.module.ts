@@ -17,6 +17,7 @@ import { NameComponent } from './name/name.component';
 import { LineGraphComponent } from './datavis-dashboard/line-graph/line-graph.component';
 import { DemoComponent } from './demo/demo.component';
 import { DatasourceConfigComponent } from './config-dashboard/datasource-config/datasource-config.component';
+import { TestConfigurationComponent } from './config-dashboard/test-configuration/test-configuration.component';
 
 
 
@@ -28,6 +29,7 @@ const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'demo', component: DemoComponent},
   { path: 'datasourceconfig', component: DatasourceConfigComponent},
+  { path: 'testconfig', component: TestConfigurationComponent},
   { path: '**', redirectTo: '/flag', pathMatch: 'full' },
 ];
 
@@ -44,7 +46,8 @@ const appRoutes: Routes = [
     NameComponent,
     LineGraphComponent,
     DemoComponent,
-    DatasourceConfigComponent
+    DatasourceConfigComponent,
+    TestConfigurationComponent
   ],
   imports: [
     HttpClientModule,

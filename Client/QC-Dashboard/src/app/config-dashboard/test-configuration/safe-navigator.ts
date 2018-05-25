@@ -3,12 +3,14 @@ export class HierarchyNavigator{
     private id:number;
     private hierarchy:string[];
     private metadata:object;
+    private navHistory:object[];
 
     constructor(level, id, metadata){
         this.level = level;
         this.id = id;
-        this.hierarchy = ["networks","sites","systems","deployments","datastreams"];
+        this.hierarchy = ["networks","sites","systems","deployments","datastreams","tests"];
         this.metadata = metadata;
+        this.navHistory = new Array<Object>();
     }
 
     getCurrentId(){
@@ -30,13 +32,21 @@ export class HierarchyNavigator{
       return this.metadata[this.hierarchy[this.level]][this.id];
     }
 
-    getNext(id){
+    getNext(id, name){
         if(this.level+1 < this.hierarchy.length){
+          this.storeHistory(id, name);
           this.incrementLevel();
           this.id = id;
           return this.getCurrent();
         } else {
           return this.getCurrent();
+        }
+    }
+
+    private storeHistory(id,name){
+        if(this.level+1 < this.hierarchy.length){
+          this.navHistory.push({id:id, name:name})
+          console.log(this.navHistory)
         }
     }
 

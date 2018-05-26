@@ -18,6 +18,7 @@ import { LineGraphComponent } from './datavis-dashboard/line-graph/line-graph.co
 import { DemoComponent } from './demo/demo.component';
 import { DatasourceConfigComponent } from './config-dashboard/datasource-config/datasource-config.component';
 import { TestConfigurationComponent } from './config-dashboard/test-configuration/test-configuration.component';
+import { HistoryTrackerComponent } from './config-dashboard/test-configuration/history-tracker/history-tracker.component';
 
 
 
@@ -47,7 +48,8 @@ const appRoutes: Routes = [
     LineGraphComponent,
     DemoComponent,
     DatasourceConfigComponent,
-    TestConfigurationComponent
+    TestConfigurationComponent,
+    HistoryTrackerComponent
   ],
   imports: [
     HttpClientModule,

@@ -13,6 +13,13 @@ export class HierarchyNavigator{
         this.navHistory = new Array<Object>();
     }
 
+    //Forward navigation
+    //
+
+    getCurrentLevel(){
+        return this.level;
+    }
+
     getCurrentId(){
         return this.id;
     }
@@ -34,7 +41,7 @@ export class HierarchyNavigator{
 
     getNext(id, name){
         if(this.level+1 < this.hierarchy.length){
-          this.storeHistory(id, name);
+          this.storeHistory(id, name, this.getCurrentLevelTitle());
           this.incrementLevel();
           this.id = id;
           return this.getCurrent();
@@ -43,16 +50,39 @@ export class HierarchyNavigator{
         }
     }
 
-    private storeHistory(id,name){
+    private storeHistory(id, name, title){
         if(this.level+1 < this.hierarchy.length){
-          this.navHistory.push({id:id, name:name})
+          this.navHistory.push({id:id, level:this.level, name:name, levelTitle:title})
           console.log(this.navHistory)
         }
     }
 
-    getPrior(){
 
+    //---- Navigation from side menu ---//
+
+    //function to set view to a specific level
+    // when we click on the history element
+    setViewToSpecificLevel(level, priorId){
+        console.log(this.level - level);
+        this.modifyHistory(this.level, level);
+
+        //account for error where initial site network list is id'd as 1
+        this.level = level;
+        if(level == 0){
+          this.id = 1;
+        }else{
+          this.id = priorId;
+        }
+
+        return this.getCurrent();
     }
+
+    modifyHistory(currentLevel, newLevel){
+        for(var i = 0; i < currentLevel - newLevel; i++){
+            this.navHistory.pop();
+        }
+    }
+
 
     private incrementLevel(){
       if(this.level+1 < this.hierarchy.length){
@@ -61,5 +91,8 @@ export class HierarchyNavigator{
         //do nothing
       }
     }
+
+
+
 
 }

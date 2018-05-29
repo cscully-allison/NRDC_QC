@@ -1,3 +1,9 @@
-<p>
-  history-tracker works!
-</p>
+<div class="history-tracker-content">
+    <h3>Nav History</h3>
+    <ul>
+      <li *ngFor="let histItem of navHist">
+        <div (click)="notifyOfViewChange(histItem)" class="history-item"> <p class="bold"> {{histItem.levelTitle}} </p> {{histItem.name}}</div>
+        <div>-</div>
+      </li>
+    </ul>
+</div>

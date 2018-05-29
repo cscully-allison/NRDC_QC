@@ -56,4 +56,8 @@ export class TestConfigurationComponent implements OnInit {
 
   }
 
+  onNotify(message:object):void {
+      this.navlist = this.safeNav.setViewToSpecificLevel(message['level'], message['id']);
+    }
+
 }

@@ -1,4 +1,5 @@
 #About-Title {
+    z-index: 15;
     margin: 15px !important;
     text-align: center;
 }
@@ -23,7 +24,6 @@
 
 .button{
     width: 300px;
-    padding: 30px;
 
     border: 1px solid black;
 
@@ -32,4 +32,13 @@
     margin: auto;
     margin-top: 25px;
     margin-bottom: 25px;
+}
+
+history-tracker{
+    min-height: 400px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+
+    border: 1px solid black;
+    border-radius: 5%;
 }

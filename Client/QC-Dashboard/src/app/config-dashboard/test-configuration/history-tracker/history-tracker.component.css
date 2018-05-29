@@ -1,0 +1,25 @@
+.history-tracker-content{
+  text-align: center;
+}
+
+ul{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+
+  text-align: center;
+}
+
+p{
+  margin-bottom: .25em;
+}
+
+.history-item:hover{
+  background: rgba(0,0,0,.9);
+  color: white;
+  /*border: 1px solid white;*/
+}
+
+.bold{
+  font-weight: bold;
+}

@@ -5,46 +5,53 @@ from DataSource import DataBaseSource
 from DataContainers import Measurement, DataStream, DataBundle
 from Testing import Tester
 from flask import Flask, jsonify, json, request
-from flask_cors import cross_origin
+from flask_cors import cross_origin,CORS
 from collections import Counter
 from sqlalchemy.sql import text
 import pyodbc
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+cors = CORS(app, resources={r"/Demo/*": {"origins": "*"}})
 
 #variables
-config = None
-DataSource = None
-ResultRows = []
-Result = None
-DataStreamQuerySource = "SQLQueries/DetailedDataStreamQuery.sql"
-MeasurementQuerySource= "SQLQueries/measurementQuery.sql"
-Query = ""
-DataStreams = []
-Measurements = []
-TesterGroup = []
+Final = {}
+
 
 # Service Functionality
-@app.route('/Demo/')
+@app.route('/Demo/Config')
 @cross_origin()
 def Get():
 
     # Try
-    try:       
-        # Variables
-        Final = {}
+    try:
+        # Variable
         Num = 0
-        # Connection Section        
+        DataStreamQuerySource = "SQLQueries/DetailedDataStreamQuery.sql"
+        MeasurementQuerySource= "SQLQueries/measurementQuery.sql"
+        TesterGroup = []
+
+        # Connection Section
         config = SourceConfiguration("config/datasource.config")
+        Final["Source Config XML"] = config.XMLString
         DataSource = DataBaseSource(config)
         DataSource.TDSconfigure()
 
         DataStreams = DataSource.fetchDataStreams(DataStreamQuerySource)
 
+        Final["Data Streams"] = []
+        for Stream in DataStreams:
+             Final["Data Streams"].append(Stream.MetaData);
+
         DataStreams = DataSource.fetchMeasurements(DataStreams, MeasurementQuerySource)
 
+        Final["Measurements"] = {}
+        for Stream in DataStreams:
+            Final["Measurements"][Stream.StreamID] = len(Stream.Measurements)
+
         TestConfig = TestConfiguration("config/tests.config")
+
+        Final["Test Configuration"] = TestConfig.XMLString
 
         for Stream in DataStreams:
             TesterGroup.append( Tester( TestConfig.TestParameters[str(Stream.StreamID)] , Stream ) )
@@ -55,9 +62,28 @@ def Get():
         for TesterObj in TesterGroup:
             Num +=1
             Final[str(Num)] = DataSource.writeFlagsToDataStream(TesterObj.DataStream.StreamID, TesterObj.DataStream.Measurements)
-        
+
+
         #Serialize
-        return("Working")
+        return jsonify({"Status":"Complete"})
+
+    # Except
+    except Exception as e:
+        print(str(e))
+        line = 'Error on line {}'.format(sys.exc_info()[-1].tb_lineno)
+        print(line)
+        return False, str(e), line
+
+# Service Functionality
+@app.route('/Demo/Run')
+@cross_origin()
+def Run():
+
+    # Try
+    try:
+
+        #Serialize
+        return jsonify(Final)
 
     # Except
     except Exception as e:

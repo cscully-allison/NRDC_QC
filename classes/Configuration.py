@@ -28,6 +28,7 @@ class SourceConfiguration(Configuration):
         CachedFilePath = "{}.cached".format(SourceFile)
         self.SourceFile = SourceFile
         self.SourceMetaData = None
+        self.XMLString = ""
 
         #Only try to fetch configuration information
         # if a file source was given
@@ -36,6 +37,7 @@ class SourceConfiguration(Configuration):
                 with open(SourceFile) as CFile:
                     xml = CFile.read()
                     self.SourceMetaData = parseString(xml)
+                    self.XMLString = xml
 
                 # Write cached file out for later comparision
                 WFile = open(CachedFilePath, 'w+')
@@ -95,6 +97,7 @@ class TestConfiguration(Configuration):
             self.SourceFile = SourceFile
             self.SourceMetaData = None
             self.TestParameters = {}
+            self.XMLString = ""
 
             #variables
             xml = ""
@@ -108,6 +111,7 @@ class TestConfiguration(Configuration):
                     with open(SourceFile) as CFile:
                         xml = CFile.read()
                         self.SourceMetaData = parseString(xml)
+                        self.XMLString = xml
 
                     # Write cached file out for later comparision
                     WFile = open(CachedFilePath, 'w+')
@@ -212,6 +216,7 @@ class TestConfiguration(Configuration):
                 #TestBundle = {}
 
             return TestBundle
+
 
         def GetInnerXML(self, node):
             return node[0].firstChild.nodeValue

@@ -1,8 +1,10 @@
 import sys
 sys.path.append("..")
+sys.path.append("../classes/")
 from flask import Flask, jsonify, json, request
 from flask_cors import cross_origin
 import pyodbc
+import TestConfiguration from Configuration.py
 
 app = Flask(__name__)
 
@@ -13,7 +15,10 @@ def index():
 
 	# Try
 	try:
-		print("Working")
+		testconfig = new TestConfiguration("config/tests.config")
+		
+		print(testconfig.TestParameters)
+		
 		return("working")
 
 	# Except

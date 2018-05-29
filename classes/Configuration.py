@@ -217,5 +217,6 @@ class TestConfiguration(Configuration):
 
             return TestBundle
 
+
         def GetInnerXML(self, node):
             return node[0].firstChild.nodeValue

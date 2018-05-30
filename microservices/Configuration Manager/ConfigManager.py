@@ -13,32 +13,54 @@ app = Flask(__name__)
 @cross_origin()
 def index():
 
-	# Try
-	try:
-		#top level calls should return api info maybe
-		return("working")
+    # Try
+    try:
+        #top level calls should return api info maybe
+        return("working")
 
-	# Except
-	except Exception as e:
-		print(str(e))
-		return False, str(e)
+    # Except
+    except Exception as e:
+        print(str(e))
+        return False, str(e)
 
-@app.route('/Config/GetTests')
-@cross_origin
+
+@app.route('/Config/GetTests/')
+@cross_origin()
 def getTests():
 
-	try:
-		testconfig = new TestConfiguration("config/tests.config")
-                testmdjson = jsonify( testconfig.TestParameters)
+    try:
+        testconfig = TestConfiguration("../config/tests.config")
+        testmdjson = jsonify( testconfig.TestParameters)
 
-		return testmdjson
+        return testmdjson
 
-	except Exception as e:
-		print (str(e))
-		return False, str(e)
+    except Exception as e:
+        print (str(e))
+        return False, str(e)
+
+
+@app.route('/Config/GetTests/<DataStreamID>')
+@cross_origin()
+def getTestsForDs(DataStreamID):
+    TestsInDS = []
+    
+    try:
+        TestConfig = TestConfiguration("../config/tests.config")
+
+        for ds,tests in TestConfig.TestParameters.items():
+            print(ds, DataStreamID)
+            if ds == DataStreamID:
+                TestsInDS = tests
+        
+        return jsonify(TestsInDS)
+
+    except Exception as e:
+        print (str(e))
+        return False, str(e)
+
 
 # Run Main
 if __name__ == '__main__':
-	# Set to False when deploying
-	app.debug = True
-	app.run(host='127.0.0.1', port=8081)
+    # Set to False when deploying
+    app.debug = True
+    app.run(host='127.0.0.1', port=8081)

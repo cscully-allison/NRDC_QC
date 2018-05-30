@@ -11,14 +11,14 @@
 	    <exe>Flag.py</exe>
 	    <path>/web/NRDC_QC/microservices/Flag\ Handler/</path>
 	    <port>8094</port>
-	    <pid />
+	    <pid>35373</pid>
 	</service>
 	<service>
 	    <name>VizHandler</name>
-	    <exe>DataViz.py</exe>
+	    <exe>DataVis.py</exe>
 	    <path>/web/NRDC_QC/microservices/DataVis\ Handler/</path>
 	    <port>8093</port>
-	    <pid />
+	    <pid>35392</pid>
 	</service>
 	<service>
 	    <name>ConfigManager</name>

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
@@ -17,6 +17,8 @@ import { NameComponent } from './name/name.component';
 import { LineGraphComponent } from './datavis-dashboard/line-graph/line-graph.component';
 import { DemoComponent } from './demo/demo.component';
 import { DatasourceConfigComponent } from './config-dashboard/datasource-config/datasource-config.component';
+import { TestConfigurationComponent } from './config-dashboard/test-configuration/test-configuration.component';
+import { HistoryTrackerComponent } from './config-dashboard/test-configuration/history-tracker/history-tracker.component';
 
 
 
@@ -28,6 +30,7 @@ const appRoutes: Routes = [
   { path: 'about', component: AboutComponent },
   { path: 'demo', component: DemoComponent},
   { path: 'datasourceconfig', component: DatasourceConfigComponent},
+  { path: 'testconfig', component: TestConfigurationComponent},
   { path: '**', redirectTo: '/flag', pathMatch: 'full' },
 ];
 
@@ -44,7 +47,9 @@ const appRoutes: Routes = [
     NameComponent,
     LineGraphComponent,
     DemoComponent,
-    DatasourceConfigComponent
+    DatasourceConfigComponent,
+    TestConfigurationComponent,
+    HistoryTrackerComponent
   ],
   imports: [
     HttpClientModule,

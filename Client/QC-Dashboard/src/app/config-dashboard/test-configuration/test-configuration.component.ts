@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
 import { HierarchyNavigator } from './safe-navigator';
 
 @Component({
@@ -13,7 +14,7 @@ export class TestConfigurationComponent implements OnInit {
   public navlist:object[];
   public safeNav:HierarchyNavigator;
 
-  constructor() {
+  constructor(private http:HttpClient) {
     this.mHierarchy = new Object;
     this.navlist = new Array<Object>();
     this.initializeNavigation();
@@ -37,7 +38,8 @@ export class TestConfigurationComponent implements OnInit {
                                 2:[{name:"1 Minute Max", id:4},
                                 {name:"1 Minute Min", id:5},
                                 {name:"1 Minute Average", id:6}]};
-      this.mHierarchy['tests'] = {Tier:"Test",   1:[{name:"Bounds Test", id:1},
+      this.mHierarchy['tests'] = {Tier:"Test",
+       1:[{name:"Bounds Test", id:1},
         {name:"Repeat Value Test", id:2}],
         2:[{name:"Bounds Test", id:4},
         {name:"Repeat Value Test", id:5}],
@@ -52,8 +54,11 @@ export class TestConfigurationComponent implements OnInit {
 
   }
 
-  getTestConfigData(id){
-        
+  getTestConfigData(dsID){
+    this.http.get('https://sensor.nevada.edu/GS/Services/Config/GetTests/dsID').subscribe(
+      data => {
+          console.log(data);
+      })
 
   }
 

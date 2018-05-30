@@ -15,15 +15,25 @@ def index():
 
 	# Try
 	try:
-		testconfig = new TestConfiguration("config/tests.config")
-		
-		print(testconfig.TestParameters)
-		
+		#Top level calls should return api info maybe?
 		return("working")
 
 	# Except
 	except Exception as e:
 		print(str(e))
+		return False, str(e)
+
+@app.route('/Config/GetTests')
+@cross_origin
+def getTests():
+
+	try:
+		testconfig = new TestConfiguration("config/tests.config")
+                testconfiginfo = jsonify()
+
+
+	except Exception as e:
+		print (str(e))
 		return False, str(e)
 
 # Run Main

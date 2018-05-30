@@ -52,10 +52,13 @@ export class TestConfigurationComponent implements OnInit {
 
   }
 
-  getTestConfigData(){
+  getTestConfigData(id){
+        
 
   }
 
+  //navigates the use rback to the tier they click on
+  //in the nav history menu
   onNotify(message:object):void {
       this.navlist = this.safeNav.setViewToSpecificLevel(message['level'], message['id']);
     }

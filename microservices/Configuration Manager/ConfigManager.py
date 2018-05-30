@@ -1,10 +1,10 @@
 import sys
 sys.path.append("..")
-sys.path.append("../classes/")
+sys.path.append("../../classes")
 from flask import Flask, jsonify, json, request
 from flask_cors import cross_origin
 import pyodbc
-import TestConfiguration from Configuration.py
+from Configuration import TestConfiguration
 
 app = Flask(__name__)
 
@@ -15,7 +15,7 @@ def index():
 
 	# Try
 	try:
-		#Top level calls should return api info maybe?
+		#top level calls should return api info maybe
 		return("working")
 
 	# Except
@@ -29,8 +29,9 @@ def getTests():
 
 	try:
 		testconfig = new TestConfiguration("config/tests.config")
-                testconfiginfo = jsonify()
+                testmdjson = jsonify( testconfig.TestParameters)
 
+		return testmdjson
 
 	except Exception as e:
 		print (str(e))

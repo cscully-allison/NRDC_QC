@@ -13,6 +13,7 @@ export class TestConfigurationComponent implements OnInit {
   public mHierarchy:object;
   public navlist:object[];
   public safeNav:HierarchyNavigator;
+  public testParameters:object;
 
   constructor(private http:HttpClient) {
     this.mHierarchy = new Object;
@@ -48,8 +49,9 @@ export class TestConfigurationComponent implements OnInit {
 
   }
 
-  renderTest(id){
-      console.log(id);
+  renderTest(testParameters:object){
+      this.testParameters = testParameters;
+      this.safeNav.setTestView();
   }
 
   getNextNavList(id, name){
@@ -63,7 +65,7 @@ export class TestConfigurationComponent implements OnInit {
       data => {
           console.log(data);
           this.safeNav.getNext(dsID, name);
-          this.navlist = data;
+          this.navlist = data as Array<object>;
       })
 
   }
@@ -71,7 +73,7 @@ export class TestConfigurationComponent implements OnInit {
   //navigates the use rback to the tier they click on
   //in the nav history menu
   onNotify(message:object):void {
-      this.navlist = this.safeNav.setViewToSpecificLevel(message['level'], message['id']);
+      this.navlist = this.safeNav.setViewToSpecificLevel(message['level']);
     }
 
 }

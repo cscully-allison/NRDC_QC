@@ -4,8 +4,10 @@ export class HierarchyNavigator{
     private hierarchy:string[];
     private metadata:object;
     private navHistory:object[];
+    public isNavView:Boolean;
 
     constructor(level, id, metadata){
+        this.isNavView = true;
         this.level = level;
         this.id = id;
         this.hierarchy = ["networks","sites","systems","deployments","datastreams","tests"];
@@ -13,9 +15,8 @@ export class HierarchyNavigator{
         this.navHistory = new Array<Object>();
     }
 
-    //Forward navigation
-    //
 
+    //getters
     getCurrentLevel(){
         return this.level;
     }
@@ -39,15 +40,22 @@ export class HierarchyNavigator{
       return this.metadata[this.hierarchy[this.level]][this.id];
     }
 
+
+    //Forward navigation
     getNext(id, name){
         if(this.level+1 < this.hierarchy.length){
           this.storeHistory(id, name, this.getCurrentLevelTitle());
           this.incrementLevel();
           this.id = id;
           return this.getCurrent();
-        } else {
+        }
+        else {
           return this.getCurrent();
         }
+    }
+
+    setTestView(){
+        this.isNavView = false;
     }
 
     private storeHistory(id, name, title){
@@ -57,26 +65,28 @@ export class HierarchyNavigator{
         }
     }
 
-
     //---- Navigation from side menu ---//
 
     //function to set view to a specific level
     // when we click on the history element
-    setViewToSpecificLevel(level, priorId){
-        console.log(this.level - level);
+    setViewToSpecificLevel(level){
+        this.isNavView = true;
         this.modifyHistory(this.level, level);
 
         //account for error where initial site network list is id'd as 1
         this.level = level;
         if(level == 0){
           this.id = 1;
-        }else{
-          this.id = priorId;
         }
-
+        //all other attempts to navigate back to other levels
+        // get's the id of the prior clicked item as stored in history
+        else {
+          this.id = this.navHistory[this.navHistory.length-1]['id'];
+        }
         return this.getCurrent();
     }
 
+    //adjusts the history to get us back to the original level
     modifyHistory(currentLevel, newLevel){
         for(var i = 0; i < currentLevel - newLevel; i++){
             this.navHistory.pop();
@@ -84,6 +94,7 @@ export class HierarchyNavigator{
     }
 
 
+    //increments our level safely
     private incrementLevel(){
       if(this.level+1 < this.hierarchy.length){
           this.level++;

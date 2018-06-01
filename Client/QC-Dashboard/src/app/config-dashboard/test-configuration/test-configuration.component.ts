@@ -32,8 +32,8 @@ export class TestConfigurationComponent implements OnInit {
       this.mHierarchy['systems'] = {tier: "System", 1:[{name:"Meterological", id:1}]};
       this.mHierarchy['deployments'] = {tier: "Deployment", 1:[{name:"Air temperature (10-meter) monitor", id:1}, {name:"Air temperature (2-meter) monitor", id:2}]};
       this.mHierarchy['datastreams'] = {tier: "Data Stream",
-                                1:[{name:"10 Minute Max", id:1},
-                                {name:"10 Minute Min", id:2},
+                                1:[{name:"10 Minute Max", id:66},
+                                {name:"10 Minute Min", id:63},
                                 {name:"10 Minute Average", id:3}],
                                 2:[{name:"1 Minute Max", id:4},
                                 {name:"1 Minute Min", id:5},
@@ -48,16 +48,22 @@ export class TestConfigurationComponent implements OnInit {
 
   }
 
+  renderTest(id){
+      console.log(id);
+  }
+
   getNextNavList(id, name){
         console.log(name);
         this.navlist = this.safeNav.getNext(id, name);
 
   }
 
-  getTestConfigData(dsID){
-    this.http.get('https://sensor.nevada.edu/GS/Services/Config/GetTests/dsID').subscribe(
+  getTestConfigData(dsID, name){
+    this.http.get('https://sensor.nevada.edu/GS/Services/Config/GetTests/'+dsID).subscribe(
       data => {
           console.log(data);
+          this.safeNav.getNext(dsID, name);
+          this.navlist = data;
       })
 
   }

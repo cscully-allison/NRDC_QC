@@ -8,6 +8,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 export class TestmanagerComponent implements OnInit {
   @Input() testParameters: Object;
   private arrayParams: Array<Object>;
+  formModified:boolean;
   testTitle: string;
 
   constructor() {
@@ -16,6 +17,21 @@ export class TestmanagerComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  undoChanges(){
+    for(var param of this.arrayParams){
+      param['newValue'] = null;
+    }
+
+    this.formModified = false;
+  }
+
+  updateNewValue(param:Object, event:any){
+      param['newValue'] = event.target.value;
+      this.formModified = true;
+
+      console.log(param)
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -35,10 +51,31 @@ export class TestmanagerComponent implements OnInit {
       var tempArray:Object[] = new Array<Object>();
 
       for(let key in object){
-        tempArray.push({'key':key,'value':object[key]});
+        tempArray.push({'key':key,'value':object[key], 'displaykey':this.formatForDisplay(key)});
       }
 
       return tempArray;
+  }
+
+  formatForDisplay(keyString:string):string{
+    var temp:string = "";
+
+    //check first letter
+    for(var letter = 0; letter < keyString.length; letter++){
+
+      if(letter == 0){
+          temp += keyString[letter].toUpperCase();
+      }
+      else if(keyString[letter].toUpperCase() != keyString[letter]){
+          temp += keyString[letter];
+      }
+      else if(keyString[letter].toUpperCase() == keyString[letter]){
+          temp += " "+ keyString[letter];
+      }
+
+    }
+
+    return temp;
   }
 
 }

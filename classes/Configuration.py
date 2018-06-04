@@ -147,6 +147,15 @@ class TestConfiguration(Configuration):
             self.SourceFile = SourceFile
 
 
+
+        def WriteChanges(self, NewTestParams):
+            if(self.TestParameters[NewTestParams['DsID']]):
+                return
+            else:
+                return
+
+
+
         def Update(self):
             #variables
             xml = ""

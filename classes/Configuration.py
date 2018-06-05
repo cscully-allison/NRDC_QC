@@ -1,7 +1,8 @@
-from abc import ABCMeta, abstractmethod
 import sys
-from xml.dom.minidom import parseString
+import copy
 
+from xml.dom.minidom import parseString
+from abc import ABCMeta, abstractmethod
 
 class Configuration:
     __metaclass__ = ABCMeta
@@ -143,16 +144,32 @@ class TestConfiguration(Configuration):
                     return False
 
 
+
         def UpdateFilePath(self, SourceFile):
             self.SourceFile = SourceFile
 
 
+        '''
+            Write changes to existing test parameters as passed up from the user interface web site.
+            Also write out new tests to our xml file with this function (maybe that should be a different function?).
+        '''
 
         def WriteChanges(self, NewTestParams):
-            if(self.TestParameters[NewTestParams['DsID']]):
-                return
-            else:
-                return
+            #A temp test param object will be needed to store and write out new test params
+            WriteTP = copy.deepcopy(self.TestParameters);
+            
+            #NewTestParams is an object with one key which is the dsID
+            #we can also push up multiple new or modified tests at the same time
+            #with this interface
+            for key in NewTestParams:
+                if(WriteTP):
+                    for ndx, test in enumerate(WriteTP[key]):
+                        if (test['Type'] == NewTestParams[key]['Type']):
+                            WriteTP[key][ndx] = NewTestParams[key] 
+                else:
+                    return
+
+            #write out changes to source xml file
 
 
 

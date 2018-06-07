@@ -22,18 +22,6 @@ tree = ET.parse(Directory)
 root =  tree.getroot()
 
 #Print the name of all services
-print('\n')
 for service in root.findall('service'):
-	if service.find('pid').text == None:
-		print(service.find('name').text + " -------- DOWN")
-	else:
-		print(service.find('name').text + " -------- UP")
-print('\n')
-
-
-
-
-
-
-
-
+	StartCommand = "./restart_service.py {0}".format(service.find('name').text)
+	p = subprocess.call(['sudo', 'bash', '-c', StartCommand])

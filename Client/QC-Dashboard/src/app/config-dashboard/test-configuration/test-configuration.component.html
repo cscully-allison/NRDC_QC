@@ -1,0 +1,34 @@
+<div class="container">
+    <h1 id="About-Title">Test Configuration</h1>
+    <hr align="center" width="50%">
+    <div class="row">
+      <div *ngIf="safeNav.navHistory.length == 0" class="col-sm-2"></div>
+      <history-tracker
+        (notify) = 'onNotify($event)'
+        [navHist]='safeNav.navHistory'
+        *ngIf="safeNav.navHistory.length !== 0"
+        class="col-sm-2"></history-tracker>
+      <ng-container *ngIf="safeNav.isNavView">
+            <div *ngIf="safeNav.getCurrentLevelTitle() != 'Test'" class=" col-sm-8">
+                  <h3 align="center"> Select a {{safeNav.getCurrentLevelTitle()}}</h3>
+                  <ng-container *ngIf="safeNav.getCurrentLevelTitle() != 'Datastream'">
+                      <div class="button"  *ngFor="let item of navlist" (click) = 'getNextNavList(item.id, item.name)' >{{item.name}}</div>
+                  </ng-container>
+                  <!-- Change button to allow for gettting of test config data this will likely be pushed into our safe nav class -->
+                  <ng-container *ngIf="safeNav.getCurrentLevelTitle() == 'Datastream'">
+                      <div class="button" *ngFor="let item of navlist" (click) = 'getTestConfigData(item.id, item.name)' >{{item.name}}</div>
+                  </ng-container>
+            </div>
+
+            <div *ngIf="safeNav.getCurrentLevelTitle() == 'Test'" class="col-sm-8">
+                  <h3 align="center">Create a New Test</h3>
+                  <hr align="center" width="50%">
+                  <h3 align="center"> Select an exsiting {{safeNav.getCurrentLevelTitle()}} </h3>
+                  <div class="button"  *ngFor="let item of navlist; let idx = index" (click) = 'renderTest(item)' >{{item.Type}}</div>
+            </div>
+      </ng-container>
+      <ng-container *ngIf="!safeNav.isNavView">
+            <test-manager [testParameters]="testParameters" [dsID]="dsID" class="col-sm-10"></test-manager>
+      </ng-container>
+    </div>
+</div>

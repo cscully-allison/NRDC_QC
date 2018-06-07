@@ -1,6 +1,11 @@
+#!/usr/bin/env python
+
 import subprocess
 import xml.etree.ElementTree as ET
 import sys
+import time
+
+
 
 #variables
 Port = ""
@@ -22,6 +27,7 @@ root =  tree.getroot()
 
 print("Restarting. . .")
 
+
 #find the service we are requesting to run up
 for child in root.findall('service'):
 	if (child.find('name').text == ServiceName):
@@ -35,11 +41,16 @@ if( pid != ""):
 	KillCommand = 'kill {}'.format(pid)
 	p = subprocess.Popen(['sudo', 'bash', '-c', KillCommand])
 
+
+time.sleep(1)
+
 #build start command from needed port, path to the python file containing the service code, and the file itself contiainig the code
 # subprocess.Popen automatically runs processes in the background
-StartCommand = 'uwsgi --socket 127.0.0.1:{0} --chdir {1} --protocol http --callable app --file {2}'.format(Port, Path, ExeFile)
-p = subprocess.Popen(['sudo', 'bash', '-c', StartCommand])
+# StartCommand = 'uwsgi --socket 127.0.0.1:{0} --chdir {1} --protocol http --callable app --file {2}'.format(Port, Path, ExeFile)
+# p = subprocess.Popen(['sudo', 'bash', '-c', StartCommand])
 
+StartCommand = "./start_service.py {0}".format(ServiceName)
+p = subprocess.Popen(['sudo', 'bash', '-c', StartCommand])
 
 
 #store the pid

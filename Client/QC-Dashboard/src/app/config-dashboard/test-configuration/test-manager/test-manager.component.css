@@ -1,0 +1,40 @@
+.window{
+  min-height: 35em;
+  background-color: #EEEEEE;
+
+  border: 1px black solid;
+  border-radius: 5px;
+}
+
+.subtitle{
+  margin-top: 20px;
+}
+
+.button{
+  background: rgba(255,255,255,.9);
+}
+
+.button:hover{
+  background: rgba(0,0,0,.9);
+}
+
+h1{
+  text-align: center;
+
+}
+
+ul{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+
+  text-align: center;
+}
+
+li{
+  padding: 10px;
+  /* padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px; */
+
+}

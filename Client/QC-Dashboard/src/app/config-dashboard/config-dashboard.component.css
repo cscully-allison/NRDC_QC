@@ -9,7 +9,7 @@
 
 .button{
     width: 300px;
-    padding: 30px;
+    padding: 20px !important;
 
     border: 1px solid black;
 

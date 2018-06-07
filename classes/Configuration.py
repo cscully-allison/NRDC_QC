@@ -1,7 +1,8 @@
-from abc import ABCMeta, abstractmethod
 import sys
-from xml.dom.minidom import parseString
+import copy
 
+from xml.dom.minidom import parseString, Document
+from abc import ABCMeta, abstractmethod
 
 class Configuration:
     __metaclass__ = ABCMeta
@@ -143,8 +144,40 @@ class TestConfiguration(Configuration):
                     return False
 
 
+
         def UpdateFilePath(self, SourceFile):
             self.SourceFile = SourceFile
+
+
+        '''
+            Write changes to existing test parameters as passed up from the user interface web site.
+            Also write out new tests to our xml file with this function (maybe that should be a different function?).
+        '''
+
+        def WriteChanges(self, NewTestParams):
+            #A temp test param object will be needed to store and write out new test params
+            #WriteTP = copy.deepcopy(self.TestParameters);
+
+            #NewTestParams is an object with one key which is the dsID
+            #we can also push up multiple new or modified tests at the same time
+            #with this interface
+            #for key in NewTestParams:
+            #    if(WriteTP):
+            #        for ndx, test in enumerate(WriteTP[key]):
+            #            if (test['Type'] == NewTestParams[key]['Type']):
+            #                WriteTP[key][ndx] = NewTestParams[key]
+            #    else:
+            #        return
+
+            #write out changes to source xml file
+            #with open(self.SourceFile, 'w+') as FP:
+
+            for key in NewTestParams:
+                self.UpdateXML(key, NewTestParams[key])
+
+
+            with open(self.SourceFile, 'w+') as fp:
+                fp.write(self.SourceMetaData.toxml());
 
 
         def Update(self):
@@ -156,13 +189,14 @@ class TestConfiguration(Configuration):
             #Only try to fetch configuration information
             # if a file source was given
             if self.SourceFile != None:
-                    with open(SourceFile) as CFile:
+                    with open(self.SourceFile) as CFile:
                         xml = CFile.read()
                         self.SourceMetaData = parseString(xml)
 
                     # Write cached file out for later comparision
                     WFile = open(CachedFilePath, 'w+')
                     WFile.write(xml)
+                    WFile.close()
 
 
         """ Helper Functions """
@@ -216,6 +250,84 @@ class TestConfiguration(Configuration):
                 #TestBundle = {}
 
             return TestBundle
+
+        #Updates the XML from SourceMetaData with a singular bundle of new test parameters
+        def UpdateXML(self, ModifiedDsID, NewTestParams):
+            StreamExists = False
+            TestExists = False
+            DataStreams = self.SourceMetaData.getElementsByTagName("DataStream")
+
+            modifiedTest = NewTestParams
+
+            for Stream in DataStreams:
+                StreamID = self.GetInnerXML(Stream.getElementsByTagName("Stream"))
+                if(StreamID == ModifiedDsID):
+                    StreamExists = True
+                    Tests = Stream.getElementsByTagName("Test")
+
+                    for Test in Tests:
+                        if( NewTestParams["Type"] == self.GetInnerXML(Test.getElementsByTagName("Type")) ):
+                            TestExists = True
+
+                            for Param in NewTestParams:
+                                if(Param != "Type"):
+                                    Test.getElementsByTagName(Param)[0].firstChild.nodeValue = NewTestParams[Param]
+
+
+                    if not TestExists:
+                        NewTestNode = self.CreateTest(NewTestParams)
+
+                        #append new test to existing stream
+
+
+            if not StreamExists:
+                Stream = self.CreateStream(NewTestNode, ModifiedDsID)
+
+                #we have to modify the data source config file here as well
+                self.AddStreamToDataSourceConfig(ModifiedDsID)
+
+
+        #---------HARDCODED TO BE REPLACED WITH A BETTER ARITECTURAL DESIGN-------
+        def AddStreamToDataSourceConfig(self, dsID):
+            ConfigDOM = None
+            NewNode = None
+            TestedDataStreams = None
+
+            with open("../config/datasource.config") as CFile:
+                xml = CFile.read()
+                ConfigDOM = parseString(xml)
+
+            NewNode = ConfigDOM.createElement("Stream")
+            NewNode.appendChild(ConfigDOM.createTextNode(dsID))
+
+            TestedDataStreams = ConfigDOM.getElementsByTagName("TestedDataStreams")[0]
+            TestedDataStreams.appendChild(NewNode)
+
+            print( ConfigDOM.getElementsByTagName("TestedDataStreams")[0].toxml() )
+
+
+        def CreateTest(self, NewTestParams):
+            #create a node called test
+            NewTest = self.SourceMetaData.createElement("Test")
+
+            #create text node each paramter and append to test
+            for parameter in NewTestParams:
+                TempParam = self.SourceMetaData.createElement(parameter)
+                TempParam.appendChild( self.SourceMetaData.createTextNode(NewTestParams[parameter]) )
+                NewTest.appendChild(TempParam)
+
+            return NewTest
+
+        def CreateStream(self, NewTestNode, DsID):
+            NewStream = self.SourceMetaData.createElement("DataStream")
+
+            StreamIDNode = self.SourceMetaData.createElement("Stream")
+            StreamIDNode.appendChild( self.SourceMetaData.createTextNode(DsID) )
+
+            NewStream.appendChild(StreamIDNode)
+            NewStream.appendChild(NewTestNode)
+
+            return NewStream
 
 
         def GetInnerXML(self, node):

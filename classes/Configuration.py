@@ -262,12 +262,12 @@ class TestConfiguration(Configuration):
             for Stream in DataStreams:
                 StreamID = self.GetInnerXML(Stream.getElementsByTagName("Stream"))
                 if(StreamID == ModifiedDsID):
-                    #StreamExists = True
+                    StreamExists = True
                     Tests = Stream.getElementsByTagName("Test")
 
                     for Test in Tests:
                         if( NewTestParams["Type"] == self.GetInnerXML(Test.getElementsByTagName("Type")) ):
-                            #TestExists = True
+                            TestExists = True
 
                             for Param in NewTestParams:
                                 if(Param != "Type"):
@@ -290,12 +290,20 @@ class TestConfiguration(Configuration):
         #---------HARDCODED TO BE REPLACED WITH A BETTER ARITECTURAL DESIGN-------
         def AddStreamToDataSourceConfig(self, dsID):
             ConfigDOM = None
+            NewNode = None
+            TestedDataStreams = None
 
             with open("../config/datasource.config") as CFile:
                 xml = CFile.read()
                 ConfigDOM = parseString(xml)
 
-            print( ConfigDOM.getElementsByTagName("TestedDataStreams")[0] )
+            NewNode = ConfigDOM.createElement("Stream")
+            NewNode.appendChild(ConfigDOM.createTextNode(dsID))
+
+            TestedDataStreams = ConfigDOM.getElementsByTagName("TestedDataStreams")[0]
+            TestedDataStreams.appendChild(NewNode)
+
+            print( ConfigDOM.getElementsByTagName("TestedDataStreams")[0].toxml() )
 
 
         def CreateTest(self, NewTestParams):

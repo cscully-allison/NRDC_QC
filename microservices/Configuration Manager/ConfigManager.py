@@ -59,6 +59,23 @@ def getTestsForDs(DataStreamID):
         return False, str(e)
 
 
+@app.route('/Config/ModifyTests/', methods=['POST'])
+@cross_origin()
+def loadTestData():
+    try:
+        modifiedTest = request.get_json()
+
+        TestConfig = TestConfiguration("../config/tests.config")
+        
+        TestConfig.WriteChanges(modifiedTest)
+
+        return jsonify({'requestPayload':request.get_json()})
+
+    except Exception as e:
+        print (str(e))
+        return False, str(e)
+
+
 # Run Main
 if __name__ == '__main__':
     # Set to False when deploying

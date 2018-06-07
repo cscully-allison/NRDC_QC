@@ -42,7 +42,7 @@ if( pid != ""):
 	p = subprocess.Popen(['sudo', 'bash', '-c', KillCommand])
 
 
-time.sleep(3)
+time.sleep(1)
 
 #build start command from needed port, path to the python file containing the service code, and the file itself contiainig the code
 # subprocess.Popen automatically runs processes in the background

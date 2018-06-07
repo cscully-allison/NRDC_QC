@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
 
 @Component({
   selector: 'test-manager',
@@ -7,15 +8,31 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 })
 export class TestmanagerComponent implements OnInit {
   @Input() testParameters: Object;
+  @Input() dsID:number;
   private arrayParams: Array<Object>;
   formModified:boolean;
   testTitle: string;
 
-  constructor() {
+  constructor(private http:HttpClient) {
       this.arrayParams = new Array<Object>();
   }
 
   ngOnInit() {
+
+  }
+
+  saveChanges(){
+    var modifiedParams:Object = new Object();
+
+    this.applyArrayToObject(this.arrayParams);
+
+    modifiedParams[this.dsID] = this.testParameters;
+
+    this.http.post('https://sensor.nevada.edu/GS/Services/Config/ModifyTests/', modifiedParams).subscribe(
+      data => {
+        console.log(data);
+      }
+    )
 
   }
 
@@ -34,6 +51,7 @@ export class TestmanagerComponent implements OnInit {
       console.log(param)
   }
 
+
   ngOnChanges(changes: SimpleChanges){
        var tempArray:Object[] = this.objectToArray(this.testParameters);
 
@@ -47,6 +65,7 @@ export class TestmanagerComponent implements OnInit {
       this.arrayParams = tempArray;
   }
 
+
   objectToArray(object){
       var tempArray:Object[] = new Array<Object>();
 
@@ -55,6 +74,18 @@ export class TestmanagerComponent implements OnInit {
       }
 
       return tempArray;
+  }
+
+
+  applyArrayToObject(arrayParams){
+
+      for(var i = 0; i < arrayParams.length; i++){
+          console.log(arrayParams[i]['newValue'])
+          if(arrayParams[i]['newValue'] != null){
+            this.testParameters[arrayParams[i]['key']] = arrayParams[i]['newValue'];
+          }
+      }
+
   }
 
   formatForDisplay(keyString:string):string{

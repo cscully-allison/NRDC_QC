@@ -14,6 +14,7 @@ export class TestConfigurationComponent implements OnInit {
   public navlist:object[];
   public safeNav:HierarchyNavigator;
   public testParameters:object;
+  public dsID:number;
 
   constructor(private http:HttpClient) {
     this.mHierarchy = new Object;
@@ -61,6 +62,7 @@ export class TestConfigurationComponent implements OnInit {
   }
 
   getTestConfigData(dsID, name){
+    this.dsID = dsID;
     this.http.get('https://sensor.nevada.edu/GS/Services/Config/GetTests/'+dsID).subscribe(
       data => {
           console.log(data);

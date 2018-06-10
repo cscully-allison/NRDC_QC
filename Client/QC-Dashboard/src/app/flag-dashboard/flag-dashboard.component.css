@@ -11,3 +11,16 @@
   max-width: 65em;
   max-height: 20em;
 }
+
+.chart-row{
+  padding-top: 5em;
+}
+
+.chart-title{
+  text-align: center;
+}
+
+.border{
+  border: 2px black solid;
+  border-radius: 5px;
+}

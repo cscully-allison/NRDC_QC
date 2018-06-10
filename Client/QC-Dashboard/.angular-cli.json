@@ -3,6 +3,11 @@
   "project": {
     "name": "qc-dashboard"
   },
+  "assets": [
+    "assets",
+    "favicon.ico",
+    "web.config"
+  ],
   "apps": [
     {
       "root": "src",

@@ -1,11 +1,28 @@
 <div class="window container">
+    <div class="row toggle-button-row">
+        <div class="col-sm-10"></div>
+        <div class="toggle-on button col-sm-2" (click)="toggleEditing()">Edit</div>
+    </div>
     <h1 class="subtitle">{{testTitle}} Test</h1>
-    <!-- <div class="row"> -->
+    <ng-container *ngIf="!editable">
+      <ul>
+        <li class="row"> <h4 class="col-sm-6"> Test Parameter Name </h4> <h4 class="col-sm-6"> Current Parameter Value </h4> </li>
+        <li class="row" *ngFor="let param of arrayParams">
+           <h4 class="col-sm-6"> {{param['displaykey']}} </h4>
+           <h4 class="col-sm-6"> {{param['value']}} </h4>
+         </li>
+      </ul>
+    </ng-container>
+    <ng-container *ngIf="editable">
       <ul>
         <li class="row"> <h4 class="col-sm-4"> Test Parameter Name </h4> <h4 class="col-sm-4"> Current Parameter Value </h4> <h4 class="col-sm-4"> New Parameter Value </h4>   </li>
-        <li class="row" *ngFor="let param of arrayParams"> <h4 class="col-sm-4"> {{param['displaykey']}} </h4> <h4 class="col-sm-4"> {{param['value']}} </h4> <input [(ngModel)]="param['newValue']" (keyup)="updateNewValue(param, $event)" class="col-sm-4"/> </li>
+        <li class="row" *ngFor="let param of arrayParams">
+           <h4 class="col-sm-4"> {{param['displaykey']}} </h4>
+           <h4 class="col-sm-4"> {{param['value']}} </h4>
+           <input [(ngModel)]="param['newValue']" (keyup)="updateNewValue(param, $event)" class="col-sm-4"/>
+         </li>
       </ul>
-    <!-- </div> -->
+    </ng-container>
     <div class="row" *ngIf="!formModified"><div class="button col-sm-4" (click)="undoChanges()">Return to Previous Screen</div></div>
     <div class="row" *ngIf="formModified"><div class="button col-sm-4" (click)="undoChanges()">Undo Changes</div><div class="button col-sm-4" (click)="saveChanges()">Save Changes</div></div>
 </div>

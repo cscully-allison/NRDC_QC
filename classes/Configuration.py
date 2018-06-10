@@ -284,7 +284,26 @@ class TestConfiguration(Configuration):
                 Stream = self.CreateStream(NewTestNode, ModifiedDsID)
 
                 #we have to modify the data source config file here as well
+                self.AddStreamToDataSourceConfig(ModifiedDsID)
 
+
+        #---------HARDCODED TO BE REPLACED WITH A BETTER ARITECTURAL DESIGN-------
+        def AddStreamToDataSourceConfig(self, dsID):
+            ConfigDOM = None
+            NewNode = None
+            TestedDataStreams = None
+
+            with open("../config/datasource.config") as CFile:
+                xml = CFile.read()
+                ConfigDOM = parseString(xml)
+
+            NewNode = ConfigDOM.createElement("Stream")
+            NewNode.appendChild(ConfigDOM.createTextNode(dsID))
+
+            TestedDataStreams = ConfigDOM.getElementsByTagName("TestedDataStreams")[0]
+            TestedDataStreams.appendChild(NewNode)
+
+            print( ConfigDOM.getElementsByTagName("TestedDataStreams")[0].toxml() )
 
 
         def CreateTest(self, NewTestParams):

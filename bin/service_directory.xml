@@ -25,6 +25,6 @@
 	    <exe>ConfigManager.py</exe>
 	    <path>/web/NRDC_QC/microservices/Configuration\ Manager/</path>
 	    <port>8091</port>
-	    <pid>58271</pid>
+	    <pid>487</pid>
 	</service>	
 </directory>

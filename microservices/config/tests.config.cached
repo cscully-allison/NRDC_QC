@@ -15,7 +15,7 @@
 		<Stream>66</Stream>
 		<Test>
 			<Type>Bounds</Type>
-			<Max>28.5</Max>
+			<Max>28.8</Max>
 			<Min>-19.7</Min>
 		</Test>
 		<Test>

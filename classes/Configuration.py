@@ -273,11 +273,10 @@ class TestConfiguration(Configuration):
                                 if(Param != "Type"):
                                     Test.getElementsByTagName(Param)[0].firstChild.nodeValue = NewTestParams[Param]
 
+            if not TestExists:
+                NewTestNode = self.CreateTest(NewTestParams)
 
-                    if not TestExists:
-                        NewTestNode = self.CreateTest(NewTestParams)
-
-                        #append new test to existing stream
+                    #append new test to existing stream
 
 
             if not StreamExists:
@@ -303,7 +302,7 @@ class TestConfiguration(Configuration):
             TestedDataStreams = ConfigDOM.getElementsByTagName("TestedDataStreams")[0]
             TestedDataStreams.appendChild(NewNode)
 
-            print( ConfigDOM.getElementsByTagName("TestedDataStreams")[0].toxml() )
+            print( ConfigDOM.toxml() )
 
 
         def CreateTest(self, NewTestParams):

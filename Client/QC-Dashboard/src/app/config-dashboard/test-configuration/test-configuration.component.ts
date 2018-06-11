@@ -15,6 +15,7 @@ export class TestConfigurationComponent implements OnInit {
   public safeNav:HierarchyNavigator;
   public testParameters:object;
   public dsID:number;
+  public newTests:object[];
 
   constructor(private http:HttpClient) {
     this.mHierarchy = new Object;
@@ -22,6 +23,8 @@ export class TestConfigurationComponent implements OnInit {
     this.initializeNavigation();
     this.safeNav = new HierarchyNavigator(0, 1, this.mHierarchy);
     this.navlist = this.safeNav.getCurrent();
+
+    this.newTests = new Array<Object>();
   }
 
   ngOnInit() {
@@ -62,13 +65,23 @@ export class TestConfigurationComponent implements OnInit {
   }
 
   getTestConfigData(dsID, name){
+    var flag:boolean = false;
+    var possibleTests:Array<Object> = [{Type:"Bounds", Min: null, Max: null }, {Type:"Repeat Value", RepeatThreshold: null}]; //Oh man makin some may comprimises. . . these should be passed down from original xml test metadata, test ontology?
+
     this.dsID = dsID;
     this.http.get('https://sensor.nevada.edu/GS/Services/Config/GetTests/'+dsID).subscribe(
       data => {
           console.log(data);
           this.safeNav.getNext(dsID, name);
           this.navlist = data as Array<object>;
-      })
+          for(let possibleTest of possibleTests){
+              if(! this.navlist.find( existingTest => existingTest['Type'] == possibleTest['Type'])){
+                  this.newTests.push(possibleTest);
+              }
+
+          }
+
+      });
 
   }
 

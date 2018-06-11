@@ -18,8 +18,8 @@
         <li class="row"> <h4 class="col-sm-4"> Test Parameter Name </h4> <h4 class="col-sm-4"> Current Parameter Value </h4> <h4 class="col-sm-4"> New Parameter Value </h4>   </li>
         <li class="row" *ngFor="let param of arrayParams">
            <h4 class="col-sm-4"> {{param['displaykey']}} </h4>
-           <h4 class="col-sm-4"> {{param['value']}} </h4>
-           <input [(ngModel)]="param['newValue']" (keyup)="updateNewValue(param, $event)" class="col-sm-4"/>
+           <h4 class="col-sm-4"> {{param['value']}} </h4> 
+          <input [(ngModel)]="param['newValue']" (keyup)="updateNewValue(param, $event)" class="col-sm-4"/>
          </li>
       </ul>
     </ng-container>

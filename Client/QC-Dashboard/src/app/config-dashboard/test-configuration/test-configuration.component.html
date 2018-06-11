@@ -23,6 +23,7 @@
             <div *ngIf="safeNav.getCurrentLevelTitle() == 'Test'" class="col-sm-8">
                   <h3 align="center">Create a New Test</h3>
                   <hr align="center" width="50%">
+                  <div class="button" *ngFor="let item of newTests; let idx = index" (click) = 'renderTest(item)' >Create New {{item.Type}} Test</div>
                   <h3 align="center"> Select an exsiting {{safeNav.getCurrentLevelTitle()}} </h3>
                   <div class="button"  *ngFor="let item of navlist; let idx = index" (click) = 'renderTest(item)' >{{item.Type}}</div>
             </div>

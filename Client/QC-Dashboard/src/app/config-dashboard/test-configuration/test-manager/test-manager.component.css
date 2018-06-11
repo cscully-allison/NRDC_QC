@@ -18,6 +18,15 @@
   background: rgba(0,0,0,.9);
 }
 
+.toggle{
+
+}
+
+.toggle-button-row{
+  padding-right: 1em;
+  padding-left: 1em;
+}
+
 h1{
   text-align: center;
 

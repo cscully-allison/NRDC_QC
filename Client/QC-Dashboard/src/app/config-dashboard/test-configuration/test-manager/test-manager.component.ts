@@ -12,13 +12,19 @@ export class TestmanagerComponent implements OnInit {
   private arrayParams: Array<Object>;
   formModified:boolean;
   testTitle: string;
+  editable: boolean;
 
   constructor(private http:HttpClient) {
       this.arrayParams = new Array<Object>();
+      this.editable = false;
   }
 
   ngOnInit() {
 
+  }
+
+  toggleEditing(){
+    this.editable = !(this.editable);
   }
 
   saveChanges(){

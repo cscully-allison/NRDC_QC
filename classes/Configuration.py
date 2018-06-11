@@ -275,12 +275,15 @@ class TestConfiguration(Configuration):
 
             if not TestExists:
                 NewTestNode = self.CreateTest(NewTestParams)
+                
+                #append test to an existing stream
 
-                    #append new test to existing stream
 
 
             if not StreamExists:
                 Stream = self.CreateStream(NewTestNode, ModifiedDsID)
+
+                print(Stream)
 
                 #we have to modify the data source config file here as well
                 self.AddStreamToDataSourceConfig(ModifiedDsID)

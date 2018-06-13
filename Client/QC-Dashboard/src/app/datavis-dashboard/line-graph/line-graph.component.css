@@ -1,6 +1,6 @@
 #graph-container{
-  min-width: 1000px;
-  min-height: 700px;
+  min-width: 900px;
+  min-height: 550px;
 }
 
 :host ::ng-deep .flag{

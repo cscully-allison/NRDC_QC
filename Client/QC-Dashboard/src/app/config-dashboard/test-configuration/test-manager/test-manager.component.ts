@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
+import { HierarchyNavigator } from '../safe-navigator';
 
 @Component({
   selector: 'test-manager',
@@ -9,6 +10,7 @@ import { HttpClient } from '@angular/common/http'
 export class TestmanagerComponent implements OnInit {
   @Input() testParameters: Object;
   @Input() dsID:number;
+  @Input() safeNav:HierarchyNavigator;
   private arrayParams: Array<Object>;
   formModified:boolean;
   testTitle: string;
@@ -50,6 +52,10 @@ export class TestmanagerComponent implements OnInit {
 
     this.toggleEditing()
 
+  }
+
+  goBack(){
+    this.safeNav.setNavView();
   }
 
   undoChanges(){

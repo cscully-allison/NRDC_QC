@@ -58,6 +58,10 @@ export class HierarchyNavigator{
         this.isNavView = false;
     }
 
+    setNavView(){
+      this.isNavView = true;
+    }
+
     private storeHistory(id, name, title){
         if(this.level+1 < this.hierarchy.length){
           this.navHistory.push({id:id, level:this.level, name:name, levelTitle:title})

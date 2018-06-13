@@ -29,6 +29,10 @@ export class HierarchyNavigator{
         return this.hierarchy[this.level];
     }
 
+    getNavHistory(){
+      return this.navHistory;
+    }
+
     getCurrentLevelTitle(){
        var title:string = this.hierarchy[this.level];
        title = title.slice(0, -1); //remove

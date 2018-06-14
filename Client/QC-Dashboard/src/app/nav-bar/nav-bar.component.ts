@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'nav-bar',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route:ActivatedRoute, private renderer:Renderer) { }
 
   ngOnInit() {
+  }
+
+  updateBar(event){
+      console.log(event.target.parentNode.parentNode)
+      console.log(this.route)
+      this.clearActiveClass(event.target.parentNode.parentNode);
+      this.renderer.setElementClass(event.target.parentNode,"active",true);
+  }
+
+  clearActiveClass(listHead){
+    console.log(listHead.children);
+    for(var li = 0; li < listHead.children.length; li++){
+        listHead.children[li].classList.remove('active');
+    }
+
   }
 
 }

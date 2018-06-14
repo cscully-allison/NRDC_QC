@@ -7,7 +7,15 @@
       <div class="button">Manual Flag</div>
       <div class="button">Review Flags</div>
     </div>
-    <div class="col-lg-9"><line-graph [chartData]=dataHolder></line-graph></div>
+    <div class="col-lg-9">
+      <canvas *ngIf="loadingDone" 
+                  baseChart
+                  [data]="data"
+                  [labels]="labels"
+                  [chartType]="lineChartType"
+                  [options]="lineChartOptions"></canvas>
+    </div>
+    <!-- <line-graph class="col-lg-9" [chartData]=dataHolder></line-graph> -->
   </div>
 <!-- </div> -->
 

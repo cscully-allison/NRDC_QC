@@ -11,20 +11,27 @@ export class TestConfigurationComponent implements OnInit {
 
 
   public mHierarchy:object;
+  public hierarchyOntology:Array<string>;
+  public queryableOntology:Array<string>;
   public navlist:object[];
   public safeNav:HierarchyNavigator;
   public testParameters:object;
   public dsID:number;
   public newTests:object[];
+  public metadataSource:string;
 
   constructor(private http:HttpClient) {
     this.mHierarchy = new Object;
     this.navlist = new Array<Object>();
     this.initializeNavigation();
-    this.safeNav = new HierarchyNavigator(0, 1, this.mHierarchy);
+    this.hierarchyOntology = ['SiteNetworks', 'Sites', 'Systems', 'Deployments', 'Datastreams', "tests"];
+    this.queryableOntology = ['SiteNetworks', 'Sites', 'Systems', 'Deployments']
+    this.safeNav = new HierarchyNavigator(0, 1, this.mHierarchy, this.hierarchyOntology);
     this.navlist = this.safeNav.getCurrent();
-
     this.newTests = new Array<Object>();
+    this.metadataSource = "http://sensor.nevada.edu/Services/nrdc/infrastructure/Services/";
+    this.getAllNavLists();
+
   }
 
   ngOnInit() {
@@ -32,11 +39,11 @@ export class TestConfigurationComponent implements OnInit {
 
   initializeNavigation(){
       //this will be replaced with calls to apis
-      this.mHierarchy['networks'] = {tier: "Network", 1:[{name: "Walker Basin Hydroclimate", id:1}, {name: "Nexus", id:2}]};
-      this.mHierarchy['sites'] = {tier: "Site", 1:[{name:"Rockland Summit", id:1}]}; //organized by the id of the parent
-      this.mHierarchy['systems'] = {tier: "System", 1:[{name:"Meterological", id:1}]};
-      this.mHierarchy['deployments'] = {tier: "Deployment", 1:[{name:"Air temperature (10-meter) monitor", id:1}, {name:"Relative Humidity Monitor", id:2}]};
-      this.mHierarchy['datastreams'] = {tier: "Data Stream",
+      this.mHierarchy['SiteNetworks'] = {tier: "Network", 1:[{name: "Walker Basin Hydroclimate", id:1}, {name: "Nexus", id:2}]};
+      this.mHierarchy['Sites'] = {tier: "Site", 1:[{name:"Rockland Summit", id:1}]}; //organized by the id of the parent
+      this.mHierarchy['Systems'] = {tier: "System", 1:[{name:"Meterological", id:1}]};
+      this.mHierarchy['Deployments'] = {tier: "Deployment", 1:[{name:"Air temperature (10-meter) monitor", id:1}, {name:"Relative Humidity Monitor", id:2}]};
+      this.mHierarchy['Datastreams'] = {tier: "Data Stream",
                                 1:[{name:"10 Minute Max", id:66},
                                 {name:"10 Minute Min", id:63},
                                 {name:"10 Minute Average", id:54}],
@@ -56,6 +63,29 @@ export class TestConfigurationComponent implements OnInit {
   renderTest(testParameters:object){
       this.testParameters = testParameters;
       this.safeNav.setTestView();
+  }
+
+  getAllNavLists(){
+      var fullHTTP;
+
+      fullHTTP = this.metadataSource + "SiteNetworks.svc/Get"
+      console.log(fullHTTP)
+      this.http.get(fullHTTP).subscribe(
+        data => {
+          console.log(data);
+        }
+      )
+      //
+      // for(let name of this.queryableOntology){
+      //     fullHTTP = this.metadataSource + name + ".svc/Get"
+      //     console.log(fullHTTP)
+      //     this.http.get(fullHTTP).subscribe(
+      //       data => {
+      //         console.log(data);
+      //       }
+      //     )
+      // }
+
   }
 
   getNextNavList(id, name){

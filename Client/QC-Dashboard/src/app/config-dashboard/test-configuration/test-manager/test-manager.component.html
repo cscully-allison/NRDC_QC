@@ -19,10 +19,10 @@
         <li class="row" *ngFor="let param of arrayParams">
            <h4 class="col-sm-4"> {{param['displaykey']}} </h4>
            <h4 class="col-sm-4"> {{param['value']}} </h4>
-           <input [(ngModel)]="param['newValue']" (keyup)="updateNewValue(param, $event)" class="col-sm-4"/>
+          <input [(ngModel)]="param['newValue']" (keyup)="updateNewValue(param, $event)" class="col-sm-4"/>
          </li>
       </ul>
     </ng-container>
-    <div class="row" *ngIf="!formModified"><div class="button col-sm-4" (click)="undoChanges()">Return to Previous Screen</div></div>
+    <div class="row" *ngIf="!formModified"><div class="button col-sm-4" (click)="goBack()">Return to Previous Screen</div></div>
     <div class="row" *ngIf="formModified"><div class="button col-sm-4" (click)="undoChanges()">Undo Changes</div><div class="button col-sm-4" (click)="saveChanges()">Save Changes</div></div>
 </div>

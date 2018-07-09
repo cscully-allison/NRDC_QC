@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
+import { HierarchyNavigator } from '../safe-navigator';
 
 @Component({
   selector: 'test-manager',
@@ -9,6 +10,7 @@ import { HttpClient } from '@angular/common/http'
 export class TestmanagerComponent implements OnInit {
   @Input() testParameters: Object;
   @Input() dsID:number;
+  @Input() safeNav:HierarchyNavigator;
   private arrayParams: Array<Object>;
   formModified:boolean;
   testTitle: string;
@@ -25,6 +27,9 @@ export class TestmanagerComponent implements OnInit {
 
   toggleEditing(){
     this.editable = !(this.editable);
+    if(this.editable == false){
+      this.undoChanges()
+    }
   }
 
   saveChanges(){
@@ -40,11 +45,22 @@ export class TestmanagerComponent implements OnInit {
       }
     )
 
+    //update view to reflect changes which were posted
+    for(var param of this.arrayParams){
+      param['value'] = param['newValue'];
+    }
+
+    this.toggleEditing()
+
+  }
+
+  goBack(){
+    this.safeNav.setNavView();
   }
 
   undoChanges(){
     for(var param of this.arrayParams){
-      param['newValue'] = null;
+      param['newValue'] = param['value'];
     }
 
     this.formModified = false;
@@ -76,7 +92,7 @@ export class TestmanagerComponent implements OnInit {
       var tempArray:Object[] = new Array<Object>();
 
       for(let key in object){
-        tempArray.push({'key':key,'value':object[key], 'displaykey':this.formatForDisplay(key)});
+        tempArray.push({'key':key,'value':object[key], 'displaykey':this.formatForDisplay(key), 'newValue':object[key]});
       }
 
       return tempArray;
@@ -86,8 +102,7 @@ export class TestmanagerComponent implements OnInit {
   applyArrayToObject(arrayParams){
 
       for(var i = 0; i < arrayParams.length; i++){
-          console.log(arrayParams[i]['newValue'])
-          if(arrayParams[i]['newValue'] != null){
+          if(arrayParams[i]['newValue'] != null){ //test if one of the changes was nullified
             this.testParameters[arrayParams[i]['key']] = arrayParams[i]['newValue'];
           }
       }

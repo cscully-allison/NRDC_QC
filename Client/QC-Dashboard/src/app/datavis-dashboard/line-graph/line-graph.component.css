@@ -1,7 +1,3 @@
-#graph-container{
-  min-width: 1000px;
-  min-height: 700px;
-}
 
 :host ::ng-deep .flag{
     fill: none !important;

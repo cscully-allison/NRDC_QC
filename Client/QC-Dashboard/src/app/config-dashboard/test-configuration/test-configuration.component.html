@@ -2,11 +2,11 @@
     <h1 id="About-Title">Test Configuration</h1>
     <hr align="center" width="50%">
     <div class="row">
-      <div *ngIf="safeNav.navHistory.length == 0" class="col-sm-2"></div>
+      <div *ngIf="safeNav.getNavHistory().length == 0" class="col-sm-2"></div>
       <history-tracker
         (notify) = 'onNotify($event)'
         [navHist]='safeNav.navHistory'
-        *ngIf="safeNav.navHistory.length !== 0"
+        *ngIf="safeNav.getNavHistory().length !== 0"
         class="col-sm-2"></history-tracker>
       <ng-container *ngIf="safeNav.isNavView">
             <div *ngIf="safeNav.getCurrentLevelTitle() != 'Test'" class=" col-sm-8">
@@ -23,12 +23,13 @@
             <div *ngIf="safeNav.getCurrentLevelTitle() == 'Test'" class="col-sm-8">
                   <h3 align="center">Create a New Test</h3>
                   <hr align="center" width="50%">
+                  <div class="button" *ngFor="let item of newTests; let idx = index" (click) = 'renderTest(item)' >Create New {{item.Type}} Test</div>
                   <h3 align="center"> Select an exsiting {{safeNav.getCurrentLevelTitle()}} </h3>
                   <div class="button"  *ngFor="let item of navlist; let idx = index" (click) = 'renderTest(item)' >{{item.Type}}</div>
             </div>
       </ng-container>
       <ng-container *ngIf="!safeNav.isNavView">
-            <test-manager [testParameters]="testParameters" [dsID]="dsID" class="col-sm-10"></test-manager>
+            <test-manager [safeNav]="safeNav" [testParameters]="testParameters" [dsID]="dsID" class="col-sm-10"></test-manager>
       </ng-container>
     </div>
 </div>

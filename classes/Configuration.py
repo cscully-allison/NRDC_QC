@@ -274,14 +274,16 @@ class TestConfiguration(Configuration):
                                     Test.getElementsByTagName(Param)[0].firstChild.nodeValue = NewTestParams[Param]
 
 
-                    if not TestExists:
-                        NewTestNode = self.CreateTest(NewTestParams)
+            if not TestExists:
+                NewTestNode = self.CreateTest(NewTestParams)
 
-                        #append new test to existing stream
+                #append new test to existing stream
 
 
             if not StreamExists:
                 Stream = self.CreateStream(NewTestNode, ModifiedDsID)
+
+                print(Stream)
 
                 #we have to modify the data source config file here as well
                 self.AddStreamToDataSourceConfig(ModifiedDsID)
@@ -303,7 +305,7 @@ class TestConfiguration(Configuration):
             TestedDataStreams = ConfigDOM.getElementsByTagName("TestedDataStreams")[0]
             TestedDataStreams.appendChild(NewNode)
 
-            print( ConfigDOM.getElementsByTagName("TestedDataStreams")[0].toxml() )
+            print( ConfigDOM.toxml() )
 
 
         def CreateTest(self, NewTestParams):

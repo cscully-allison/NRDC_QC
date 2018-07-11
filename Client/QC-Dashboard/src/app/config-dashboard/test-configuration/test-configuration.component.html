@@ -1,6 +1,7 @@
 <div class="container">
     <h1 id="About-Title">Test Configuration</h1>
     <hr align="center" width="50%">
+    <div class="row"><div class=" button" (click)="getAllNavLists()">Get Nav Lists</div></div>
     <div class="row">
       <div *ngIf="safeNav.getNavHistory().length == 0" class="col-sm-2"></div>
       <history-tracker

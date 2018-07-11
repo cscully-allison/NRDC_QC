@@ -68,23 +68,23 @@ export class TestConfigurationComponent implements OnInit {
   getAllNavLists(){
       var fullHTTP;
 
-      fullHTTP = this.metadataSource + "SiteNetworks.svc/Get"
-      console.log(fullHTTP)
-      this.http.get(fullHTTP).subscribe(
-        data => {
-          console.log(data);
-        }
-      )
-      //
-      // for(let name of this.queryableOntology){
-      //     fullHTTP = this.metadataSource + name + ".svc/Get"
-      //     console.log(fullHTTP)
-      //     this.http.get(fullHTTP).subscribe(
-      //       data => {
-      //         console.log(data);
-      //       }
-      //     )
-      // }
+      // fullHTTP = this.metadataSource + "SiteNetworks.svc/Get"
+      // console.log(fullHTTP)
+      // this.http.get(fullHTTP).subscribe(
+      //   data => {
+      //     console.log(data);
+      //   }
+      // )
+
+      for(let name of this.queryableOntology){
+          fullHTTP = this.metadataSource + name + ".svc/Get"
+          console.log(fullHTTP)
+          this.http.get(fullHTTP).subscribe(
+            data => {
+              console.log(data);
+            }
+          )
+      }
 
   }
 

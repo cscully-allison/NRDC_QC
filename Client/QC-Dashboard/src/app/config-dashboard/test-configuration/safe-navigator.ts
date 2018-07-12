@@ -1,3 +1,6 @@
+import { HttpClient } from '@angular/common/http';
+
+
 export class HierarchyNavigator{
     private level:number;
     private id:number;
@@ -42,6 +45,11 @@ export class HierarchyNavigator{
 
     getCurrent(){
       return this.metadata[this.hierarchyOntology[this.level]][this.id];
+    }
+
+    peekNext(id, name){
+      //this retirves the information related to a hovered item, filters it according to the actual item being hovered over, and sends back only the additional metadata about the item
+      return this.metadata[this.hierarchyOntology[this.level]][this.id].filter(object => object['name'] == name)[0]['otherdata'];
     }
 
 
@@ -91,6 +99,7 @@ export class HierarchyNavigator{
         else {
           this.id = this.navHistory[this.navHistory.length-1]['id'];
         }
+
         return this.getCurrent();
     }
 

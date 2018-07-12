@@ -1,36 +1,52 @@
-<div class="container">
+<!-- <div class="container"> -->
     <h1 id="About-Title">Test Configuration</h1>
     <hr align="center" width="50%">
-    <div class="row"><div class=" button" (click)="getAllNavLists()">Get Nav Lists</div></div>
+    <!-- <div class="row"><div class=" button" (click)="getAllNavLists()">Get Nav Lists</div></div> -->
     <div class="row">
-      <div *ngIf="safeNav.getNavHistory().length == 0" class="col-sm-2"></div>
+      <div *ngIf="safeNav.getNavHistory().length == 0" class="offset-1 col-sm-2"></div>
       <history-tracker
         (notify) = 'onNotify($event)'
         [navHist]='safeNav.navHistory'
         *ngIf="safeNav.getNavHistory().length !== 0"
-        class="col-sm-2"></history-tracker>
+        class="offset-1 col-sm-2 limit"></history-tracker>
       <ng-container *ngIf="safeNav.isNavView">
-            <div *ngIf="safeNav.getCurrentLevelTitle() != 'Test'" class=" col-sm-8">
+            <div *ngIf="safeNav.getCurrentLevelTitle() != 'Test'" class=" offset-1 col-sm-4">
                   <h3 align="center"> Select a {{safeNav.getCurrentLevelTitle()}}</h3>
                   <ng-container *ngIf="safeNav.getCurrentLevelTitle() != 'Datastream'">
-                      <div class="button"  *ngFor="let item of navlist" (click) = 'getNextNavList(item.id, item.name)' >{{item.name}}</div>
+                      <div class="button"  *ngFor="let item of navlist" (click) = 'getNextNavList(item.id, item.name)' (mouseover)='broadcast(item.id, item.name)' >{{item.name}}</div>
                   </ng-container>
                   <!-- Change button to allow for gettting of test config data this will likely be pushed into our safe nav class -->
                   <ng-container *ngIf="safeNav.getCurrentLevelTitle() == 'Datastream'">
-                      <div class="button" *ngFor="let item of navlist" (click) = 'getTestConfigData(item.id, item.name)' >{{item.name}}</div>
+                      <div class="button" *ngFor="let item of navlist" (click) = 'getTestConfigData(item.id, item.name)' (mouseover)='broadcast(item.id, item.name)'  >{{item.name}}</div>
                   </ng-container>
             </div>
 
-            <div *ngIf="safeNav.getCurrentLevelTitle() == 'Test'" class="col-sm-8">
+            <div *ngIf="safeNav.getCurrentLevelTitle() == 'Test'" class="offset-1 col-sm-4">
                   <h3 align="center">Create a New Test</h3>
                   <hr align="center" width="50%">
                   <div class="button" *ngFor="let item of newTests; let idx = index" (click) = 'renderTest(item)' >Create New {{item.Type}} Test</div>
-                  <h3 align="center"> Select an exsiting {{safeNav.getCurrentLevelTitle()}} </h3>
+                  <h3 align="center"> Select an existing {{safeNav.getCurrentLevelTitle()}} </h3>
                   <div class="button"  *ngFor="let item of navlist; let idx = index" (click) = 'renderTest(item)' >{{item.Type}}</div>
             </div>
+
+            <div class="col-sm-3">
+                <ng-container *ngIf="hoveredMetadata != null">
+                  <h4>{{hoveredMetadata['Name']}}</h4>
+                  <h5>Additional Info</h5>
+                  <div *ngIf="hoveredMetadata['Photo'] != null"><img class='img-thumbnail' src='data:image/jpg;base64,{{hoveredMetadata["Photo"]}}'/></div>
+                  <div *ngFor="let key of keys" class="row margin shadow bg-white rounded even-size vertical-align">
+                    <ng-container *ngIf="key != 'Photo'">
+                      <span class="blue col-sm-4">{{key}}</span> <span class="col-sm-8">{{hoveredMetadata[key]}}</span>
+                    </ng-container>
+                  </div>
+                </ng-container>
+            </div>
+
       </ng-container>
+
+
       <ng-container *ngIf="!safeNav.isNavView">
-            <test-manager [safeNav]="safeNav" [testParameters]="testParameters" [dsID]="dsID" class="col-sm-10"></test-manager>
+            <test-manager [safeNav]="safeNav" [testParameters]="testParameters" [dsID]="dsID" class="col-sm-9"></test-manager>
       </ng-container>
     </div>
-</div>
+<!-- </div> -->

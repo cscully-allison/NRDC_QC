@@ -34,6 +34,7 @@ export class DemoComponent implements OnInit {
   public done = false;
   public numtests = 0;
   public data = {};
+  public loadingStatus = {};
 
   constructor(private http: HttpClient) { }
 
@@ -41,36 +42,40 @@ export class DemoComponent implements OnInit {
 
   }
 
+
+  //Recursive function
+  check(){
+    this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Check/').subscribe(
+      data => {
+        if(data['Status'] != 'Complete'){
+            console.log(data)
+            this.loadingStatus = data;
+            setTimeout(()=>{this.check()}, 1000);
+        } else {
+          this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Run/')
+            .subscribe(data => {
+                this.loading = false;
+                this.data = data;
+                console.log(data);
+                this.done = true;
+                this.numtests = 0;
+                for(let stream in this.data["Measurements"]){
+                    this.numtests += this.data["Measurements"][stream] * 3;
+                }
+            })
+        }
+      }
+    )
+  }
+
   demo(){
       this.loading = true;
-      this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Config/', { headers: new HttpHeaders({ timeout: `${60000}` }) })
+      this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Config/', { headers: new HttpHeaders({ timeout: `${1000}` }) })
       .subscribe(
-        data => { this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Run/')
-                  .subscribe(data => {
-                      this.loading = false;
-                      this.data = data;
-                      console.log(data);
-                      this.done = true;
-                      this.numtests = 0;
-                      for(let stream in this.data["Measurements"]){
-                          this.numtests += this.data["Measurements"][stream] * 3;
-                      }
-                  })
-                },
-        err => {
-                this.http.get('https://sensor.nevada.edu/GS/Services/Demo/Run/')
-                .subscribe(data => {
-                        this.loading = false;
-                        this.data = data;
-                        console.log(data);
-                        this.done = true;
-                        this.numtests = 0;
-                        for(let stream in this.data["Measurements"]){
-                            this.numtests += this.data["Measurements"][stream] * 3;
-                        }
-                })
-        }
+        data => { this.check(); }
+
      )
   }
+
 
 }

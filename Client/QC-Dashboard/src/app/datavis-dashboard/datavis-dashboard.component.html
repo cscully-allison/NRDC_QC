@@ -1,7 +1,24 @@
-
-  <h3>Queried Measurments for {{passedData["Deployment Name"]}}</h3>
-  <h4>DataStream: {{passedData["streamID"]}}</h4>
-  <line-graph [chartData]=dataHolder></line-graph>
+<!-- <div class="container"> -->
+  <div class="row"><h3 class="col-lg-10">Queried Measurments for {{passedData["Deployment Name"]}}</h3></div>
+  <div class="row"><h4 class="col-lg-10">DataStream: {{passedData["streamID"]}}</h4></div>
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="button">Add DataStream</div>
+      <div class="button">Manual Flag</div>
+      <div class="button">Review Flags</div>
+    </div>
+    <div class="col-lg-9">
+      <canvas *ngIf="loadingDone"
+                  baseChart
+                  [data]="data"
+                  [labels]="labels"
+                  [chartType]="lineChartType"
+                  [options]="lineChartOptions"
+                  (chartHover)="showAdvData($event)"></canvas>
+    </div>
+    <!-- <line-graph class="col-lg-9" [chartData]=dataHolder></line-graph> -->
+  </div>
+<!-- </div> -->
 
   <!-- <div id="chart-view">
     <div id="chart-container">

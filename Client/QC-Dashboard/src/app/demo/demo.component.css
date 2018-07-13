@@ -16,6 +16,29 @@
     animation: spin 2s linear infinite;
 }
 
+.orange {
+    background-color: rgba(255,155,99,.9);
+}
+
+.blue{
+    background-color: rgba(88,139,201,.9);
+}
+
+.card{
+    box-shadow: .3em .3em .3em rgba(0,0,0,.4);
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.sm-margin{
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.md-margin{
+  margin-top:3em;
+  margin-bottom:3em;
+}
 
 
 @keyframes spin {

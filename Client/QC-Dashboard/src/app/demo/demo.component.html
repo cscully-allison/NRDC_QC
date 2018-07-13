@@ -1,7 +1,7 @@
 
 <div class="loader-holder">
     <div class="loader" *ngIf="loading"></div>
-    <div *ngIf="loading"><h3> Testing Measurements. Please Wait </h3></div>
+    <div *ngIf="loading"><h3> {{loadingStatus['Status']}}.</h3> <h3 *ngIf="loadingStatus['Total'] != null">{{loadingStatus['DataStream']}} Datastreams out of {{loadingStatus['Total']}}</h3></div>
 </div>
 <div class="button" *ngIf="!loading" (click)="demo()">DEMO</div>
 <ng-container *ngIf="done">

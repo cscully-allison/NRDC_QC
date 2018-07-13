@@ -169,10 +169,12 @@ export class TestConfigurationComponent implements OnInit {
     this.dsID = dsID;
     this.http.get('https://sensor.nevada.edu/GS/Services/Config/GetTests/'+dsID).subscribe(
       data => {
-          console.log(data);
+          console.log("Test configuration data: ", data);
+
           this.newTests = [];
           this.safeNav.getNext(dsID, name);
           this.navlist = data as Array<object>;
+
           for(let possibleTest of possibleTests){
               if(! this.navlist.find( existingTest => existingTest['Type'] == possibleTest['Type'])){
                   this.newTests.push(possibleTest);

@@ -25,4 +25,6 @@
     </ng-container>
     <div class="row" *ngIf="!formModified"><div class="button col-sm-4" (click)="goBack()">Return to Previous Screen</div></div>
     <div class="row" *ngIf="formModified"><div class="button col-sm-4" (click)="undoChanges()">Undo Changes</div><div class="button col-sm-4" (click)="saveChanges()">Save Changes</div></div>
+    <div class="row shadow-sm alert alert-danger text-center" *ngIf="saveError">There was an error saving your test parameters. Paramater values can only be floats or integers and cannot be empty.</div>
+    <div class="row shadow-sm alert alert-success text-center" *ngIf="saveSuccess">Your test parameters were successfully modified and saved on the server.</div>
 </div>

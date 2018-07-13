@@ -8,12 +8,13 @@
       <div class="button">Review Flags</div>
     </div>
     <div class="col-lg-9">
-      <canvas *ngIf="loadingDone" 
+      <canvas *ngIf="loadingDone"
                   baseChart
                   [data]="data"
                   [labels]="labels"
                   [chartType]="lineChartType"
-                  [options]="lineChartOptions"></canvas>
+                  [options]="lineChartOptions"
+                  (chartHover)="showAdvData($event)"></canvas>
     </div>
     <!-- <line-graph class="col-lg-9" [chartData]=dataHolder></line-graph> -->
   </div>

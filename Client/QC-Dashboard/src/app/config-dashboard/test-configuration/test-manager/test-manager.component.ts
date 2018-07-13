@@ -15,10 +15,14 @@ export class TestmanagerComponent implements OnInit {
   formModified:boolean;
   testTitle: string;
   editable: boolean;
+  saveError: boolean;
+  saveSuccess: boolean;
 
   constructor(private http:HttpClient) {
       this.arrayParams = new Array<Object>();
       this.editable = false;
+      this.saveError = false;
+      this.saveSuccess = false;
   }
 
   ngOnInit() {
@@ -42,6 +46,11 @@ export class TestmanagerComponent implements OnInit {
     this.http.post('https://sensor.nevada.edu/GS/Services/Config/ModifyTests/', modifiedParams).subscribe(
       data => {
         console.log(data);
+        this.saveSuccess = true;
+      }
+      error => {
+        this.saveError = true;
+        console.log(error);
       }
     )
 
@@ -69,8 +78,6 @@ export class TestmanagerComponent implements OnInit {
   updateNewValue(param:Object, event:any){
       param['newValue'] = event.target.value;
       this.formModified = true;
-
-      console.log(param)
   }
 
 

@@ -32,7 +32,7 @@ for child in root.findall('service'):
 print(Path)
 
 #start the service
-StartCommand = 'uwsgi --socket 127.0.0.1:{0} --chdir {1} --protocol http --callable app --file {2}'.format(Port, Path, ExeFile)
+StartCommand = 'uwsgi --enable-threads --socket 127.0.0.1:{0} --chdir {1} --protocol http --callable app --file {2}'.format(Port, Path, ExeFile)
 p = subprocess.Popen(['sudo', 'bash', '-c', StartCommand])
 
 

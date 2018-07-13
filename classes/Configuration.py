@@ -155,29 +155,15 @@ class TestConfiguration(Configuration):
         '''
 
         def WriteChanges(self, NewTestParams):
-            #A temp test param object will be needed to store and write out new test params
-            #WriteTP = copy.deepcopy(self.TestParameters);
+            try:
+                for key in NewTestParams:
+                    self.UpdateXML(key, NewTestParams[key])
 
-            #NewTestParams is an object with one key which is the dsID
-            #we can also push up multiple new or modified tests at the same time
-            #with this interface
-            #for key in NewTestParams:
-            #    if(WriteTP):
-            #        for ndx, test in enumerate(WriteTP[key]):
-            #            if (test['Type'] == NewTestParams[key]['Type']):
-            #                WriteTP[key][ndx] = NewTestParams[key]
-            #    else:
-            #        return
+                with open(self.SourceFile, 'w+') as fp:
+                    fp.write(self.SourceMetaData.toxml());
 
-            #write out changes to source xml file
-            #with open(self.SourceFile, 'w+') as FP:
-
-            for key in NewTestParams:
-                self.UpdateXML(key, NewTestParams[key])
-
-
-            with open(self.SourceFile, 'w+') as fp:
-                fp.write(self.SourceMetaData.toxml());
+            except:
+                raise
 
 
         def Update(self):
@@ -253,40 +239,52 @@ class TestConfiguration(Configuration):
 
         #Updates the XML from SourceMetaData with a singular bundle of new test parameters
         def UpdateXML(self, ModifiedDsID, NewTestParams):
-            StreamExists = False
-            TestExists = False
-            DataStreams = self.SourceMetaData.getElementsByTagName("DataStream")
+            try:
+                StreamExists = False
+                TestExists = False
+                DataStreams = self.SourceMetaData.getElementsByTagName("DataStream")
 
-            modifiedTest = NewTestParams
+                modifiedTest = NewTestParams
 
-            for Stream in DataStreams:
-                StreamID = self.GetInnerXML(Stream.getElementsByTagName("Stream"))
-                if(StreamID == ModifiedDsID):
-                    StreamExists = True
-                    Tests = Stream.getElementsByTagName("Test")
+                print("New Test Params", NewTestParams, "ModifiedDsID", ModifiedDsID);
 
-                    for Test in Tests:
-                        if( NewTestParams["Type"] == self.GetInnerXML(Test.getElementsByTagName("Type")) ):
-                            TestExists = True
+                for Stream in DataStreams:
+                    StreamID = self.GetInnerXML(Stream.getElementsByTagName("Stream"))
+                    if(StreamID == ModifiedDsID):
+                        StreamExists = True
+                        Tests = Stream.getElementsByTagName("Test")
 
-                            for Param in NewTestParams:
-                                if(Param != "Type"):
-                                    Test.getElementsByTagName(Param)[0].firstChild.nodeValue = NewTestParams[Param]
+                        for Test in Tests:
+                            if( NewTestParams["Type"] == self.GetInnerXML(Test.getElementsByTagName("Type")) ):
+                                TestExists = True
 
-            if not TestExists:
-                NewTestNode = self.CreateTest(NewTestParams)
-                
-                #append test to an existing stream
+                                for Param in NewTestParams:
+                                    #Check here for null values
+                                    if(Param != "Type"):
+                                        Test.getElementsByTagName(Param)[0].firstChild.nodeValue = NewTestParams[Param]
+
+                if not TestExists:
+                    NewTestNode = self.CreateTest(NewTestParams)
+
+                    #append test to an existing stream
+                    for Stream in DataStreams:
+                        StreamID = self.GetInnerXML(Stream.getElementsByTagName("Stream"))
+                        if(StreamID == ModifiedDsID):
+                            Stream.appendChild(NewTestNode)
 
 
 
-            if not StreamExists:
-                Stream = self.CreateStream(NewTestNode, ModifiedDsID)
+                if not StreamExists:
+                    Stream = self.CreateStream(NewTestNode, ModifiedDsID)
+                    self.SourceMetaData.getElementsByTagName("DataStreams")[0].appendChild(Stream);
 
-                print(Stream)
+                    #we have to modify the data source config file here as well
+                    self.AddStreamToDataSourceConfig(ModifiedDsID)
 
-                #we have to modify the data source config file here as well
-                self.AddStreamToDataSourceConfig(ModifiedDsID)
+            except:
+                raise
+
+
 
 
         #---------HARDCODED TO BE REPLACED WITH A BETTER ARITECTURAL DESIGN-------
@@ -294,8 +292,9 @@ class TestConfiguration(Configuration):
             ConfigDOM = None
             NewNode = None
             TestedDataStreams = None
+            ConfigSource = "../config/datasource.config"
 
-            with open("../config/datasource.config") as CFile:
+            with open(ConfigSource) as CFile:
                 xml = CFile.read()
                 ConfigDOM = parseString(xml)
 
@@ -306,19 +305,43 @@ class TestConfiguration(Configuration):
             TestedDataStreams.appendChild(NewNode)
 
             print( ConfigDOM.toxml() )
+            with open(ConfigSource, "w+") as WFile:
+                WFile.write(ConfigDOM.toxml())
+
 
 
         def CreateTest(self, NewTestParams):
             #create a node called test
             NewTest = self.SourceMetaData.createElement("Test")
 
-            #create text node each paramter and append to test
-            for parameter in NewTestParams:
-                TempParam = self.SourceMetaData.createElement(parameter)
-                TempParam.appendChild( self.SourceMetaData.createTextNode(NewTestParams[parameter]) )
-                NewTest.appendChild(TempParam)
+            try:
+                #create text node each paramter and append to test
+                for parameter in NewTestParams:
 
-            return NewTest
+                    #ensure value is not none
+                    if NewTestParams[parameter] is None:
+                        raise Exception('Details', 'Test parameters cannot be empty.')
+
+                    #strip away whitespace
+                    # NewTestParams[parameter] = NewTestParams[parameter].replace(' ', '')
+
+                    #Convert parameter value to number
+                    # if(parameter != 'Type'):
+                    #     Value = float(NewTestParams[parameter])
+                    # else:
+                    Value = NewTestParams[parameter]
+
+
+
+                    TempParam = self.SourceMetaData.createElement(parameter)
+                    TempParam.appendChild( self.SourceMetaData.createTextNode( str(Value) ) )
+                    NewTest.appendChild(TempParam)
+
+                return NewTest
+
+            except:
+                raise
+
 
         def CreateStream(self, NewTestNode, DsID):
             NewStream = self.SourceMetaData.createElement("DataStream")

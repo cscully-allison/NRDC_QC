@@ -3,8 +3,8 @@
 		<Stream>63</Stream>
 		<Test>
 			<Type>Bounds</Type>
-			<Max>27.5</Max>
-			<Min>-39.8</Min>
+			<Max>40.0</Max>
+			<Min>-40.0</Min>
 		</Test>
 		<Test>
 			<Type>Repeat Value</Type>
@@ -15,12 +15,46 @@
 		<Stream>66</Stream>
 		<Test>
 			<Type>Bounds</Type>
-			<Max>28.8</Max>
-			<Min>-19.7</Min>
+			<Max>41.0</Max>
+			<Min>-30.0</Min>
 		</Test>
 		<Test>
 			<Type>Repeat Value</Type>
 			<RepeatThreshold>5</RepeatThreshold>
+		</Test>
+	</DataStream>
+	<DataStream>
+		<Stream>55</Stream>
+		<Test>
+			<Min>0.0</Min>
+			<Max>98.0</Max>
+			<Type>Bounds</Type>
+		</Test>
+	</DataStream>
+	<DataStream>
+		<Stream>54</Stream>
+		<Test>
+			<RepeatThreshold>4</RepeatThreshold>
+			<Type>Repeat Value</Type>
+		</Test>
+	</DataStream>
+	<DataStream>
+		<Stream>56</Stream>
+		<Test>
+			<Type>Repeat Value</Type>
+			<RepeatThreshold>3</RepeatThreshold>
+		</Test>
+	</DataStream>
+	<DataStream>
+		<Stream>67</Stream>
+		<Test>
+			<Type>Bounds</Type>
+			<Min>-25.0</Min>
+			<Max>30.0</Max>
+		</Test>
+		<Test>
+			<RepeatThreshold>5</RepeatThreshold>
+			<Type>Repeat Value</Type>
 		</Test>
 	</DataStream>
 </DataStreams>

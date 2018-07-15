@@ -147,16 +147,29 @@ export class FlagsByDatastreamComponent implements OnInit {
   //assign some visual data to each flag bundle object that will be
   // displayed as a circle
   assignVisualData(flagBundles:object[]):object[]{
-      var xoffset = 400, yoffset = 200;
+      var xoffset = 400, yoffset = 320;
       var color = "rgb(250,170,104, .9)";
       var radius = 100;
       var localXOffset = 400;
-      var localYOffset = 320;
+      var localYOffset = 200;
+      var init = 1;
 
       for(var i=0; i< flagBundles.length; i++ ){
-          if(localXOffset*(i+1) < this.viewport_width - 100){
-            flagBundles[i]["xoffset"] = localXOffset*(i+1);
-            flagBundles[i]["yoffset"] = yoffset;
+          if(localXOffset*( (i%3) + 1 ) < this.viewport_width - 100){
+            flagBundles[i]["xoffset"] = localXOffset*( (i%3) + 1 );
+            if(i%3 == 0 && !init){
+              localYOffset += yoffset;
+              this.viewport_height += yoffset;
+            }
+            flagBundles[i]["yoffset"] = localYOffset;
+            init = 0;
+            // } else if (i%3 == 0 && init) {
+            //   flagBundles[i]["yoffset"] = localYOffset;
+            //   init = 0;
+            // } else {
+            //   flagBundles[i]["yoffset"] = localYOffset;
+            // }
+
           } else {
             localXOffset = 400;
             localYOffset += yoffset;

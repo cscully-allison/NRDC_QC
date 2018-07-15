@@ -1,6 +1,6 @@
 <!-- <div class="container"> -->
   <div class="row"><h3 class="col-lg-10">Queried Measurments for {{passedData["Deployment Name"]}}</h3></div>
-  <div class="row"><h4 class="col-lg-10">DataStream: {{passedData["streamID"]}}</h4></div>
+  <div class="row"><h4 class="col-lg-10">Data Stream ID: {{passedData["streamID"]}}</h4></div>
   <div class="row">
     <div class="col-lg-3">
       <div class="button">Select DataStream</div>
@@ -11,7 +11,7 @@
     <div class="col-lg-8" *ngIf="!reviewFlags">
       <canvas *ngIf="loadingDone"
                   baseChart
-                  [data]="data"
+                  [datasets]="data"
                   [labels]="labels"
                   [chartType]="lineChartType"
                   [options]="lineChartOptions"
@@ -36,7 +36,7 @@
 
         </div>
         <ng-container *ngFor="let datum of dataHolder">
-        <div *ngIf="datum['Flag Type'] < 4" class="row shadow alert-danger mb-3 mt-3 pt-2 pb-2" data-aos="fade-up">
+        <div *ngIf="datum['Flag Type'] < 4" class="row shadow alert-danger mb-3 mt-3 pt-2 pb-2">
             <!-- <div *ngIf="data['Flag Type'] == 4" class="value ok">
                 {{data.Value}}
             </div>

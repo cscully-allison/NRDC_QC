@@ -16,7 +16,7 @@ export class DatavisDashboardComponent implements OnInit {
   public passedData = {};
   public dataHolder = [];
   public data:Array<any> = [];
-  public labels:Array<number[]> = [];
+  public labels:Array<any> = [];
   public flags:Array<any> = [];
   public lineChartOptions:any = {responsive: true};
   public lineChartLegend:boolean = true;
@@ -51,15 +51,20 @@ export class DatavisDashboardComponent implements OnInit {
 
       this.http.get('https://sensor.nevada.edu/GS/Services/DataVis/Measurements/' + this.passedData["streamID"] + '/150').subscribe(
          data => {
-
+             var dataArray = [];
              for(let measurement in data["Measurements"]){
-                this.data.push(data["Measurements"][measurement]['Value']);
+                dataArray.push(data["Measurements"][measurement]['Value']);
                 this.labels.push(data["Measurements"][measurement]['Time Stamp']);
                 this.flags.push(this.flagMappings[data["Measurements"][measurement]['Flag Type']]);
 
                 this.dataHolder.push(data["Measurements"][measurement]);
              }
 
+             console.log(dataArray);
+
+             this.data.push({data: dataArray, label: this.passedData["Deployment Name"] + " -- Stream ID: " + this.passedData["streamID"] });
+
+             this.data[0]['data'] = this.data[0]['data'].slice();
 
              this.lineChartOptions['hover'] = { onHover: (event, active) => { this.renderFlags(event, active) } };
 

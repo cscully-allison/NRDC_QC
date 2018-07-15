@@ -47,7 +47,7 @@ export class TestmanagerComponent implements OnInit {
       data => {
         console.log(data);
         this.saveSuccess = true;
-      }
+      },
       error => {
         this.saveError = true;
         console.log(error);

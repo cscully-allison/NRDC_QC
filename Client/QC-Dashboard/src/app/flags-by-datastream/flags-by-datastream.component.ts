@@ -16,6 +16,8 @@ export class FlagsByDatastreamComponent implements OnInit {
   flagData = {};
   flagDataArr = [];
   labels = [];
+  viewport_width = 1600;
+  viewport_height = 600;
 
   constructor(private aroute:ActivatedRoute, private http:HttpClient, private router:Router) {
 
@@ -33,8 +35,8 @@ export class FlagsByDatastreamComponent implements OnInit {
 
 
           var svgContainer = d3.select("#flag-bundles-container").append("svg")
-                              .attr("width", 1600)
-                              .attr("height", 600);
+                              .attr("width", this.viewport_width)
+                              .attr("height", this.viewport_height);
 
 
 
@@ -48,7 +50,10 @@ export class FlagsByDatastreamComponent implements OnInit {
                                  .attr("cy", function(d){return d.yoffset;})
                                  .attr("r", function(d){return d.radius})
                                  .style("fill", function(d){return d.color;})
+                                 .style("cursor", "pointer")
                                  .on("click", function(d){ d.classContext.forwardToMeasurements(d, d.classContext) })
+                                 //.on("mouseover", function(d){console.log("mouseover", this); d3.select(this).style("fill", "rgb(250,170,104, .9)");  })
+                                 //.on("mouseout", function(){d3.select(this).style("fill", "#027878") })
 
 
 
@@ -60,10 +65,15 @@ export class FlagsByDatastreamComponent implements OnInit {
                   .append("text")
                   .style("fill", "rgba(255,255,255,0.9)")
                   .style("text-anchor", "middle")
+                  .style("cursor", "pointer")
                   .attr("x", function(d){return d.xoffset;} )
                   .attr("y", function(d){return d.yoffset + 20;} )
                   .attr("font-size", "4em")
-                  .text( function(d){return d.flagCount;} );
+                  .text( function(d){return d.flagCount;} )
+                  .on("click", function(d){ d.classContext.forwardToMeasurements(d, d.classContext) })
+                  .on("mouseover", function(d){console.log("mouseover", this); d3.select(this).style("fill", "rgba(0,0,0,.7)");  })
+                  .on("mouseout", function(){d3.select(this).style("fill", "rgba(255,255,255,.9)") })
+
 
           svgContainer
                   .selectAll("text.labels")
@@ -129,7 +139,7 @@ export class FlagsByDatastreamComponent implements OnInit {
           return 0;
       });
 
-      objectsArr  = this.assignVisualData(objectsArr);
+      objectsArr = this.assignVisualData(objectsArr);
 
       return objectsArr;
   }
@@ -137,13 +147,24 @@ export class FlagsByDatastreamComponent implements OnInit {
   //assign some visual data to each flag bundle object that will be
   // displayed as a circle
   assignVisualData(flagBundles:object[]):object[]{
-      var xoffset = 350, yoffset = 320;
-      var color = "#027878";
+      var xoffset = 400, yoffset = 200;
+      var color = "rgb(250,170,104, .9)";
       var radius = 100;
+      var localXOffset = 400;
+      var localYOffset = 320;
 
       for(var i=0; i< flagBundles.length; i++ ){
-          flagBundles[i]["xoffset"] = xoffset*(i+1);
-          flagBundles[i]["yoffset"] = yoffset;
+          if(localXOffset*(i+1) < this.viewport_width - 100){
+            flagBundles[i]["xoffset"] = localXOffset*(i+1);
+            flagBundles[i]["yoffset"] = yoffset;
+          } else {
+            localXOffset = 400;
+            localYOffset += yoffset;
+            this.viewport_height += yoffset;
+
+            flagBundles[i]["xoffset"] = localXOffset;
+            flagBundles[i]["yoffset"] = localYOffset;
+          }
           flagBundles[i]["color"] = color;
           flagBundles[i]["radius"] = radius;
       }

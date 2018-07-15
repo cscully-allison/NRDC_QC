@@ -3,11 +3,12 @@
   <div class="row"><h4 class="col-lg-10">DataStream: {{passedData["streamID"]}}</h4></div>
   <div class="row">
     <div class="col-lg-3">
-      <div class="button">Add DataStream</div>
+      <div class="button">Select DataStream</div>
       <div class="button">Manual Flag</div>
-      <div class="button">Review Flags</div>
+      <div class="button" (click)="listFlags()">Review Flags</div>
+      <div *ngIf="reviewFlags" class="button" (click)="returnToChart()">View Chart</div>
     </div>
-    <div class="col-lg-9">
+    <div class="col-lg-8" *ngIf="!reviewFlags">
       <canvas *ngIf="loadingDone"
                   baseChart
                   [data]="data"
@@ -16,45 +17,49 @@
                   [options]="lineChartOptions"
                   (chartHover)="showAdvData($event)"></canvas>
     </div>
+
+    <div *ngIf="reviewFlags" class="col-lg-8">
+        <div class="row">
+            <div class="col-lg-3">
+                <h3>Value</h3>
+            </div>
+            <div class="col-lg-3">
+                <h3>Time Stamp</h3>
+            </div>
+            <div class="col-lg-3">
+                <h3>Flag</h3>
+            </div>
+            <div class="col-lg-3">
+                <h3>Annotation</h3>
+            </div>
+
+
+        </div>
+        <ng-container *ngFor="let datum of dataHolder">
+        <div *ngIf="datum['Flag Type'] < 4" class="row shadow alert-danger mb-3 mt-3 pt-2 pb-2" data-aos="fade-up">
+            <!-- <div *ngIf="data['Flag Type'] == 4" class="value ok">
+                {{data.Value}}
+            </div>
+            <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
+                {{data["Time Stamp"]}}
+            </div>
+            <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
+                {{data["Flag Name"]}}
+            </div> -->
+
+            <div class="col-lg-3">
+                {{datum.Value}}
+            </div>
+            <div class="col-lg-3">
+                {{datum["Time Stamp"]}}
+            </div>
+            <div  class="col-lg-3">
+                {{flagMappings[datum["Flag Type"]]}}
+            </div>
+            <div class="col-lg-3"><textarea></textarea></div>
+        </div>
+        </ng-container>
+    </div>
     <!-- <line-graph class="col-lg-9" [chartData]=dataHolder></line-graph> -->
   </div>
 <!-- </div> -->
-
-  <!-- <div id="chart-view">
-    <div id="chart-container">
-        <ul>
-            <li>
-                <div class="value">
-                    <h3>Value:</h3>
-                </div>
-                <div class="timestamp">
-                    <h3>Time Stamp:</h3>
-                </div>
-                <div class="timestamp">
-                    <h3>Flag:</h3>
-                </div>
-            </li>
-            <li *ngFor="let data of dataHolder">
-                <div *ngIf="data['Flag Type'] == 4" class="value ok">
-                    {{data.Value}}
-                </div>
-                <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
-                    {{data["Time Stamp"]}}
-                </div>
-                <div *ngIf="data['Flag Type'] == 4" class="timestamp ok">
-                    {{data["Flag Name"]}}
-                </div>
-
-                <div *ngIf="data['Flag Type'] < 4" class="value bad">
-                    {{data.Value}}
-                </div>
-                <div *ngIf="data['Flag Type'] < 4" class="timestamp bad">
-                    {{data["Time Stamp"]}}
-                </div>
-                <div *ngIf="data['Flag Type'] < 4" class="timestamp bad">
-                    {{data["Flag Name"]}}
-                </div>
-            </li>
-        </ul>
-    </div>
-</div> -->

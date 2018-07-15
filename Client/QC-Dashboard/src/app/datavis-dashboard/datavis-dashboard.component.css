@@ -25,7 +25,7 @@ ul{
     padding-top: 10px;
 }
 
-.timestamp{
+/* .timestamp{
     display: inline-block;
 
     min-width: 250px;
@@ -35,10 +35,10 @@ ul{
     padding-top: 10px;
 
     border: 1px black solid;
-}
+} */
 
 div{
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 #chart-view{

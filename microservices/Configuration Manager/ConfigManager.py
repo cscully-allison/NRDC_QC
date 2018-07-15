@@ -43,7 +43,7 @@ def getTests():
 @cross_origin()
 def getTestsForDs(DataStreamID):
     TestsInDS = []
-    
+
     try:
         TestConfig = TestConfiguration("../config/tests.config")
 
@@ -51,7 +51,7 @@ def getTestsForDs(DataStreamID):
             print(ds, DataStreamID)
             if ds == DataStreamID:
                 TestsInDS = tests
-        
+
         return jsonify(TestsInDS)
 
     except Exception as e:
@@ -66,14 +66,14 @@ def loadTestData():
         modifiedTest = request.get_json()
 
         TestConfig = TestConfiguration("../config/tests.config")
-        
+
         TestConfig.WriteChanges(modifiedTest)
 
         return jsonify({'requestPayload':request.get_json()})
 
     except Exception as e:
         print (str(e))
-        return False, str(e)
+        return False, jsonify(e.args)
 
 
 # Run Main

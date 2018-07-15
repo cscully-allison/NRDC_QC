@@ -32,11 +32,12 @@ def Connect(User,Pass,Db):
 
 class DataBaseSource(DataSource):
 
-    def __init__(self, configuration = None):
+    def __init__(self, configuration = None, Verbose = False):
         self.Configuration = configuration
         self.Engine = None
         self.Connection = None
         self.ConnectionString = ""
+        self.Verbose = Verbose
 
 
     def configure(self):
@@ -138,28 +139,37 @@ class DataBaseSource(DataSource):
         Update = "UPDATE Data.Measurements SET [L1 Flag] = {0} WHERE [Measurement Time Stamp] = \'{1}\' AND [Stream] = {2};"
         Insert  = "INSERT INTO Data.Measurements ([Stream],[Measurement Time Stamp],[Value],[Controlled Value],[L1 Flag],[L2 Flag]) VALUES ({0}, \'{1}\', NULL, NULL, {2}, NULL);"
         Query = ""
+        MISSINGVALUE = 3
 
         ReturnStatements = []
         newConn = self.Engine.connect()
 
         for Ndx, Measurement in enumerate(MeasurementList):
-            if Measurement.getFlag() != 3:
+            if Measurement.getFlag() != MISSINGVALUE:
 
                 Query += Update.format(Measurement.getFlag(), Measurement.TimeStamp, DataStreamID)
+
                 if(Ndx % 300 == 0):
-                    print("Loading Flags into DB. . . ", Ndx, " out of ", len(MeasurementList))
-                    line = "Loading Flags into DB. . . " + str(Ndx) + " out of " + str(len(MeasurementList))
+                    if(self.Verbose):
+                        print("Updating Flags in DB. ", Ndx, " out of ", len(MeasurementList))
+
+
+                    line = "Updating Flags into DB. " + str(Ndx) + " out of " + str(len(MeasurementList))
                     ReturnStatements.append(line)
                     returned = newConn.execute( text(Query) )
                     Query = ""
 
                 elif(len(MeasurementList) < 600):
-                    print("Loading Flags into DB. ", Ndx, "out of ", len(MeasurementList))
+                    if(self.Verbose):
+                        print("Updating Flags into DB. ", Ndx, "out of ", len(MeasurementList))
+
                     returned = newConn.execute( text(Query) )
                     Query = ""
 
-            elif Measurement.getFlag() == 3:
-                print("Inserting Flags Into DB. ", Ndx, "out of ", len(MeasurementList))
+            elif Measurement.getFlag() == MISSINGVALUE:
+                if(self.Verbose):
+                    print("Inserting Flags Into DB. ", Ndx, "out of ", len(MeasurementList))
+
                 InsertStatement = Insert.format(DataStreamID, Measurement.TimeStamp, Measurement.getFlag());
                 newConn.execute( text(InsertStatement) )
 
